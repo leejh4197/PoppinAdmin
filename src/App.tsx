@@ -13,7 +13,7 @@ import OverallManger from "./pages/overallManagementPage/OverallManger";
 
 function App() {
   return (
-    <div className="bg-pink-300">
+    <div className="h-full w-full">
       <Routes>
         <Route path="/" element={<Login />} />
         <Route element={<SideBar />}>

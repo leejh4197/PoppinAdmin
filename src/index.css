@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .flexCenter {
+    @apply w-full h-full flex justify-center items-center pl-[350px] pt-[160px];
+  }
+}

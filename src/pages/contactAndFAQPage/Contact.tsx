@@ -1,5 +1,5 @@
 function Contact() {
-  return <div>문의하기</div>;
+  return <div className="flexCenter">문의하기</div>;
 }
 
 export default Contact;
