@@ -16,7 +16,7 @@ const SideBar = () => {
               {el.name}
             </button>
           )}
-          {(el.name === "문의하기" || el.name === "FAQ") &&
+          {(el.name === "자주 묻는 질문" || el.name === "1:1 문의  ") &&
             showContactSubMenu && (
               <button onClick={() => navigate(el.path as string)}>
                 {el.name}
@@ -27,7 +27,7 @@ const SideBar = () => {
               {el.name}
             </button>
           )}
-          {(el.name === "팝업 신고 관리" || el.name === "후기 신고 관리") &&
+          {(el.name === "팝업 신고" || el.name === "후기 신고") &&
             showReportSubMenu && (
               <button onClick={() => navigate(el.path as string)}>
                 {el.name}
