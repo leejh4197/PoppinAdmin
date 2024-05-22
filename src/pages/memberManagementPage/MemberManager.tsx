@@ -1,5 +1,9 @@
 function MemberManager() {
-  return <div className="flexCenter">회원관리1!!!</div>;
+  return (
+    <div className="flexCenter">
+      <h1 className="font-bold text-4xl">회원관리</h1>
+    </div>
+  );
 }
 
 export default MemberManager;

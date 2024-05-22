@@ -4,6 +4,6 @@
 
 @layer components {
   .flexCenter {
-    @apply w-full h-full flex justify-center items-center pl-[350px] pt-[160px];
+    @apply w-full h-full flex flex-col pl-[500px] pt-[160px];
   }
 }

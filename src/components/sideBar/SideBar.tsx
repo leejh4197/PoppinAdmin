@@ -9,7 +9,7 @@ const SideBar = () => {
 
   return (
     <>
-      <div className="flex flex-col absolute pl-[200px] h-full pt-[64px]">
+      <div className="flex flex-col absolute pl-[200px] h-full pt-[160px]">
         <img className="w-8" src="Logo.png" />
         <div>
           <button className="font-bold py-8" onClick={() => navigate("/home")}>
