@@ -21,9 +21,14 @@ const SideBar = () => {
             <div className="my-5" key={index}>
               {el.name === "문의하기/FAQ 관리" && (
                 <button
+                  className="flex items-center"
                   onClick={() => setShowContactSubMenu(!showContactSubMenu)}
                 >
-                  {el.name}
+                  <span className="mr-2">{el.name}</span>
+                  <img
+                    src="/arrow.svg"
+                    className={`${showContactSubMenu ? "rotate-180" : ""}`}
+                  />
                 </button>
               )}
               {(el.name === "자주 묻는 질문" || el.name === "1:1 문의") &&
@@ -37,9 +42,14 @@ const SideBar = () => {
                 )}
               {el.name === "신고 관리" && (
                 <button
+                  className="flex items-center"
                   onClick={() => setShowReportSubMenu(!showReportSubMenu)}
                 >
-                  {el.name}
+                  <span className="mr-2">{el.name}</span>
+                  <img
+                    src="/arrow.svg"
+                    className={`${showReportSubMenu ? "rotate-180" : ""}`}
+                  />
                 </button>
               )}
               {(el.name === "팝업 신고" || el.name === "후기 신고") &&
