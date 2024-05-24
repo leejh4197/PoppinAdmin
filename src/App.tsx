@@ -10,8 +10,15 @@ import PopupReport from "./pages/reportManagementPage/popupReportPage/PopupRepor
 import ReviewReport from "./pages/reportManagementPage/reviewReportPage/ReviewReport";
 import SubmissionManager from "./pages/submissionManagementPage/SubmissionManager";
 import OverallManger from "./pages/overallManagementPage/OverallManger";
+import { useEffect } from "react";
+import { baseInstance } from "./api/instance";
 
 function App() {
+  // useEffect(() => {
+  //   baseInstance
+  //     .get("/api/v1/user/support/faqs")
+  //     .then((res) => console.log(res));
+  // }, []);
   return (
     <div className="h-full w-full">
       <Routes>
@@ -19,6 +26,7 @@ function App() {
         <Route element={<SideBar />}>
           <Route path="/home" element={<Home />} />
           <Route path="/memberManager" element={<MemberManager />} />
+          <Route path="/memberManager/:id" element={<MemberManager />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/editRequests" element={<EditRequests />} />
