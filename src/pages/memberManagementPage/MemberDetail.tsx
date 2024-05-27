@@ -1,7 +1,5 @@
-import React from "react";
-
 const MemberDetail = () => {
-  return <div></div>;
+  return <div>회원상세페이지</div>;
 };
 
 export default MemberDetail;

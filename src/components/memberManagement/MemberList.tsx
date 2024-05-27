@@ -3,8 +3,10 @@ import CustomPagination from "../../pages/memberManagementPage/CustomPagination"
 import { userList } from "../../constants/managerDummys";
 import UserList from "./UserList";
 import CustomDropDown from "./CustomDropDown";
+import { useNavigate } from "react-router-dom";
 
 const MemberList = () => {
+  const navigate = useNavigate();
   const [totalPages, setTotalPages] = useState<number>(userList.length);
   const [offset, setOffset] = useState<number>(0);
   const [filterDropDown, setFilterDropDown] = useState<boolean>(false);
@@ -22,20 +24,11 @@ const MemberList = () => {
     setFilterDropDown(false);
     setBaseDropDown(content);
   };
+  const handleMemberDetailClick = (nickName: string) => {
+    navigate(`/memberManager/${nickName}`);
+  };
   return (
     <div>
-      <div className="relative flex items-center w-4/5 mb-12">
-        <input
-          className="w-full py-4 pl-10 pr-4 rounded-full border border-gray-300"
-          type="text"
-          placeholder="텍스트를 입력하세요."
-        />
-        <img
-          className="absolute right-3 w-5 h-5"
-          src="/Search.png"
-          alt="Search Icon"
-        />
-      </div>
       <div className="flex w-4/5 justify-between items-center mb-6">
         <button className="border px-7 py-3 rounded-full">
           집중 관리 회원
@@ -56,6 +49,7 @@ const MemberList = () => {
         {userList.map((el, index) => (
           <div key={index}>
             <UserList
+              handleMemberDetailClick={handleMemberDetailClick}
               nickName={el.nickname}
               email={el.email}
               requiresSpecialCare={el.requiresSpecialCare}
