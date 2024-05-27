@@ -105,8 +105,8 @@ const SideBar = () => {
           ))}
         </div>
         <div className="flex flex-col">
-          <div className="my-5">앱 버전</div>
-          <div>로그아웃</div>
+          <div className="my-5">로그아웃</div>
+          <div>회원탈퇴</div>
         </div>
       </div>
       <Outlet />

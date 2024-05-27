@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import MemberList from "../../components/memberManagement/MemberList";
 import MemberDetail from "./MemberDetail";
 
 function MemberManager() {
-  const { id } = useParams();
-  console.log(id);
+  const location = useLocation();
+  const state = location.state || {};
+  const { nickName, focus } = state;
   return (
     <div className="flexCenter">
       <h1 className="font-bold text-4xl mb-10">회원관리</h1>
@@ -20,7 +21,11 @@ function MemberManager() {
           alt="Search Icon"
         />
       </div>
-      {id ? <MemberDetail /> : <MemberList />}
+      {nickName ? (
+        <MemberDetail nickName={nickName} focus={focus} />
+      ) : (
+        <MemberList />
+      )}
     </div>
   );
 }

@@ -24,8 +24,10 @@ const MemberList = () => {
     setFilterDropDown(false);
     setBaseDropDown(content);
   };
-  const handleMemberDetailClick = (nickName: string) => {
-    navigate(`/memberManager/${nickName}`);
+  const handleMemberDetailClick = (nickName: string, focus: boolean) => {
+    navigate(`/memberManager/${nickName}`, {
+      state: { nickName: nickName, focus: focus },
+    });
   };
   return (
     <div>
