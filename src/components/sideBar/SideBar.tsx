@@ -8,8 +8,21 @@ const SideBar = () => {
   const [showReportSubMenu, setShowReportSubMenu] = useState(false);
   const [activeButton, setActiveButton] = useState("");
 
+  const contactButtons = ["문의하기/FAQ 관리", "자주 묻는 질문", "1:1 문의"];
+  const reportsButtons = ["신고 관리", "팝업 신고", "후기 신고"];
+  const contactIsActive = contactButtons.includes(activeButton);
+  const reportsIsActive = reportsButtons.includes(activeButton);
+
   const handleClick = (name: string, path?: string) => {
-    setActiveButton(name);
+    if (name === "문의하기/FAQ 관리") {
+      setActiveButton(name);
+      setShowContactSubMenu(!showContactSubMenu);
+    } else if (name === "신고 관리") {
+      setActiveButton(name);
+      setShowReportSubMenu(!showReportSubMenu);
+    } else {
+      setActiveButton(name);
+    }
     if (path) {
       navigate(path);
     }
@@ -35,9 +48,9 @@ const SideBar = () => {
               {el.name === "문의하기/FAQ 관리" && (
                 <button
                   className={`flex items-center ${
-                    activeButton === el.name ? "font-bold" : ""
+                    contactIsActive && showContactSubMenu ? "font-bold" : ""
                   }`}
-                  onClick={() => setShowContactSubMenu(!showContactSubMenu)}
+                  onClick={() => handleClick("문의하기/FAQ 관리")}
                 >
                   <span className="mr-2">{el.name}</span>
                   <img
@@ -53,7 +66,7 @@ const SideBar = () => {
                 showContactSubMenu && (
                   <button
                     className={`text-gray-400 ${
-                      activeButton === el.name ? "font-bold text-black" : ""
+                      activeButton === el.name ? "font-bold text-[#0EB5F9]" : ""
                     }`}
                     onClick={() => handleClick(el.name, el.path)}
                   >
@@ -63,9 +76,9 @@ const SideBar = () => {
               {el.name === "신고 관리" && (
                 <button
                   className={`flex items-center ${
-                    activeButton === el.name ? "font-bold" : ""
+                    reportsIsActive && showReportSubMenu ? "font-bold" : ""
                   }`}
-                  onClick={() => setShowReportSubMenu(!showReportSubMenu)}
+                  onClick={() => handleClick("신고 관리")}
                 >
                   <span className="mr-2">{el.name}</span>
                   <img
@@ -81,7 +94,7 @@ const SideBar = () => {
                 showReportSubMenu && (
                   <button
                     className={`text-gray-400 ${
-                      activeButton === el.name ? "font-bold text-black" : ""
+                      activeButton === el.name ? "font-bold text-[#0EB5F9]" : ""
                     }`}
                     onClick={() => handleClick(el.name, el.path)}
                   >

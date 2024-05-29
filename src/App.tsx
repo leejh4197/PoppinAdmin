@@ -12,13 +12,14 @@ import SubmissionManager from "./pages/submissionManagementPage/SubmissionManage
 import OverallManger from "./pages/overallManagementPage/OverallManger";
 import { useEffect } from "react";
 import { baseInstance } from "./api/instance";
+import WriteContact from "./pages/contactAndFAQPage/WriteContact";
 
 function App() {
-  // useEffect(() => {
-  //   baseInstance
-  //     .get("/api/v1/user/support/faqs")
-  //     .then((res) => console.log(res));
-  // }, []);
+  useEffect(() => {
+    baseInstance
+      .get("/api/v1/user/support/faqs")
+      .then((res) => console.log(res));
+  }, []);
   return (
     <div className="h-full w-full">
       <Routes>
@@ -28,6 +29,7 @@ function App() {
           <Route path="/memberManager" element={<MemberManager />} />
           <Route path="/memberManager/:id" element={<MemberManager />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/writeContact" element={<WriteContact />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/editRequests" element={<EditRequests />} />
           <Route path="/popupReport" element={<PopupReport />} />
