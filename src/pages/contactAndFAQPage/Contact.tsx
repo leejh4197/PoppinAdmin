@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import ContactList from "../../components/contactAndFAQ/faqManagement/ContactList";
-import ContactTitle from "../../components/contactAndFAQ/ContactTitle";
+import TitleText from "../../components/common/TitleText";
 
 function Contact() {
   const navigate = useNavigate();
   return (
     <div className="flexCenter w-4/5">
       <div className="flex justify-between items-center mb-10">
-        <ContactTitle />
+        <TitleText mainTitle="문의하기/FAQ 관리" />
         <div
           onClick={() => navigate("/writeContact")}
           className="cursor-pointer whitespace-nowrap px-14 py-5 rounded-full bg-[#0EB5F9] text-white"

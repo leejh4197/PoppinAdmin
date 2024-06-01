@@ -1,9 +1,9 @@
-import ContactTitle from "../../components/contactAndFAQ/ContactTitle";
+import TitleText from "../../components/common/TitleText";
 
 function Faq() {
   return (
     <div className="flexCenter">
-      <ContactTitle subTitle="1:1 문의" />
+      <TitleText mainTitle="문의하기/FAQ 관리" subTitle="1:1 문의" />
     </div>
   );
 }

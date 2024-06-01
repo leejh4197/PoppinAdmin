@@ -13,13 +13,15 @@ import OverallManger from "./pages/overallManagementPage/OverallManger";
 import { useEffect } from "react";
 import { baseInstance } from "./api/instance";
 import WriteContact from "./pages/contactAndFAQPage/WriteContact";
+import NoticeManager from "./pages/noticePage/NoticeManager";
+import PopUpRegister from "./pages/overallManagementPage/PopUpRegister";
 
 function App() {
-  useEffect(() => {
-    baseInstance
-      .get("/api/v1/user/support/faqs")
-      .then((res) => console.log(res));
-  }, []);
+  // useEffect(() => {
+  //   baseInstance
+  //     .get("/api/v1/user/support/faqs")
+  //     .then((res) => console.log(res));
+  // }, []);
   return (
     <div className="h-full w-full">
       <Routes>
@@ -35,7 +37,9 @@ function App() {
           <Route path="/popupReport" element={<PopupReport />} />
           <Route path="/reviewReport" element={<ReviewReport />} />
           <Route path="/submissionManager" element={<SubmissionManager />} />
+          <Route path="/noticeManager" element={<NoticeManager />} />
           <Route path="/overallManager" element={<OverallManger />} />
+          <Route path="/popupRegister" element={<PopUpRegister />} />
         </Route>
       </Routes>
     </div>

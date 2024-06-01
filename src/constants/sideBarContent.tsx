@@ -15,5 +15,6 @@ export const sideBarContents: SideBarContent[] = [
   { name: "후기 신고", path: "/reviewReport" },
   { name: "팝업 제보 관리", path: "/submissionManager" },
   { name: "전체 팝업 관리", path: "/overallManager" },
+  { name: "공지사항 관리", path: "/noticeManager" },
   { name: "이용 약관 및 정책 관리", path: "/" },
 ];

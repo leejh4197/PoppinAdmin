@@ -11,7 +11,7 @@ const CustomDropDown = ({ handleDropDownClick }: DropDownProps) => {
         {filterDropDownList.map((el, index) => (
           <button
             onClick={(e) => handleDropDownClick(e.currentTarget.value)}
-            className={`flex justify-center p-3 border w-full bg-white hover:bg-gray-100 cursor-pointer ${
+            className={`flex justify-center p-3 border w-full bg-white hover:bg-gray-100 cursor-pointer whitespace-nowrap ${
               index === 0 ? "rounded-t-xl" : ""
             } ${index === 3 ? "rounded-b-xl" : ""}`}
             key={index}

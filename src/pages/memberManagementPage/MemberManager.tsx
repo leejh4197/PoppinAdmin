@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import MemberList from "../../components/memberManagement/MemberList";
 import MemberDetail from "./MemberDetail";
+import TitleText from "../../components/common/TitleText";
 
 function MemberManager() {
   const location = useLocation();
@@ -8,7 +9,7 @@ function MemberManager() {
   const { nickName, focus } = state;
   return (
     <div className="flexCenter">
-      <h1 className="font-bold text-4xl mb-10">회원관리</h1>
+      <TitleText mainTitle="회원 관리" className="mb-10" />
       <div className="relative flex items-center w-4/5 mb-12">
         <input
           className="w-full py-4 pl-10 pr-4 rounded-full border border-gray-300"
