@@ -6,12 +6,15 @@ const SideBar = () => {
   const navigate = useNavigate();
   const [showContactSubMenu, setShowContactSubMenu] = useState(false);
   const [showReportSubMenu, setShowReportSubMenu] = useState(false);
+  const [showPopupReportSubMenu, setShowPopupReportSubMenu] = useState(false);
   const [activeButton, setActiveButton] = useState("");
 
-  const contactButtons = ["문의하기/FAQ 관리", "자주 묻는 질문", "1:1 문의"];
+  const contactButtons = ["문의하기/FAQ 관리", "자주 묻는 질문"];
   const reportsButtons = ["신고 관리", "팝업 신고", "후기 신고"];
+  const popupReportsButtons = ["팝업 제보 관리", "운영자 제보", "이용자 제보"];
   const contactIsActive = contactButtons.includes(activeButton);
   const reportsIsActive = reportsButtons.includes(activeButton);
+  const popupReportsIsActive = popupReportsButtons.includes(activeButton);
 
   const handleClick = (name: string, path?: string) => {
     if (name === "문의하기/FAQ 관리") {
@@ -20,6 +23,9 @@ const SideBar = () => {
     } else if (name === "신고 관리") {
       setActiveButton(name);
       setShowReportSubMenu(!showReportSubMenu);
+    } else if (name === "팝업 제보 관리") {
+      setActiveButton(name);
+      setShowPopupReportSubMenu(!showPopupReportSubMenu);
     } else {
       setActiveButton(name);
     }
@@ -62,17 +68,16 @@ const SideBar = () => {
                   />
                 </button>
               )}
-              {(el.name === "자주 묻는 질문" || el.name === "1:1 문의") &&
-                showContactSubMenu && (
-                  <button
-                    className={`text-gray-400 ${
-                      activeButton === el.name ? "font-bold text-[#0EB5F9]" : ""
-                    }`}
-                    onClick={() => handleClick(el.name, el.path)}
-                  >
-                    {el.name}
-                  </button>
-                )}
+              {el.name === "자주 묻는 질문" && showContactSubMenu && (
+                <button
+                  className={`text-gray-400 ${
+                    activeButton === el.name ? "font-bold text-LoginBtn" : ""
+                  }`}
+                  onClick={() => handleClick(el.name, el.path)}
+                >
+                  {el.name}
+                </button>
+              )}
               {el.name === "신고 관리" && (
                 <button
                   className={`flex items-center ${
@@ -94,7 +99,37 @@ const SideBar = () => {
                 showReportSubMenu && (
                   <button
                     className={`text-gray-400 ${
-                      activeButton === el.name ? "font-bold text-[#0EB5F9]" : ""
+                      activeButton === el.name ? "font-bold text-LoginBtn" : ""
+                    }`}
+                    onClick={() => handleClick(el.name, el.path)}
+                  >
+                    {el.name}
+                  </button>
+                )}
+              {el.name === "팝업 제보 관리" && (
+                <button
+                  className={`flex items-center ${
+                    popupReportsIsActive && showPopupReportSubMenu
+                      ? "font-bold"
+                      : ""
+                  }`}
+                  onClick={() => handleClick("팝업 제보 관리")}
+                >
+                  <span className="mr-2">{el.name}</span>
+                  <img
+                    src="/arrow.svg"
+                    className={`arrowAnimation ${
+                      showPopupReportSubMenu ? "rotate-180" : ""
+                    }`}
+                    alt="Arrow"
+                  />
+                </button>
+              )}
+              {(el.name === "운영자 제보" || el.name === "이용자 제보") &&
+                showPopupReportSubMenu && (
+                  <button
+                    className={`text-gray-400 ${
+                      activeButton === el.name ? "font-bold text-LoginBtn" : ""
                     }`}
                     onClick={() => handleClick(el.name, el.path)}
                   >
@@ -103,10 +138,12 @@ const SideBar = () => {
                 )}
               {el.name !== "문의하기/FAQ 관리" &&
                 el.name !== "자주 묻는 질문" &&
-                el.name !== "1:1 문의" &&
                 el.name !== "신고 관리" &&
                 el.name !== "팝업 신고" &&
-                el.name !== "후기 신고" && (
+                el.name !== "후기 신고" &&
+                el.name !== "팝업 제보 관리" &&
+                el.name !== "운영자 제보" &&
+                el.name !== "이용자 제보" && (
                   <button
                     className={activeButton === el.name ? "font-bold" : ""}
                     onClick={() => handleClick(el.name, el.path)}
@@ -119,7 +156,6 @@ const SideBar = () => {
         </div>
         <div className="flex flex-col">
           <div className="my-5">로그아웃</div>
-          <div>회원탈퇴</div>
         </div>
       </div>
       <Outlet />

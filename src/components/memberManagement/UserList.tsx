@@ -11,7 +11,7 @@ const UserList = ({
   handleMemberDetailClick,
 }: UserListProps) => {
   return (
-    <div className="flex items-center ">
+    <div className="flex items-center mb-5">
       <div className="text-xl mr-3">
         <button
           value={nickName}

@@ -7,7 +7,7 @@ function Contact() {
   return (
     <div className="flexCenter w-4/5">
       <div className="flex justify-between items-center mb-10">
-        <TitleText mainTitle="문의하기/FAQ 관리" />
+        <TitleText mainTitle="문의하기/FAQ 관리" subTitle="자주 묻는 질문" />
         <div
           onClick={() => navigate("/writeContact")}
           className="cursor-pointer whitespace-nowrap px-14 py-5 rounded-full bg-[#0EB5F9] text-white"

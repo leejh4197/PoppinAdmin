@@ -1,42 +1,55 @@
 import { useState } from "react";
 
-type MainLoginTitleProps = {
+type MainLoginInputProps = {
   title: string;
   type: string;
   placeholder: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const MainLoginInput = ({ title, type, placeholder }: MainLoginTitleProps) => {
+const MainLoginInput = ({
+  title,
+  type,
+  placeholder,
+  value,
+  setValue,
+}: MainLoginInputProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const handlePasswordVisibleClick = () => {
     setPasswordVisible(!passwordVisible);
   };
 
   return (
-    <div>
+    <div className="w-1/2">
       <div className="mb-[27px] font-bold">{title}</div>
-      {title === "아이디" ? (
+      <div
+        className={`relative ${title === "비밀번호" ? "flex flex-col" : ""}`}
+      >
         <input
-          type={type}
-          className="outline-none border-b w-[514px] mb-[64px]"
+          type={title === "비밀번호" && passwordVisible ? "text" : type}
+          className={`outline-none border-b w-full ${
+            title === "아이디" ? "mb-[64px]" : "mb-2"
+          }`}
           placeholder={placeholder}
+          value={value}
+          onChange={(e) => setValue(e.currentTarget.value)}
         />
-      ) : (
-        <div className="relative">
-          <input
-            type={passwordVisible ? "text" : type}
-            className="outline-none border-b w-[514px] mb-[64px]"
-            placeholder={placeholder}
-          />
+        {title === "비밀번호" && (
+          <div className="mb-[64px] text-[11px] text-red-500 font-semibold">
+            x 잘못 된 비밀번호 입니다.
+          </div>
+        )}
+        {title === "비밀번호" && (
           <button onClick={handlePasswordVisibleClick}>
-            {passwordVisible ? (
-              <img className="absolute right-0 top-0" src="/ActiveEye.svg" />
-            ) : (
-              <img className="absolute right-0 top-0" src="/Eye.svg" />
-            )}
+            <img
+              className="absolute right-0 top-0 w-6"
+              src={`${passwordVisible ? "/ActiveEye.svg" : "/Eye.svg"}`}
+              alt=""
+            />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

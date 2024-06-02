@@ -1,14 +1,9 @@
 import { useState } from "react";
 import TitleText from "../../components/common/TitleText";
-import CustomDropDown from "../../components/memberManagement/CustomDropDown";
-import ModificationRequestList from "../../components/common/editRequestManager/ModificationRequestList";
+import ModificationRequestList from "../../components/editRequests/ModificationRequestList";
 import CustomPagination from "../memberManagementPage/CustomPagination";
 
 function EditRequests() {
-  const [baseDropDown, setBaseDropDown] = useState<string | undefined>(
-    "최신순"
-  );
-  const [filterDropDown, setFilterDropDown] = useState<boolean>(false);
   const [process, setProcess] = useState<string>("미처리");
   const [totalPages, setTotalPages] = useState<number>(4);
   const [offset, setOffset] = useState<number>(0);
@@ -21,13 +16,6 @@ function EditRequests() {
     setProcess(value);
   };
 
-  const hadleDropDownListClick = (content: string) => {
-    setFilterDropDown(false);
-    setBaseDropDown(content);
-  };
-  const handleDropDownClick = () => {
-    setFilterDropDown(!filterDropDown);
-  };
   return (
     <div className="flexCenter w-4/5">
       <TitleText mainTitle="정보 수정 요청 관리" className="mb-10" />
@@ -51,20 +39,6 @@ function EditRequests() {
               </button>
             </div>
           ))}
-        </div>
-        <div>
-          <div className="flex items-center">
-            <button
-              className="mr-2 whitespace-nowrap"
-              onClick={handleDropDownClick}
-            >
-              <span>{baseDropDown}</span>
-            </button>
-            <img className="w-3 h-3" src="/updownArrow.png" alt="" />
-          </div>
-          {filterDropDown && (
-            <CustomDropDown handleDropDownClick={hadleDropDownListClick} />
-          )}
         </div>
       </div>
       <div>

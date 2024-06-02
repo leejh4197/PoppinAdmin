@@ -4,17 +4,17 @@ import SideBar from "./components/sideBar/SideBar";
 import Login from "./pages/loginPage/Login";
 import MemberManager from "./pages/memberManagementPage/MemberManager";
 import Contact from "./pages/contactAndFAQPage/Contact";
-import Faq from "./pages/contactAndFAQPage/Faq";
 import EditRequests from "./pages/editRequestsPage/EditRequests";
 import PopupReport from "./pages/reportManagementPage/popupReportPage/PopupReport";
 import ReviewReport from "./pages/reportManagementPage/reviewReportPage/ReviewReport";
-import SubmissionManager from "./pages/submissionManagementPage/SubmissionManager";
 import OverallManger from "./pages/overallManagementPage/OverallManger";
 import { useEffect } from "react";
 import { baseInstance } from "./api/instance";
 import WriteContact from "./pages/contactAndFAQPage/WriteContact";
 import NoticeManager from "./pages/noticePage/NoticeManager";
 import PopUpRegister from "./pages/overallManagementPage/PopUpRegister";
+import UserReport from "./pages/submissionManagementPage/UserReport";
+import OperatorReprt from "./pages/submissionManagementPage/OperatorReprt";
 
 function App() {
   // useEffect(() => {
@@ -32,11 +32,11 @@ function App() {
           <Route path="/memberManager/:id" element={<MemberManager />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/writeContact" element={<WriteContact />} />
-          <Route path="/faq" element={<Faq />} />
           <Route path="/editRequests" element={<EditRequests />} />
           <Route path="/popupReport" element={<PopupReport />} />
           <Route path="/reviewReport" element={<ReviewReport />} />
-          <Route path="/submissionManager" element={<SubmissionManager />} />
+          <Route path="/operatorReport" element={<OperatorReprt />} />
+          <Route path="/userReport" element={<UserReport />} />
           <Route path="/noticeManager" element={<NoticeManager />} />
           <Route path="/overallManager" element={<OverallManger />} />
           <Route path="/popupRegister" element={<PopUpRegister />} />
