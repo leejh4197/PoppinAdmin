@@ -11,7 +11,7 @@ const CustomPagination = ({
 }) => {
   return (
     <ReactPaginate
-      className="flex justify-center w-4/5 gap-[26px] text-[15px]  items-center"
+      className="flex justify-center w-full gap-[26px] text-[15px]  items-center mb-16 mt-16"
       nextLabel=">"
       onPageChange={(e) => handlePageClick(e.selected)}
       pageRangeDisplayed={5}

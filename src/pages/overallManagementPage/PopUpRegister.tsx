@@ -6,10 +6,14 @@ import OverallAddress from "../../components/overallManagement/OverallAddress";
 import OverallDate from "../../components/overallManagement/OverallDate";
 import OverallTime from "../../components/overallManagement/OverallTime";
 import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
+import ImgUpload from "../../components/common/ImgUpload";
 
 const PopUpRegister = () => {
   const [popupName, setPopupName] = useState("");
   const [category, setCategory] = useState("");
+  // 이미지
+  const [showImages, setShowImages] = useState<string[]>([]);
+  console.log(showImages);
   // 팝업 유형 버튼
   const [popupCategory, setPopupcategory] = useState("");
   // 예약 여부 버튼
@@ -33,6 +37,23 @@ const PopUpRegister = () => {
       setAdmissionFee(value);
     } else if (name === "주차 가능 여부") {
       setParking(value);
+    }
+  };
+  const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const imageLists = event.target.files;
+    let imageUrlLists = [...showImages];
+
+    if (imageLists) {
+      for (let i = 0; i < imageLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imageLists[i]);
+        imageUrlLists.push(currentImageUrl);
+      }
+
+      if (imageUrlLists.length > 5) {
+        imageUrlLists = imageUrlLists.slice(0, 5);
+      }
+
+      setShowImages(imageUrlLists);
     }
   };
 
@@ -80,7 +101,15 @@ const PopUpRegister = () => {
           placeholder="site@site.com"
           essential
         />
-        <div>관련사진</div>
+        <div>
+          <ImgUpload
+            title="관련 사진"
+            value={showImages}
+            setValue={setShowImages}
+            onChange={handleAddImages}
+            limit="5"
+          />
+        </div>
         <OverallPopupInput
           title="소개"
           value={category}

@@ -24,7 +24,7 @@ const OverallPopupInput = ({
         <div className="text-sm">{subTitle}</div>
       </div>
       <input
-        className="w-full px-9 py-4 bg-[#F2F4F6] rounded-full"
+        className="w-full px-9 py-4 bg-[#F2F4F6] rounded-full outline-LoginBtn"
         value={value}
         placeholder={placeholder}
         type="text"

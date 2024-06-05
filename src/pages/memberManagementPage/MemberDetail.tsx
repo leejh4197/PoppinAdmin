@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MemberDetailInput from "../../components/memberManagement/MemberDetailInput";
+import { useNavigate } from "react-router-dom";
 
 type MemberDetailProps = {
   nickName: string;
@@ -7,7 +8,8 @@ type MemberDetailProps = {
 };
 
 const MemberDetail = ({ nickName, focus }: MemberDetailProps) => {
-  const [userId, setUserId] = useState("");
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState("test");
   const [userBirthDay, setUserBirthDay] = useState("");
   return (
     <div className="w-4/5 relative">
@@ -39,7 +41,9 @@ const MemberDetail = ({ nickName, focus }: MemberDetailProps) => {
       </div>
       <div className="flex flex-col w-full ">
         <div className="font-semibold mb-5">
-          <button>작성 후기 확인하기</button>
+          <button onClick={() => navigate(`/writeReview/${userId}`)}>
+            작성 후기 확인하기
+          </button>
         </div>
         <div className="flex items-center mb-5">
           <button className="font-semibold mr-4">숨겨진 후기 갯수</button>

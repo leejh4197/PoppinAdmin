@@ -15,6 +15,10 @@ import NoticeManager from "./pages/noticePage/NoticeManager";
 import PopUpRegister from "./pages/overallManagementPage/PopUpRegister";
 import UserReport from "./pages/submissionManagementPage/UserReport";
 import OperatorReprt from "./pages/submissionManagementPage/OperatorReprt";
+import WriteReview from "./pages/memberManagementPage/WriteReview";
+import EditRequestsDetail from "./pages/editRequestsPage/EditRequestsDetail";
+import PopupReportDetail from "./pages/reportManagementPage/popupReportPage/PopupReportDetail";
+import ReviewReportDetail from "./pages/reportManagementPage/reviewReportPage/ReviewReportDetail";
 
 function App() {
   // useEffect(() => {
@@ -30,11 +34,15 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/memberManager" element={<MemberManager />} />
           <Route path="/memberManager/:id" element={<MemberManager />} />
+          <Route path="/writeReview/:id" element={<WriteReview />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/writeContact" element={<WriteContact />} />
           <Route path="/editRequests" element={<EditRequests />} />
+          <Route path="/editRequests/:id" element={<EditRequestsDetail />} />
           <Route path="/popupReport" element={<PopupReport />} />
+          <Route path="/popupReport/:id" element={<PopupReportDetail />} />
           <Route path="/reviewReport" element={<ReviewReport />} />
+          <Route path="/reviewReport/:id" element={<ReviewReportDetail />} />
           <Route path="/operatorReport" element={<OperatorReprt />} />
           <Route path="/userReport" element={<UserReport />} />
           <Route path="/noticeManager" element={<NoticeManager />} />
