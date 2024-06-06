@@ -1,36 +1,37 @@
 import React, { useState } from "react";
-import TitleText from "../../components/common/TitleText";
-import OverallPopupInput from "../../components/overallManagement/OverallPopupInput";
-import OverallPopupBtn from "../../components/overallManagement/OverallPopupBtn";
-import OverallAddress from "../../components/overallManagement/OverallAddress";
-import OverallDate from "../../components/overallManagement/OverallDate";
-import OverallTime from "../../components/overallManagement/OverallTime";
 import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
-import ImgUpload from "../../components/common/ImgUpload";
+import PopupForm from "../../components/common/PopupForm";
 
 const PopUpRegister = () => {
+  // 팝업이름/카테고리/예외사항/상세주소/사이트주소/소개/가능연령/입장료/키워드
+  // 팝업이름
   const [popupName, setPopupName] = useState("");
+  // 카테고리
   const [category, setCategory] = useState("");
-  // 이미지
-  const [showImages, setShowImages] = useState<string[]>([]);
-  console.log(showImages);
-  // 팝업 유형 버튼
-  const [popupCategory, setPopupcategory] = useState("");
-  // 예약 여부 버튼
-  const [popupReservation, setPopupReservation] = useState("");
-  // 입장료 유무 버튼
+  // 예외사항
+  const [exceptions, setExceptions] = useState("");
+  // 상세주소
+  const [detailAddress, setDetailAddress] = useState("");
+  // 사이트주소
+  const [siteAddress, setSiteAddress] = useState("");
+  // 소개
+  const [intro, setIntro] = useState("");
+  // 가능연령
+  const [possibleAge, setPossibleAge] = useState("");
+  // 입장료
+  const [price, setPrice] = useState("");
+  // 키워드
+  const [keyWord, setKeyWord] = useState("");
   const [admissionFee, setAdmissionFee] = useState("");
-  // 주차 가능 여부 버튼
+  const [showImages, setShowImages] = useState<string[]>([]);
+  const [popupCategory, setPopupCategory] = useState("");
+  const [popupReservation, setPopupReservation] = useState("");
   const [parking, setParking] = useState("");
-  const popupCategoryArray = ["소비형", "전시형", "체험형"];
-  const reservationArray = ["필수 아님", "예약 필수"];
-  const admissionFeeArray = ["없음", "있음"];
-  const parkingArray = ["주차불가", "주차가능"];
 
   const handleBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { value, name } = e.currentTarget;
     if (name === "팝업 유형") {
-      setPopupcategory(value);
+      setPopupCategory(value);
     } else if (name === "예약 필수 여부") {
       setPopupReservation(value);
     } else if (name === "입장료 유무") {
@@ -39,6 +40,7 @@ const PopUpRegister = () => {
       setParking(value);
     }
   };
+
   const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showImages];
@@ -59,101 +61,41 @@ const PopUpRegister = () => {
 
   return (
     <div className="flexCenter w-4/5">
-      <TitleText
-        mainTitle="팝업 정보 관리"
+      <PopupForm
+        title="팝업 정보 관리"
         subTitle="팝핀에 등록할 정확한 정보를 입력해주세요."
-        className="mb-16"
+        guide="팝팝에 등록하기 위한 정보가 충분한지 확인해주세요!"
+        popupName={popupName}
+        category={category}
+        exceptions={exceptions}
+        detailAddress={detailAddress}
+        siteAddress={siteAddress}
+        intro={intro}
+        admissionFee={admissionFee}
+        possibleAge={possibleAge}
+        keyWord={keyWord}
+        showImages={showImages}
+        popupCategory={popupCategory}
+        popupReservation={popupReservation}
+        parking={parking}
+        price={price}
+        setPrice={setPrice}
+        setDetailAddress={setDetailAddress}
+        setExceptions={setExceptions}
+        setKeyWord={setKeyWord}
+        setPossibleAge={setPossibleAge}
+        setSiteAddress={setSiteAddress}
+        setIntro={setIntro}
+        setPopupName={setPopupName}
+        setCategory={setCategory}
+        setShowImages={setShowImages}
+        setPopupCategory={setPopupCategory}
+        setPopupReservation={setPopupReservation}
+        setAdmissionFee={setAdmissionFee}
+        setParking={setParking}
+        handleBtnClick={handleBtnClick}
+        handleAddImages={handleAddImages}
       />
-      <div className="mb-14 font-bold">
-        팝팝에 등록하기 위한 정보가 충분한지 확인해주세요!
-      </div>
-      <div>
-        <OverallPopupInput
-          title="팝업 이름"
-          value={popupName}
-          placeholder="팝업 이름"
-          essential
-        />
-        <OverallPopupInput
-          title="카테고리"
-          value={category}
-          placeholder="카테고리"
-          essential
-        />
-        <OverallPopupBtn
-          title="팝업 유형"
-          value={popupCategory}
-          onClick={handleBtnClick}
-          btnArray={popupCategoryArray}
-        />
-        <OverallDate />
-        <OverallTime />
-        <OverallPopupInput
-          title="운영 시간 외 예외사항"
-          value={category}
-          placeholder="예외사항"
-          essential={false}
-        />
-        <OverallAddress />
-        <OverallPopupInput
-          title="공식 사이트 주소"
-          value={category}
-          placeholder="site@site.com"
-          essential
-        />
-        <div>
-          <ImgUpload
-            title="관련 사진"
-            value={showImages}
-            setValue={setShowImages}
-            onChange={handleAddImages}
-            limit="5"
-          />
-        </div>
-        <OverallPopupInput
-          title="소개"
-          value={category}
-          placeholder="소개"
-          essential
-        />
-        <OverallPopupBtn
-          title="예약 필수 여부"
-          onClick={handleBtnClick}
-          value={popupReservation}
-          btnArray={reservationArray}
-        />
-        <OverallPopupInput
-          title="이용 가능 연령"
-          value={category}
-          placeholder="EX)전연령"
-          essential
-        />
-        <OverallPopupBtn
-          title="입장료 유무"
-          onClick={handleBtnClick}
-          value={admissionFee}
-          btnArray={admissionFeeArray}
-        />
-        <OverallPopupInput
-          title="입장료"
-          value={category}
-          placeholder="입장료"
-          essential={false}
-        />
-        <OverallPopupBtn
-          title="주차 가능 여부"
-          onClick={handleBtnClick}
-          value={parking}
-          btnArray={parkingArray}
-        />
-        <OverallPopupInput
-          title="키워드 등록"
-          value={category}
-          placeholder="키워드"
-          essential
-          subTitle="키워드는 띄어쓰기 없이 /로 구분해서 작성해 주세요."
-        />
-      </div>
       <div className="flex justify-end mb-16">
         <OverallAddEditBtn content="등록하기" />
         <OverallAddEditBtn content="등록하기" />

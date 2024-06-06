@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomPagination from "../../pages/memberManagementPage/CustomPagination";
+import CustomPagination from "../common/CustomPagination";
 import { userList } from "../../constants/managerDummys";
 import UserList from "./UserList";
 import { useNavigate } from "react-router-dom";

@@ -3,7 +3,7 @@ import TitleText from "../../components/common/TitleText";
 import PostList from "../../components/common/PostList";
 import CustomPagination from "../../components/common/CustomPagination";
 
-function UserReport() {
+function OperatorReport() {
   const [operateReportBtn, setOperateReportBtn] = useState("미처리");
   const [totalPages, setTotalPages] = useState<number>(4);
   const [offset, setOffset] = useState<number>(0);
@@ -22,7 +22,7 @@ function UserReport() {
     <div className="flexCenter w-4/5">
       <TitleText
         mainTitle="팝업 제보 관리"
-        subTitle="이용자 제보"
+        subTitle="운영자 제보"
         className="mb-10"
       />
       <div className="flex mb-8">
@@ -56,4 +56,4 @@ function UserReport() {
   );
 }
 
-export default UserReport;
+export default OperatorReport;

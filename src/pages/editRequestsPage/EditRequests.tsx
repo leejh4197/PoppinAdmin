@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TitleText from "../../components/common/TitleText";
-import ModificationRequestList from "../../components/editRequests/ModificationRequestList";
-import CustomPagination from "../memberManagementPage/CustomPagination";
+import CustomPagination from "../../components/common/CustomPagination";
+import PostList from "../../components/common/PostList";
 
 function EditRequests() {
   const [process, setProcess] = useState<string>("미처리");
@@ -42,7 +42,10 @@ function EditRequests() {
         </div>
       </div>
       <div>
-        <ModificationRequestList
+        <PostList
+          path="editRequests"
+          sub1="작성자"
+          sub2="작성일"
           title="팝업1"
           write="피타고라스"
           date="2024.02.20.13:14"

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TitleText from "../../../components/common/TitleText";
 import PopupReportList from "../../../components/reportManagement/popupReport/PopupReportList";
-import CustomPagination from "../../memberManagementPage/CustomPagination";
+import CustomPagination from "../../../components/common/CustomPagination";
 
 function ReviewReport() {
   const [active, setActive] = useState("미처리");

@@ -79,17 +79,6 @@ const OverallAddress = () => {
             />
           </div>
         )}
-        <div className="mb-12">
-          <div className="text-[22px] mb-2">
-            상세주소 <span className="text-red-500">*</span>
-          </div>
-          <input
-            placeholder="상세 주소를 입력해주세요."
-            className="py-4 px-9 bg-[#F2F4F6] rounded-full w-full outline-LoginBtn"
-            value={detailAddress}
-            onChange={inputChangeHandler}
-          />
-        </div>
       </div>
     </div>
   );

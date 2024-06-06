@@ -14,7 +14,7 @@ import WriteContact from "./pages/contactAndFAQPage/WriteContact";
 import NoticeManager from "./pages/noticePage/NoticeManager";
 import PopUpRegister from "./pages/overallManagementPage/PopUpRegister";
 import UserReport from "./pages/submissionManagementPage/UserReport";
-import OperatorReprt from "./pages/submissionManagementPage/OperatorReprt";
+import OperatorReport from "./pages/submissionManagementPage/OperatorReport";
 import WriteReview from "./pages/memberManagementPage/WriteReview";
 import EditRequestsDetail from "./pages/editRequestsPage/EditRequestsDetail";
 import PopupReportDetail from "./pages/reportManagementPage/popupReportPage/PopupReportDetail";
@@ -43,7 +43,7 @@ function App() {
           <Route path="/popupReport/:id" element={<PopupReportDetail />} />
           <Route path="/reviewReport" element={<ReviewReport />} />
           <Route path="/reviewReport/:id" element={<ReviewReportDetail />} />
-          <Route path="/operatorReport" element={<OperatorReprt />} />
+          <Route path="/operatorReport" element={<OperatorReport />} />
           <Route path="/userReport" element={<UserReport />} />
           <Route path="/noticeManager" element={<NoticeManager />} />
           <Route path="/overallManager" element={<OverallManger />} />

@@ -4,6 +4,7 @@ type OverallPopupInputType = {
   placeholder: string;
   essential: boolean;
   subTitle?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 const OverallPopupInput = ({
   title,
@@ -11,6 +12,7 @@ const OverallPopupInput = ({
   placeholder,
   essential,
   subTitle,
+  onChange,
 }: OverallPopupInputType) => {
   return (
     <div className="w-full mb-12">
@@ -28,6 +30,7 @@ const OverallPopupInput = ({
         value={value}
         placeholder={placeholder}
         type="text"
+        onChange={onChange}
       />
     </div>
   );

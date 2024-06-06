@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomPagination from "../../pages/memberManagementPage/CustomPagination";
+import CustomPagination from "../../components/common/CustomPagination";
 import TitleText from "../../components/common/TitleText";
 import WriteReviewList from "../../components/memberManagement/WriteReviewList";
 
