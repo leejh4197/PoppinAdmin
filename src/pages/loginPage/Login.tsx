@@ -2,10 +2,17 @@ import { useState } from "react";
 import MainLoginBanner from "../../components/login/MainLoginBanner";
 import MainLoginBtn from "../../components/login/MainLoginBtn";
 import MainLoginInput from "../../components/login/MainLoginInput";
+import { baseInstance } from "../../api/instance";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  console.log(email, password);
+  const handleLoginBtnClick = () => {
+    baseInstance
+      .post("/api/v1/auth/sign-in", { email: email, password: password })
+      .then((res) => console.log(res));
+  };
   return (
     <div className="w-full h-screen flex">
       <MainLoginBanner />
@@ -24,7 +31,12 @@ function Login() {
           value={password}
           setValue={setPassword}
         />
-        <MainLoginBtn email={email} password={password} title="로그인" />
+        <MainLoginBtn
+          email={email}
+          password={password}
+          title="로그인"
+          onClick={handleLoginBtnClick}
+        />
       </div>
     </div>
   );
