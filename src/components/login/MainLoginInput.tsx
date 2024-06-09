@@ -6,6 +6,8 @@ type MainLoginInputProps = {
   placeholder: string;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  success?: boolean | null;
+  message?: string | null;
 };
 
 const MainLoginInput = ({
@@ -13,6 +15,8 @@ const MainLoginInput = ({
   type,
   placeholder,
   value,
+  success,
+  message,
   setValue,
 }: MainLoginInputProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -30,14 +34,14 @@ const MainLoginInput = ({
           type={title === "비밀번호" && passwordVisible ? "text" : type}
           className={`outline-none border-b w-full ${
             title === "아이디" ? "mb-[64px]" : "mb-2"
-          }`}
+          } ${success ? "mb-[64px]" : ""}`}
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
         />
-        {title === "비밀번호" && (
+        {title === "비밀번호" && !success && (
           <div className="mb-[64px] text-[11px] text-red-500 font-semibold">
-            x 잘못 된 비밀번호 입니다.
+            <div>{message}</div>
           </div>
         )}
         {title === "비밀번호" && (

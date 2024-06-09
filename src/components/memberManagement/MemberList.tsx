@@ -3,6 +3,7 @@ import CustomPagination from "../common/CustomPagination";
 import { userList } from "../../constants/managerDummys";
 import UserList from "./UserList";
 import { useNavigate } from "react-router-dom";
+import useUserList from "../../queries/useUserList";
 
 const MemberList = () => {
   const navigate = useNavigate();
@@ -11,6 +12,9 @@ const MemberList = () => {
   const handlePageChange = (selected: number) => {
     setOffset(selected);
   };
+  console.log(offset);
+  const { data } = useUserList("20222194@sungshin.ac.kr");
+  console.log(data);
 
   const handleMemberDetailClick = (nickName: string, focus: boolean) => {
     navigate(`/memberManager/${nickName}`, {

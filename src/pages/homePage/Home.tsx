@@ -1,25 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useGetUser from "../../queries/useGetUser";
 
 function Home() {
-  const [nickName, setNickName] = useState("test");
-  const [adminId, setAdminId] = useState("");
+  const { data } = useGetUser();
+  const [nickName, setNickName] = useState("");
+  useEffect(() => {
+    if (data) {
+      setNickName(data.nickname);
+    }
+  }, [data]);
 
   return (
     <div className="flexCenter">
       <div className="flex items-center mb-[44px]">
         <img
-          className="w-[155px] h-[155px] mr-[35px]"
-          src="/profile.svg"
+          className="w-[155px] h-[155px] mr-[35px] rounded-full"
+          src={data?.userImageUrl ? data.userImageUrl : "/profile.svg"}
           alt=""
         />
-        <div className="font-bold text-2xl">관리자1</div>
+        <div className="font-bold text-2xl">{nickName}</div>
       </div>
       <div className="mb-[70px]">
         <div className="mb-2">아이디</div>
         <input
           className="outline-none bg-gray-200 py-[20px] pl-[33px] rounded-full w-[887px]"
           readOnly
-          defaultValue={adminId}
+          defaultValue={data?.email}
         />
       </div>
       <div>

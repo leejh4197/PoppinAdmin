@@ -33,6 +33,14 @@ const SideBar = () => {
       navigate(path);
     }
   };
+  const handleLogOutClick = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      alert("로그아웃 완료!");
+      navigate("/");
+    }
+  };
 
   return (
     <>
@@ -40,12 +48,12 @@ const SideBar = () => {
         <img className="w-8" src="Logo.png" alt="Logo" />
         <div>
           <button
-            className={`font-bold py-8 ${
-              activeButton === "관리자1" ? "font-bold" : ""
+            className={`py-8 text-4xl ${
+              activeButton === "관리자" ? "font-bold" : ""
             }`}
-            onClick={() => handleClick("관리자1", "/home")}
+            onClick={() => handleClick("관리자", "/home")}
           >
-            관리자1
+            관리자
           </button>
         </div>
         <div className="border-y">
@@ -154,8 +162,10 @@ const SideBar = () => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col">
-          <div className="my-5">로그아웃</div>
+        <div className="flex flex-col items-start">
+          <button className="my-5" onClick={handleLogOutClick}>
+            로그아웃
+          </button>
         </div>
       </div>
       <Outlet />

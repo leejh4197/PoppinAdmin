@@ -16,7 +16,7 @@ const useLogin = () => {
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
-    setSuccess(null); // 초기화
+    setSuccess(null);
 
     const encodedCredentials = encodeCredentials(email, password);
 

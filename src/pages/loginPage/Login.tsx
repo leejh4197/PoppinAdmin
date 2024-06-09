@@ -1,24 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainLoginBanner from "../../components/login/MainLoginBanner";
 import MainLoginBtn from "../../components/login/MainLoginBtn";
 import MainLoginInput from "../../components/login/MainLoginInput";
 import useLogin from "../../api/useLogin";
+import { useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../../auth/auth";
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, loading, response, success } = useLogin();
-  console.log(response);
+
   const handleLoginBtnClick = async () => {
     await login(email, password);
+  };
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      alert("이미 로그인 된 상태입니다.");
+      navigate("/home");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     if (success) {
       localStorage.setItem("token", response?.data.data.accessToken);
       localStorage.setItem("refreshToken", response?.data.data.refreshToken);
       alert("로그인이 완료 됐습니다.");
-    } else {
-      alert(response?.data.error.message || "로그인 실패");
+      navigate("/home");
     }
-  };
+  }, [success, response]);
   return (
     <div className="w-full h-screen flex">
       <MainLoginBanner />
@@ -36,6 +48,8 @@ function Login() {
           placeholder="영문,숫자,특수문자 8자 이상"
           value={password}
           setValue={setPassword}
+          success={success}
+          message={response?.data.error?.message}
         />
         {!loading ? (
           <MainLoginBtn
@@ -45,7 +59,10 @@ function Login() {
             onClick={handleLoginBtnClick}
           />
         ) : (
-          "로그인중.."
+          <MainLoginBtn
+            className="bg-gray-400 animate-bounce"
+            title="로그인 중 ..."
+          />
         )}
       </div>
     </div>
