@@ -2,16 +2,22 @@ import { useState } from "react";
 import MainLoginBanner from "../../components/login/MainLoginBanner";
 import MainLoginBtn from "../../components/login/MainLoginBtn";
 import MainLoginInput from "../../components/login/MainLoginInput";
-import { baseInstance } from "../../api/instance";
+import useLogin from "../../api/useLogin";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  console.log(email, password);
-  const handleLoginBtnClick = () => {
-    baseInstance
-      .post("/api/v1/auth/sign-in", { email: email, password: password })
-      .then((res) => console.log(res));
+  const { login, loading, response, success } = useLogin();
+  console.log(response);
+  const handleLoginBtnClick = async () => {
+    await login(email, password);
+    if (success) {
+      localStorage.setItem("token", response?.data.data.accessToken);
+      localStorage.setItem("refreshToken", response?.data.data.refreshToken);
+      alert("로그인이 완료 됐습니다.");
+    } else {
+      alert(response?.data.error.message || "로그인 실패");
+    }
   };
   return (
     <div className="w-full h-screen flex">
@@ -31,12 +37,16 @@ function Login() {
           value={password}
           setValue={setPassword}
         />
-        <MainLoginBtn
-          email={email}
-          password={password}
-          title="로그인"
-          onClick={handleLoginBtnClick}
-        />
+        {!loading ? (
+          <MainLoginBtn
+            email={email}
+            password={password}
+            title="로그인"
+            onClick={handleLoginBtnClick}
+          />
+        ) : (
+          "로그인중.."
+        )}
       </div>
     </div>
   );
