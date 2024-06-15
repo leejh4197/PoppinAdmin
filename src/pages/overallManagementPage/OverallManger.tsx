@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { cateBtn } from "../../constants/overAllCateBtn";
 import useGetOverAllPopupList from "../../queries/overAllpopupManager/useGetOverAllPopupList";
 import CustomPagination from "../../components/common/CustomPagination";
+import Spinner from "../../components/common/Spinner";
 
 function OverallManger() {
   const navigate = useNavigate();
@@ -77,18 +78,22 @@ function OverallManger() {
             </div>
           ))}
         </div>
-        <div>총{overAllList && overAllList.pageInfo.size}개</div>
+        <div>총 {overAllList ? overAllList.pageInfo.size : 0} 개</div>
       </div>
-      <div>
-        {overAllList?.items.popups.map((el) => (
-          <OverallPopupList
-            key={el.id}
-            title={el.name}
-            date={el.createdAt}
-            name={el.adminName}
-          />
-        ))}
-      </div>
+      {overAllList ? (
+        <div>
+          {overAllList?.items.popups.map((el) => (
+            <OverallPopupList
+              key={el.id}
+              title={el.name}
+              date={el.createdAt}
+              name={el.adminName}
+            />
+          ))}
+        </div>
+      ) : (
+        <Spinner />
+      )}
       <CustomPagination
         totalPage={totalPages}
         handlePageClick={handlePageChange}

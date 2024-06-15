@@ -15,6 +15,11 @@ function Login() {
   const handleLoginBtnClick = async () => {
     await login(email, password);
   };
+  const handleActiveEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && email && password) {
+      handleLoginBtnClick();
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -41,6 +46,7 @@ function Login() {
           placeholder="이메일 주소를 입력해주세요."
           value={email}
           setValue={setEmail}
+          keyDown={handleActiveEnter}
         />
         <MainLoginInput
           title="비밀번호"
@@ -50,6 +56,7 @@ function Login() {
           setValue={setPassword}
           success={success}
           message={response?.data.error?.message}
+          keyDown={handleActiveEnter}
         />
         {!loading ? (
           <MainLoginBtn
