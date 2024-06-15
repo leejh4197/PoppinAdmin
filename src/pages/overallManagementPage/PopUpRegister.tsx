@@ -25,6 +25,7 @@ const PopUpRegister = () => {
   const [keyWord, setKeyWord] = useState("키워드/키워드/키워드");
   const [admissionFee, setAdmissionFee] = useState("");
   const [showImages, setShowImages] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
   const [popupCategory, setPopupCategory] = useState("");
   const [popupReservation, setPopupReservation] = useState("");
   const [parking, setParking] = useState("");
@@ -44,36 +45,39 @@ const PopUpRegister = () => {
 
   const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = event.target.files;
+
     let imageUrlLists = [...showImages];
+    let imagesList = [...images];
+    console.log(imageLists);
 
     if (imageLists) {
       for (let i = 0; i < imageLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
         imageUrlLists.push(currentImageUrl);
+        imagesList.push(imageLists[i]);
       }
 
-      if (imageUrlLists.length > 5) {
+      if (imageUrlLists.length || imagesList.length > 5) {
         imageUrlLists = imageUrlLists.slice(0, 5);
+        imagesList = imagesList.slice(0, 5);
       }
 
       setShowImages(imageUrlLists);
+      setImages(imagesList);
     }
   };
 
   const { mutate, data } = usePostOverAllPopupCreate();
-  console.log(data);
-  console.log(showImages);
 
   const handleSubmit = async () => {
-    const imagesFiles = await Promise.all(
-      showImages.map(async (url) => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const fileName = url.split("/").pop();
-        return new File([blob], fileName || "image.jpg", { type: blob.type });
-      })
-    );
-    console.log("파일", imagesFiles);
+    // const imagesFiles = await Promise.all(
+    //   images.map(async (url) => {
+    //     console.log("응답", url);
+    //     const blob = await response.blob();
+    //     console.log("파일이름", fileName);
+    //     return new File([blob], url.name, { type: url.type });
+    //   })
+    // );
 
     const contents = {
       name: "젠틀 몬스터 잠실",
@@ -115,7 +119,7 @@ const PopUpRegister = () => {
       keywords: keyWord.split("/"),
     };
 
-    mutate({ contents, images: imagesFiles });
+    mutate({ contents, images: images });
   };
 
   return (

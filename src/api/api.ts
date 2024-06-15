@@ -69,8 +69,8 @@ export const PostPopupCreate = (
     "contents",
     new Blob([JSON.stringify(contents)], { type: "application/json" })
   );
-  images.forEach((image, index) => {
-    formData.append(`images[${index}]`, image);
+  images.forEach((image) => {
+    formData.append(`images`, image);
   });
 
   return userInstance.post(`/api/v1/popup/admin`, formData).then((res) => {

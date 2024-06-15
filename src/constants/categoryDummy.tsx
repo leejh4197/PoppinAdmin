@@ -1,1 +1,16 @@
-export const categoryDummy = [“패션/뷰티”,”캐릭터”,”식품/음료”,”웹툰/애니메이션”,”인테리어/소품”,”영화/드라마/예능”,”뮤지컬/연극”,”스포츠”,”게임”,”IT/테크”,”K-POP”,”주류”,”동물/식물”,”기타”]
+export const categoryDummy = [
+  { name: "fashionBeauty", value: "패션/뷰티" },
+  { name: "characters", value: "캐릭터" },
+  { name: "foodBeverage", value: "식품/음료" },
+  { name: "webtoonAni", value: "웹툰/애니메이션" },
+  { name: "interiorThings", value: "인테리어/소품" },
+  { name: "movie", value: "영화/드라마/예능" },
+  { name: "musical", value: "뮤지컬/연극" },
+  { name: "sports", value: "스포츠" },
+  { name: "game", value: "게임" },
+  { name: "itTech", value: "IT/테크" },
+  { name: "kpop", value: "K-POP" },
+  { name: "alcohol", value: "주류" },
+  { name: "animalPlant", value: "동물/식물" },
+  { name: "etc", value: "기타" },
+];
