@@ -22,7 +22,7 @@ const PopUpRegister = () => {
   // 입장료
   const [price, setPrice] = useState("");
   // 키워드
-  const [keyWord, setKeyWord] = useState("");
+  const [keyWord, setKeyWord] = useState("키워드/키워드/키워드");
   const [admissionFee, setAdmissionFee] = useState("");
   const [showImages, setShowImages] = useState<string[]>([]);
   const [popupCategory, setPopupCategory] = useState("");
@@ -62,15 +62,18 @@ const PopUpRegister = () => {
 
   const { mutate, data } = usePostOverAllPopupCreate();
   console.log(data);
+  console.log(showImages);
 
   const handleSubmit = async () => {
     const imagesFiles = await Promise.all(
       showImages.map(async (url) => {
         const response = await fetch(url);
         const blob = await response.blob();
-        return new File([blob], "image.jpg", { type: blob.type });
+        const fileName = url.split("/").pop();
+        return new File([blob], fileName || "image.jpg", { type: blob.type });
       })
     );
+    console.log("파일", imagesFiles);
 
     const contents = {
       name: "젠틀 몬스터 잠실",
@@ -86,6 +89,8 @@ const PopUpRegister = () => {
       openDate: "2024-03-03",
       openTime: "13:00",
       closeTime: "22:00",
+      latitude: "37.5486305419897",
+      longitude: "126.849079688841",
       prefered: {
         market: true,
         display: false,

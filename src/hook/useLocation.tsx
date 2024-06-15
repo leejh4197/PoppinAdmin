@@ -9,6 +9,7 @@ declare global {
 
 const useLocation = (address: string) => {
   const [location, setLocation] = useState({ latitude: "", longitude: "" });
+  console.log(location);
 
   useEffect(() => {
     if (!address) return;

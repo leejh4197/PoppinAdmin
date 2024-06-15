@@ -10,7 +10,7 @@ import { FaqRes } from "../types/writeFaq";
 import { userInstance } from "./instance";
 
 export const GetUserCheck = (): Promise<User> =>
-  userInstance.get("/api/v1/user").then((res) => res.data.data);
+  userInstance.get("/api/v1/user/settings").then((res) => res.data.data);
 // 유저 검색
 export const GetuserSearch = (text: string): Promise<UserSearch> =>
   userInstance
@@ -46,9 +46,13 @@ export const DeleteFaq = (faqId: string): Promise<DeleteFaqData> =>
     .then((res) => res.data.data);
 
 //전체 팝업
-export const GetOverAllPopupList = (page: number): Promise<AllPopupRes> =>
+export const GetOverAllPopupList = (
+  page: number,
+  size: number,
+  oper: string
+): Promise<AllPopupRes> =>
   userInstance
-    .get(`/api/v1/popup/admin/list?page=${page}&size=${19}`)
+    .get(`/api/v1/popup/admin/list?page=${page}&size=${size}&oper=${oper}`)
     .then((res) => res.data.data);
 
 //정보 수정 요청 관리
@@ -56,8 +60,21 @@ export const GetEditRequestList = (): Promise<EditRequestListType[]> =>
   userInstance.get(`/api/v1/modify-info/list`).then((res) => res.data.data);
 
 // 전체 팝업 관리 - 팝업 생성
-export const PostPopupCreate = (content: any, images: File[]): Promise<any> =>
-  userInstance.post(`/api/v1/popup/admin`, { content, images }).then((res) => {
+export const PostPopupCreate = (
+  contents: any,
+  images: File[]
+): Promise<any> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image, index) => {
+    formData.append(`images[${index}]`, image);
+  });
+
+  return userInstance.post(`/api/v1/popup/admin`, formData).then((res) => {
     console.log(res);
     return res.data;
   });
+};

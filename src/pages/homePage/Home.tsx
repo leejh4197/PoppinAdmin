@@ -9,6 +9,7 @@ function Home() {
       setNickName(data.nickname);
     }
   }, [data]);
+  console.log(data);
 
   return (
     <div className="flexCenter">

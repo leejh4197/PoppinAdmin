@@ -4,35 +4,22 @@ import OverallPopupList from "../../components/overallManagement/OverallPopupLis
 import { useNavigate } from "react-router-dom";
 import { cateBtn } from "../../constants/overAllCateBtn";
 import useGetOverAllPopupList from "../../queries/overAllpopupManager/useGetOverAllPopupList";
-import { AllPopupList } from "../../types/overAllPopupList";
 import CustomPagination from "../../components/common/CustomPagination";
 
 function OverallManger() {
   const navigate = useNavigate();
-  const [totalPages, setTotalPages] = useState<number>(2);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [time, setTime] = useState("");
   const [offset, setOffset] = useState<number>(0);
   const [operateBtn, setOperateBtn] = useState({
     name: "운영 중",
     state: "OPERATING",
   });
-  const [divideData, setDivideData] = useState<AllPopupList[] | undefined>([]);
-  const { data: overAllList } = useGetOverAllPopupList(offset);
-
-  // useEffect(() => {
-  //   if (overAllList) {
-  //     setTotalPages(Math.ceil(overAllList.userCnt / 19));
-  //   }
-  // }, [overAllList]);
-
-  useEffect(() => {
-    if (overAllList) {
-      setDivideData(
-        overAllList?.popups.filter(
-          (popup) => popup.operationStatus === operateBtn.state
-        )
-      );
-    }
-  }, [overAllList, operateBtn.state]);
+  const { data: overAllList } = useGetOverAllPopupList(
+    offset,
+    19,
+    operateBtn.state
+  );
 
   const handlePageChange = (selected: number) => {
     setOffset(selected);
@@ -40,13 +27,15 @@ function OverallManger() {
 
   const handleOperateClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = e.currentTarget;
-    setDivideData(
-      overAllList?.popups.filter(
-        ((popup) => popup.operationStatus === value) || []
-      )
-    );
+
     setOperateBtn({ name: name, state: value });
   };
+
+  useEffect(() => {
+    if (overAllList) {
+      setTotalPages(overAllList.pageInfo.totalPages);
+    }
+  }, [overAllList]);
   return (
     <div className="flexCenter w-4/5">
       <TitleText
@@ -66,7 +55,7 @@ function OverallManger() {
           alt="Search Icon"
         />
       </div>
-      <div className="w-full flex justify-between items-center mb-2">
+      <div className="w-full flex justify-between items-center mb-2 whitespace-nowrap">
         <div className="flex">
           {cateBtn.map((el, index) => (
             <div
@@ -88,10 +77,10 @@ function OverallManger() {
             </div>
           ))}
         </div>
-        <div>총{overAllList?.popupNum}개</div>
+        <div>총{overAllList && overAllList.pageInfo.size}개</div>
       </div>
       <div>
-        {divideData?.map((el) => (
+        {overAllList?.items.popups.map((el) => (
           <OverallPopupList
             key={el.id}
             title={el.name}
