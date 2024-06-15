@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
 import PopupForm from "../../components/common/PopupForm";
+import usePostOverAllPopupCreate from "../../queries/overAllpopupManager/usePostOverAllPopupCreate";
 
 const PopUpRegister = () => {
   // 팝업이름/카테고리/예외사항/상세주소/사이트주소/소개/가능연령/입장료/키워드
@@ -59,6 +60,59 @@ const PopUpRegister = () => {
     }
   };
 
+  const { mutate, data } = usePostOverAllPopupCreate();
+  console.log(data);
+
+  const handleSubmit = async () => {
+    const imagesFiles = await Promise.all(
+      showImages.map(async (url) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new File([blob], "image.jpg", { type: blob.type });
+      })
+    );
+
+    const contents = {
+      name: "젠틀 몬스터 잠실",
+      homepageLink: "https://www.naver.com/",
+      introduce: "안녕하세요 젠틀 몬스터 잠실입니다.",
+      address: "서울",
+      addressDetail: "팝핀빌딩",
+      closeDate: "2024-03-25",
+      entranceFee: "성인 10000원, 청소년 7000원",
+      availableAge: "G_RATED",
+      parkingAvailable: true,
+      resvRequired: false,
+      openDate: "2024-03-03",
+      openTime: "13:00",
+      closeTime: "22:00",
+      prefered: {
+        market: true,
+        display: false,
+        experience: false,
+        wantFree: true,
+      },
+      taste: {
+        fashionBeauty: true,
+        characters: false,
+        foodBeverage: true,
+        webtoonAni: false,
+        interiorThings: false,
+        movie: true,
+        musical: false,
+        sports: false,
+        game: true,
+        itTech: false,
+        kpop: false,
+        alcohol: true,
+        animalPlant: false,
+      },
+      keywords: keyWord.split("/"),
+    };
+
+    mutate({ contents, images: imagesFiles });
+  };
+
   return (
     <div className="flexCenter w-4/5">
       <PopupForm
@@ -97,7 +151,7 @@ const PopUpRegister = () => {
         handleAddImages={handleAddImages}
       />
       <div className="flex justify-end mb-16">
-        <OverallAddEditBtn content="등록하기" />
+        <OverallAddEditBtn content="등록하기" onClick={handleSubmit} />
         <OverallAddEditBtn content="등록하기" />
       </div>
     </div>

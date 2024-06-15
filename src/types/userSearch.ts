@@ -1,6 +1,5 @@
 import { User } from "./user";
 
-export interface UserList {
+export interface UserSearch {
   userList: User[];
-  userCnt: number;
 }

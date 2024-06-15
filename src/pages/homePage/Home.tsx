@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useGetUser from "../../queries/useGetUser";
+import useGetUser from "../../queries/memberManager/useGetUser";
 
 function Home() {
   const { data } = useGetUser();

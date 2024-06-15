@@ -1,6 +1,6 @@
 type MemberDetailProps = {
   title: string;
-  value: string;
+  value?: string;
   placeholder: string;
 };
 

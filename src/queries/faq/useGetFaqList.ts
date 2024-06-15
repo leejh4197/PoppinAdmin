@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetUserCheck } from "../api/api";
+import { GetFaqList } from "../../api/api";
 
-const useGetUser = () => {
+const useGetFaqList = () => {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["getUser"],
-    queryFn: GetUserCheck,
+    queryKey: ["getFaqList"],
+    queryFn: GetFaqList,
     refetchOnWindowFocus: false,
     retry: false,
   });
   return { data, isPending, isError, error };
 };
 
-export default useGetUser;
+export default useGetFaqList;

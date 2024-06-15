@@ -6,15 +6,11 @@ import TitleText from "../../components/common/TitleText";
 function MemberManager() {
   const location = useLocation();
   const state = location.state || {};
-  const { nickName, focus } = state;
+  const { id } = state;
   return (
     <div className="flexCenter">
       <TitleText mainTitle="회원 관리" className="mb-10" />
-      {nickName ? (
-        <MemberDetail nickName={nickName} focus={focus} />
-      ) : (
-        <MemberList />
-      )}
+      {id ? <MemberDetail id={id} /> : <MemberList />}
     </div>
   );
 }

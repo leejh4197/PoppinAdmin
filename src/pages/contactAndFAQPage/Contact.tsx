@@ -1,9 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import ContactList from "../../components/contactAndFAQ/faqManagement/ContactList";
 import TitleText from "../../components/common/TitleText";
+import useGetFaqList from "../../queries/faq/useGetFaqList";
+import useDeleteFaq from "../../queries/faq/useDeleteFaq";
 
 function Contact() {
   const navigate = useNavigate();
+  const { data: faqList } = useGetFaqList();
+  const deleteFaqMutation = useDeleteFaq();
+  const handleFaqDeleteClick = (faqId: string) => {
+    deleteFaqMutation.mutate(faqId);
+  };
+
   return (
     <div className="flexCenter w-4/5">
       <div className="flex justify-between items-center mb-10">
@@ -16,12 +24,15 @@ function Contact() {
         </div>
       </div>
       <div>
-        <ContactList
-          question={"등록되어 있지 않은 새로운 팝업 이벤트를 발견 했어요."}
-          answer={
-            "'마이페이지'>'팝업 제보기하기'를 통해 이벤트의 정보를 주시면 POPPIN 담당자가 검토 후 등록하겠습니다."
-          }
-        />
+        {faqList?.map((el) => (
+          <ContactList
+            key={el.id}
+            question={el.question}
+            answer={el.answer}
+            faqId={String(el.id)}
+            onClick={() => handleFaqDeleteClick(String(el.id))}
+          />
+        ))}
       </div>
     </div>
   );

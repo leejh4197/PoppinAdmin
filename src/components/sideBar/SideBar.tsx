@@ -7,7 +7,7 @@ const SideBar = () => {
   const [showContactSubMenu, setShowContactSubMenu] = useState(false);
   const [showReportSubMenu, setShowReportSubMenu] = useState(false);
   const [showPopupReportSubMenu, setShowPopupReportSubMenu] = useState(false);
-  const [activeButton, setActiveButton] = useState("");
+  const [activeButton, setActiveButton] = useState("관리자");
 
   const contactButtons = ["문의하기/FAQ 관리", "자주 묻는 질문"];
   const reportsButtons = ["신고 관리", "팝업 신고", "후기 신고"];
@@ -78,9 +78,11 @@ const SideBar = () => {
               )}
               {el.name === "자주 묻는 질문" && showContactSubMenu && (
                 <button
-                  className={`text-gray-400 ${
-                    activeButton === el.name ? "font-bold text-LoginBtn" : ""
-                  }`}
+                  className={` ${
+                    activeButton === el.name
+                      ? "font-bold text-LoginBtn"
+                      : "text-gray-400"
+                  } `}
                   onClick={() => handleClick(el.name, el.path)}
                 >
                   {el.name}
@@ -106,8 +108,10 @@ const SideBar = () => {
               {(el.name === "팝업 신고" || el.name === "후기 신고") &&
                 showReportSubMenu && (
                   <button
-                    className={`text-gray-400 ${
-                      activeButton === el.name ? "font-bold text-LoginBtn" : ""
+                    className={`${
+                      activeButton === el.name
+                        ? "font-bold text-LoginBtn"
+                        : "text-gray-400"
                     }`}
                     onClick={() => handleClick(el.name, el.path)}
                   >
@@ -136,8 +140,10 @@ const SideBar = () => {
               {(el.name === "운영자 제보" || el.name === "이용자 제보") &&
                 showPopupReportSubMenu && (
                   <button
-                    className={`text-gray-400 ${
-                      activeButton === el.name ? "font-bold text-LoginBtn" : ""
+                    className={`${
+                      activeButton === el.name
+                        ? "font-bold text-LoginBtn"
+                        : "text-gray-400"
                     }`}
                     onClick={() => handleClick(el.name, el.path)}
                   >

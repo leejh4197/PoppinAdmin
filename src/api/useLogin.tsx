@@ -38,7 +38,7 @@ const useLogin = () => {
       } else {
         setError(new Error("알 수 없는 에러가 발생하였습니다."));
       }
-      setSuccess(false); // 실패 시 success를 false로 설정
+      setSuccess(false);
     } finally {
       setLoading(false);
     }

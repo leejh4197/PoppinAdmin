@@ -1,5 +1,6 @@
 type UserListProps = {
   nickName: string;
+  userId: number;
   email: string;
   requiresSpecialCare: boolean;
   handleMemberDetailClick: (nickName: string, focus: boolean) => void;
@@ -7,16 +8,18 @@ type UserListProps = {
 const UserList = ({
   nickName,
   email,
+  userId,
   requiresSpecialCare,
   handleMemberDetailClick,
 }: UserListProps) => {
   return (
-    <div className="flex items-center mb-5">
+    <div className="flex items-center mb-5 whitespace-nowrap">
       <div className="text-xl mr-3">
         <button
+          id={String(userId)}
           value={nickName}
           onClick={(e) =>
-            handleMemberDetailClick(e.currentTarget.value, requiresSpecialCare)
+            handleMemberDetailClick(e.currentTarget.id, requiresSpecialCare)
           }
         >
           {nickName}
