@@ -8,7 +8,7 @@ import {
   generateTasteObject,
 } from "../../components/common/FormUtil";
 
-const PopUpRegister = () => {
+const EditRequestRegister = () => {
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -233,4 +233,4 @@ const PopUpRegister = () => {
   );
 };
 
-export default PopUpRegister;
+export default EditRequestRegister;

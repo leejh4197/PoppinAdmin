@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import useFormattedDate from "../../hook/useFormattedDate";
 
 type OverallPopupListType = {
   title: string;
@@ -6,20 +6,13 @@ type OverallPopupListType = {
   name: string;
 };
 const OverallPopupList = ({ title, date, name }: OverallPopupListType) => {
-  // const [customDate, setCustomDate] = useState("");
-  // console.log(date);
-  // useEffect(() => {
-  //   const divideDate = date.split("T");
-  //   console.log(divideDate);
-  //   console.log(parseInt(divideDate[1]));
-  //   setCustomDate(divideDate[0] + String(Math.floor(Number(divideDate[1]))));
-  // }, []);
+  const formattedDate = useFormattedDate(date);
 
   return (
     <div className="w-full px-8 py-6 border-b">
       <div>[{title}]</div>
       <div className="flex justify-between">
-        <div>등록 일시: {date}</div>
+        <div>등록 일시: {formattedDate}</div>
         <div>{name}</div>
       </div>
     </div>

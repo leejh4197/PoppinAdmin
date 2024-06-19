@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import DaumPostcode from "react-daum-postcode";
-import useLocation from "../../hook/useLocation";
 
 type AddressType = {
   address: string;
   zonecode: string;
 };
+type AddressDate = {
+  address: string;
+  setAddress: React.Dispatch<SetStateAction<string>>;
+};
 
-const OverallAddress = () => {
-  const [zonecode, setZonecode] = useState("");
-  const [address, setAddress] = useState("");
+const OverallAddress = ({ address, setAddress }: AddressDate) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [detailAddress, setDetailAdress] = useState("");
-  const location = useLocation(address);
   const themeObj = {
     bgColor: "#FFFFFF",
     pageBgColor: "#FFFFFF",
@@ -26,8 +25,7 @@ const OverallAddress = () => {
   };
 
   const completeHandler = (data: AddressType) => {
-    const { address, zonecode } = data;
-    setZonecode(zonecode);
+    const { address } = data;
     setAddress(address);
   };
 
@@ -41,10 +39,6 @@ const OverallAddress = () => {
 
   const toggleHandler = () => {
     setIsOpen((prevOpenState) => !prevOpenState);
-  };
-
-  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailAdress(event.target.value);
   };
 
   return (

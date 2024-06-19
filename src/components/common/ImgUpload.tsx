@@ -4,13 +4,24 @@ type ImgUploadType = {
   title?: string;
   value: string[];
   limit?: string;
+  img: File[];
   setValue: React.Dispatch<React.SetStateAction<string[]>>;
+  setImg: React.Dispatch<React.SetStateAction<File[]>>;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function ImgUpload({ value, setValue, onChange, title, limit }: ImgUploadType) {
+function ImgUpload({
+  value,
+  setValue,
+  onChange,
+  title,
+  limit,
+  img,
+  setImg,
+}: ImgUploadType) {
   const handleDeleteImage = (id: number) => {
     setValue(value.filter((_, index) => index !== id));
+    setImg(img.filter((_, index) => index !== id));
   };
   return (
     <div className="mb-10">
@@ -33,8 +44,8 @@ function ImgUpload({ value, setValue, onChange, title, limit }: ImgUploadType) {
             multiple
             onChange={onChange}
           />
-          <div className="flex justify-center bg-gray-100 w-24 h-24 cursor-pointer">
-            <img src="Plus.svg" alt="" />
+          <div className="flex animate-pulse justify-center bg-gray-100 w-24 h-24 cursor-pointer">
+            <img src="/Plus.svg" alt="" />
           </div>
         </label>
         <div className="flex  gap-3">

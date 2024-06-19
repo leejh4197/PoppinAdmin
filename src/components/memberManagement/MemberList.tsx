@@ -16,19 +16,27 @@ const MemberList = () => {
   const [focusUserActive, setFocusUserActive] = useState<boolean>(true);
   const [displayData, setDisplayData] = useState<User[]>([]);
 
-  const debouncedSearchQuery = useDebounce(searchQuery, 1000);
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  const { data: userSearchData } = useGetUserSearch(searchQuery);
+  const { data: userSearchData } = useGetUserSearch(debouncedSearchQuery);
   const { data: userListData } = useGetUserList(offset + 1);
   const { data: focusUserListData } = useGetFocusUserList(offset + 1);
 
   useEffect(() => {
-    if (userListData) {
-      setTotalPages(Math.ceil(userListData.userCnt / 44));
-    } else if (focusUserListData) {
+    if (debouncedSearchQuery && userSearchData) {
+      setTotalPages(Math.ceil(userSearchData.userCnt / 44));
+    } else if (focusUserActive && focusUserListData) {
       setTotalPages(Math.ceil(focusUserListData.userCnt / 44));
+    } else if (userListData) {
+      setTotalPages(Math.ceil(userListData.userCnt / 44));
     }
-  }, [userListData, focusUserListData]);
+  }, [
+    userSearchData,
+    userListData,
+    focusUserListData,
+    debouncedSearchQuery,
+    focusUserActive,
+  ]);
 
   const handlePageChange = (selected: number) => {
     setOffset(selected);
@@ -36,6 +44,7 @@ const MemberList = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setFocusUserActive(true);
   };
 
   const handleMemberDetailClick = (id: string) => {
@@ -45,10 +54,10 @@ const MemberList = () => {
   };
 
   useEffect(() => {
-    if (focusUserActive) {
-      setDisplayData(userListData?.userList || []);
-    } else if (debouncedSearchQuery) {
+    if (debouncedSearchQuery) {
       setDisplayData(userSearchData?.userList || []);
+    } else if (focusUserActive) {
+      setDisplayData(userListData?.userList || []);
     } else {
       setDisplayData(focusUserListData?.userList || []);
     }
@@ -88,8 +97,12 @@ const MemberList = () => {
           집중 관리 회원
         </button>
         <div className="text-gray-400 whitespace-nowrap">
-          총{" "}
-          {focusUserActive ? userListData?.userCnt : focusUserListData?.userCnt}
+          총
+          {debouncedSearchQuery
+            ? userSearchData?.userCnt
+            : focusUserActive
+            ? focusUserListData?.userCnt
+            : userListData?.userCnt}
           명
         </div>
       </div>

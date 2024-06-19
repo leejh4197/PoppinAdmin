@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleText from "../../components/common/TitleText";
 import CustomPagination from "../../components/common/CustomPagination";
 import PostList from "../../components/common/PostList";
 import useGetEditRequestList from "../../queries/editRequestManager/useGetEditRequestList";
+import Spinner from "../../components/common/Spinner";
 
 function EditRequests() {
   const [process, setProcess] = useState<string>("미처리");
-  const [totalPages, setTotalPages] = useState<number>(4);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
-  const { data: editRequestList } = useGetEditRequestList();
-  console.log(editRequestList);
 
   const handlePageChange = (selected: number) => {
     setOffset(selected);
@@ -18,6 +17,17 @@ function EditRequests() {
     const { value } = e.currentTarget;
     setProcess(value);
   };
+  const { data: editRequestList, isPending } = useGetEditRequestList(
+    process === "미처리" ? true : false,
+    offset,
+    19
+  );
+  console.log(editRequestList);
+  useEffect(() => {
+    if (editRequestList) {
+      setTotalPages(editRequestList.pageInfo.totalPages);
+    }
+  }, []);
 
   return (
     <div className="flexCenter w-4/5">
@@ -45,17 +55,22 @@ function EditRequests() {
         </div>
       </div>
       <div>
-        {editRequestList?.map((el) => (
-          <PostList
-            path="editRequests"
-            sub1="작성자"
-            sub2="작성일"
-            title={el.popupName}
-            write={el.informerName}
-            date={el.informedAt}
-            className=""
-          />
-        ))}
+        {!isPending ? (
+          editRequestList?.items.map((el) => (
+            <PostList
+              id={el.id}
+              path="editRequests"
+              sub1="작성자"
+              sub2="작성일"
+              title={el.popupName}
+              write={el.informerName}
+              date={el.informedAt}
+              className=""
+            />
+          ))
+        ) : (
+          <Spinner />
+        )}
       </div>
       <CustomPagination
         totalPage={totalPages}

@@ -5,6 +5,7 @@ import MainLoginInput from "../../components/login/MainLoginInput";
 import useLogin from "../../api/useLogin";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../auth/auth";
+import Spinner from "../../components/common/Spinner";
 
 function Login() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Login() {
       alert("이미 로그인 된 상태입니다.");
       navigate("/home");
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (success) {
@@ -66,10 +67,7 @@ function Login() {
             onClick={handleLoginBtnClick}
           />
         ) : (
-          <MainLoginBtn
-            className="bg-gray-400 animate-bounce"
-            title="로그인 중 ..."
-          />
+          <Spinner />
         )}
       </div>
     </div>

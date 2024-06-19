@@ -70,7 +70,7 @@ const SideBar = () => {
                   <img
                     src="/arrow.svg"
                     className={`arrowAnimation ${
-                      showContactSubMenu ? "rotate-180" : ""
+                      showContactSubMenu ? "-rotate-180" : ""
                     }`}
                     alt="Arrow"
                   />
@@ -99,7 +99,7 @@ const SideBar = () => {
                   <img
                     src="/arrow.svg"
                     className={`arrowAnimation ${
-                      showReportSubMenu ? "rotate-180" : ""
+                      showReportSubMenu ? "-rotate-180" : ""
                     }`}
                     alt="Arrow"
                   />
@@ -131,7 +131,7 @@ const SideBar = () => {
                   <img
                     src="/arrow.svg"
                     className={`arrowAnimation ${
-                      showPopupReportSubMenu ? "rotate-180" : ""
+                      showPopupReportSubMenu ? "-rotate-180" : ""
                     }`}
                     alt="Arrow"
                   />

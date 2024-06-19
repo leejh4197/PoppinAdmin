@@ -6,16 +6,28 @@ import { cateBtn } from "../../constants/overAllCateBtn";
 import useGetOverAllPopupList from "../../queries/overAllpopupManager/useGetOverAllPopupList";
 import CustomPagination from "../../components/common/CustomPagination";
 import Spinner from "../../components/common/Spinner";
+import { useDebounce } from "../../hook/useDebounce";
+
+type OverAllType = {
+  id: number;
+  adminName: string;
+  createdAt: string;
+  name: string;
+  operationStatus: string;
+};
 
 function OverallManger() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [time, setTime] = useState("");
   const [offset, setOffset] = useState<number>(0);
   const [operateBtn, setOperateBtn] = useState({
     name: "운영 중",
     state: "OPERATING",
   });
+  const [filterData, setFilterData] = useState<OverAllType[]>([]);
+
+  const debounceSearch = useDebounce(search, 500);
   const { data: overAllList } = useGetOverAllPopupList(
     offset,
     19,
@@ -25,12 +37,30 @@ function OverallManger() {
   const handlePageChange = (selected: number) => {
     setOffset(selected);
   };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+    setSearch(value);
+  };
 
   const handleOperateClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = e.currentTarget;
 
     setOperateBtn({ name: name, state: value });
   };
+  useEffect(() => {
+    if (overAllList) {
+      if (debounceSearch) {
+        setFilterData(
+          overAllList?.items.popups.filter((el) =>
+            el.name.toLowerCase().includes(debounceSearch.toLowerCase())
+          )
+        );
+      } else {
+        setFilterData(overAllList?.items.popups);
+      }
+    }
+  }, [debounceSearch, overAllList]);
+  console.log(overAllList);
 
   useEffect(() => {
     if (overAllList) {
@@ -49,6 +79,8 @@ function OverallManger() {
           className="w-full py-4 pl-10 pr-4 rounded-full border border-gray-300"
           type="text"
           placeholder="텍스트를 입력하세요."
+          value={search}
+          onChange={handleSearchChange}
         />
         <img
           className="absolute right-3 w-5 h-5"
@@ -82,7 +114,7 @@ function OverallManger() {
       </div>
       {overAllList ? (
         <div>
-          {overAllList?.items.popups.map((el) => (
+          {filterData.map((el) => (
             <OverallPopupList
               key={el.id}
               title={el.name}

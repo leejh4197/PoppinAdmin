@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import useFormattedDate from "../../hook/useFormattedDate";
 
 type RequstListTypes = {
+  id: string;
   sub1: string;
   sub2: string;
   title: string;
@@ -12,6 +14,7 @@ type RequstListTypes = {
 };
 
 const PostList = ({
+  id,
   title,
   write,
   date,
@@ -22,9 +25,8 @@ const PostList = ({
 }: RequstListTypes) => {
   const navigate = useNavigate();
 
-  const handleBoardClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { value } = e.currentTarget;
-    navigate(`/${path}/${value}`);
+  const handleBoardClick = () => {
+    navigate(`/${path}/${id}`);
   };
   return (
     <button
@@ -41,7 +43,7 @@ const PostList = ({
           </div>
           <div className="flex">
             <div>{sub2}: </div>
-            <div>{date}</div>
+            <div>{useFormattedDate(date)}</div>
           </div>
         </div>
       </div>

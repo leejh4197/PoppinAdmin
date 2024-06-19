@@ -1,4 +1,5 @@
 export const categoryDummy = [
+  { value: "카테고리를 선택해주세요." },
   { name: "fashionBeauty", value: "패션/뷰티" },
   { name: "characters", value: "캐릭터" },
   { name: "foodBeverage", value: "식품/음료" },

@@ -19,6 +19,7 @@ import PopupReportDetail from "./pages/reportManagementPage/popupReportPage/Popu
 import ReviewReportDetail from "./pages/reportManagementPage/reviewReportPage/ReviewReportDetail";
 import { isAuthenticated } from "./auth/auth";
 import { ReactElement } from "react";
+import EditRequestRegister from "./pages/editRequestsPage/EditRequestRegister";
 
 interface PrivateRouteProps {
   element: ReactElement;
@@ -68,6 +69,10 @@ function App() {
             element={<PrivateRoute element={<EditRequestsDetail />} />}
           />
           <Route
+            path="/editRequestRegister/:id"
+            element={<PrivateRoute element={<EditRequestRegister />} />}
+          />
+          <Route
             path="/popupReport"
             element={<PrivateRoute element={<PopupReport />} />}
           />
@@ -88,7 +93,15 @@ function App() {
             element={<PrivateRoute element={<OperatorReport />} />}
           />
           <Route
+            path="/operatorReport/:id"
+            element={<PrivateRoute element={<OperatorReport />} />}
+          />
+          <Route
             path="/userReport"
+            element={<PrivateRoute element={<UserReport />} />}
+          />
+          <Route
+            path="/userReport/:id"
             element={<PrivateRoute element={<UserReport />} />}
           />
           <Route

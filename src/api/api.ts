@@ -1,3 +1,4 @@
+import { EditRequestCheckType } from "../types/editRequestCheck";
 import { EditRequestListType } from "../types/editRequestList";
 import { DeleteFaqData } from "../types/faqDelete";
 import { FaqDataList } from "../types/faqList";
@@ -56,8 +57,21 @@ export const GetOverAllPopupList = (
     .then((res) => res.data.data);
 
 //정보 수정 요청 관리
-export const GetEditRequestList = (): Promise<EditRequestListType[]> =>
-  userInstance.get(`/api/v1/modify-info/list`).then((res) => res.data.data);
+export const GetEditRequestList = (
+  exec: boolean,
+  page: number,
+  size: number
+): Promise<EditRequestListType> =>
+  userInstance
+    .get(`/api/v1/modify-info/list?isExec=${exec}&page=${page}&size=${size}`)
+    .then((res) => res.data.data);
+// 정보 수정 요청 조회
+export const GetEditRequestCheck = (
+  infoId: number
+): Promise<EditRequestCheckType> =>
+  userInstance
+    .get(`/api/v1/modify-info?infoId=${infoId}`)
+    .then((res) => res.data.data);
 
 // 전체 팝업 관리 - 팝업 생성
 export const PostPopupCreate = (
@@ -78,3 +92,5 @@ export const PostPopupCreate = (
     return res.data;
   });
 };
+
+// 운영자 제보하기

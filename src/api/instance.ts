@@ -34,7 +34,6 @@ export const getNewToken = async () => {
         headers: { Refresh: window.localStorage.getItem("refreshToken") },
       })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem("refreshToken", res.data.data.refreshToken);
         window.localStorage.setItem("token", res.data.data.accessToken);
       });
@@ -56,7 +55,6 @@ userInstance.interceptors.response.use(
   },
   async (error) => {
     const { config, response } = error;
-    console.log(response);
     if (
       config.url === "/api/v1/auth/refresh" ||
       config._retry ||
@@ -67,7 +65,6 @@ userInstance.interceptors.response.use(
     config._retry = true;
     try {
       const newToken = await getNewToken();
-      console.log(newToken, "새로운 토큰");
       if (newToken) {
         config.headers["Authorization"] = `Bearer ${newToken[0]}`;
         config.headers["Refresh"] = newToken[1];

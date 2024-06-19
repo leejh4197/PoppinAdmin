@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { SetStateAction } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../css/customDate.css";
 import { ko } from "date-fns/locale";
 
-const OverallDate = () => {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+type OverAllDateType = {
+  startDate: Date | null;
+  endDate: Date | null;
+  setEndDate: React.Dispatch<SetStateAction<Date | null>>;
+  setStartDate: React.Dispatch<SetStateAction<Date | null>>;
+};
 
+const OverallDate = ({
+  startDate,
+  endDate,
+  setEndDate,
+  setStartDate,
+}: OverAllDateType) => {
   const handleStartDateChange = (date: Date | null) => {
     setStartDate(date);
     if (date && (!endDate || date > endDate)) {

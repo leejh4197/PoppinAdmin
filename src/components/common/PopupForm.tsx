@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import React, { SetStateAction, useState } from "react";
 import OverallPopupInput from "../../components/overallManagement/OverallPopupInput";
 import OverallPopupBtn from "../../components/overallManagement/OverallPopupBtn";
 import OverallAddress from "../../components/overallManagement/OverallAddress";
@@ -6,7 +6,12 @@ import OverallDate from "../../components/overallManagement/OverallDate";
 import OverallTime from "../../components/overallManagement/OverallTime";
 import ImgUpload from "../../components/common/ImgUpload";
 import TitleText from "./TitleText";
+import { popupCategoryArray } from "../../constants/formBtnDummy";
 
+type CategoryType = {
+  name: string;
+  value: string;
+};
 type PopupFormType = {
   title: string;
   subTitle: string;
@@ -17,25 +22,37 @@ type PopupFormType = {
   siteAddress: string;
   intro: string;
   keyWord: string;
-  possibleAge: string;
-  category: string;
+  possibleAge: { name: string; value: string };
+  category: { name: string; value: string };
   showImages: string[];
+  images: File[];
   popupCategory: string;
   popupReservation: string;
   admissionFee: string;
   parking: string;
   price: string;
+  address: string;
+  startTime: Date | null;
+  endTime: Date | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  setEndDate: React.Dispatch<SetStateAction<Date | null>>;
+  setStartDate: React.Dispatch<SetStateAction<Date | null>>;
+  setEndTime: React.Dispatch<SetStateAction<Date | null>>;
+  setStartTime: React.Dispatch<SetStateAction<Date | null>>;
   setPrice: React.Dispatch<SetStateAction<string>>;
+  setAddress: React.Dispatch<SetStateAction<string>>;
   setPopupName: React.Dispatch<SetStateAction<string>>;
   setExceptions: React.Dispatch<SetStateAction<string>>;
   setDetailAddress: React.Dispatch<SetStateAction<string>>;
   setSiteAddress: React.Dispatch<SetStateAction<string>>;
   setIntro: React.Dispatch<SetStateAction<string>>;
-  setPossibleAge: React.Dispatch<SetStateAction<string>>;
+  setPossibleAge: React.Dispatch<SetStateAction<CategoryType>>;
   setKeyWord: React.Dispatch<SetStateAction<string>>;
-  setCategory: React.Dispatch<SetStateAction<string>>;
+  setCategory: React.Dispatch<SetStateAction<CategoryType>>;
   setPopupCategory: React.Dispatch<SetStateAction<string>>;
   setShowImages: React.Dispatch<SetStateAction<string[]>>;
+  setImages: React.Dispatch<SetStateAction<File[]>>;
   setPopupReservation: React.Dispatch<SetStateAction<string>>;
   setAdmissionFee: React.Dispatch<SetStateAction<string>>;
   setParking: React.Dispatch<SetStateAction<string>>;
@@ -61,15 +78,23 @@ const PopupForm = ({
   popupReservation,
   admissionFee,
   parking,
+  address,
+  startTime,
+  endTime,
+  startDate,
+  endDate,
+  images,
+  setImages,
+  setEndTime,
+  setStartTime,
+  setEndDate,
+  setStartDate,
+  setAddress,
   setPrice,
   setPopupName,
   setCategory,
   setShowImages,
-  setPopupCategory,
   setExceptions,
-  setPopupReservation,
-  setAdmissionFee,
-  setParking,
   handleBtnClick,
   handleAddImages,
   setDetailAddress,
@@ -78,10 +103,18 @@ const PopupForm = ({
   setPossibleAge,
   setKeyWord,
 }: PopupFormType) => {
-  const popupCategoryArray = ["소비형", "전시형", "체험형"];
   const reservationArray = ["필수 아님", "예약 필수"];
   const admissionFeeArray = ["없음", "있음"];
   const parkingArray = ["주차불가", "주차가능"];
+  const [cateActive, setCateActive] = useState(false);
+  const [ageActive, setAgeActive] = useState(false);
+
+  const handleCateClick = () => {
+    setCateActive(!cateActive);
+  };
+  const handleAgeClick = () => {
+    setAgeActive(!ageActive);
+  };
 
   return (
     <div>
@@ -96,19 +129,33 @@ const PopupForm = ({
       />
       <OverallPopupInput
         title="카테고리"
-        value={category}
+        value={category.name}
         placeholder="카테고리"
         essential
-        onChange={(e) => setCategory(e.target.value)}
+        onClick={handleCateClick}
+        cateActive={cateActive}
+        setCateActive={setCateActive}
+        setCategory={setCategory}
+        category={category}
       />
       <OverallPopupBtn
         title="팝업 유형"
         value={popupCategory}
         onClick={handleBtnClick}
-        btnArray={popupCategoryArray}
+        boolBtnArray={popupCategoryArray}
       />
-      <OverallDate />
-      <OverallTime />
+      <OverallDate
+        endDate={endDate}
+        startDate={startDate}
+        setEndDate={setEndDate}
+        setStartDate={setStartDate}
+      />
+      <OverallTime
+        endTime={endTime}
+        startTime={startTime}
+        setEndTime={setEndTime}
+        setStartTime={setStartTime}
+      />
       <OverallPopupInput
         title="운영 시간 외 예외사항"
         value={exceptions}
@@ -116,7 +163,7 @@ const PopupForm = ({
         essential={false}
         onChange={(e) => setExceptions(e.target.value)}
       />
-      <OverallAddress />
+      <OverallAddress address={address} setAddress={setAddress} />
       <OverallPopupInput
         title="상세 주소"
         value={detailAddress}
@@ -133,6 +180,8 @@ const PopupForm = ({
       />
       <ImgUpload
         title="관련 사진"
+        img={images}
+        setImg={setImages}
         value={showImages}
         setValue={setShowImages}
         onChange={handleAddImages}
@@ -153,10 +202,14 @@ const PopupForm = ({
       />
       <OverallPopupInput
         title="이용 가능 연령"
-        value={possibleAge}
+        value={possibleAge.name}
         placeholder="EX)전연령"
         essential
-        onChange={(e) => setPossibleAge(e.target.value)}
+        onClick={handleAgeClick}
+        ageActive={ageActive}
+        setAgeActive={setAgeActive}
+        setPossibleAge={setPossibleAge}
+        possibleAge={possibleAge}
       />
       <OverallPopupBtn
         title="입장료 유무"
