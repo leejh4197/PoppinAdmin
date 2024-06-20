@@ -41,6 +41,9 @@ function OverallManger() {
     const { value } = e.currentTarget;
     setSearch(value);
   };
+  const handleEditClick = (id: number) => {
+    navigate(`/popupEdit/${id}`);
+  };
 
   const handleOperateClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = e.currentTarget;
@@ -52,7 +55,7 @@ function OverallManger() {
       if (debounceSearch) {
         setFilterData(
           overAllList?.items.popups.filter((el) =>
-            el.name.toLowerCase().includes(debounceSearch.toLowerCase())
+            el.name.includes(debounceSearch)
           )
         );
       } else {
@@ -60,7 +63,6 @@ function OverallManger() {
       }
     }
   }, [debounceSearch, overAllList]);
-  console.log(overAllList);
 
   useEffect(() => {
     if (overAllList) {
@@ -120,6 +122,7 @@ function OverallManger() {
               title={el.name}
               date={el.createdAt}
               name={el.adminName}
+              onClick={() => handleEditClick(el.id)}
             />
           ))}
         </div>

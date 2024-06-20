@@ -47,7 +47,17 @@ const MemberDetail = ({ id }: MemberDetailProps) => {
       </div>
       <div className="flex flex-col w-full ">
         <div className="font-semibold mb-5">
-          <button onClick={() => navigate(`/writeReview/${id}`)}>
+          <button
+            onClick={() =>
+              navigate(`/writeReview/${userDetail?.id}`, {
+                state: {
+                  nickName: userDetail?.nickname,
+                  email: userDetail?.email,
+                  image: userDetail?.userImageUrl,
+                },
+              })
+            }
+          >
             작성 후기 확인하기
           </button>
         </div>

@@ -8,8 +8,10 @@ import { UserDetail } from "../types/userDetail";
 import { UserList } from "../types/userList";
 import { UserSearch } from "../types/userSearch";
 import { FaqRes } from "../types/writeFaq";
+import { WriteReviewResponse, WriteReviewType } from "../types/writeReviewList";
 import { userInstance } from "./instance";
 
+// ! 유저관리
 export const GetUserCheck = (): Promise<User> =>
   userInstance.get("/api/v1/user/settings").then((res) => res.data.data);
 // 유저 검색
@@ -30,7 +32,18 @@ export const GetUserDetail = (userId: string): Promise<UserDetail> =>
   userInstance
     .get(`/api/v1/admin/users/${userId}`)
     .then((res) => res.data.data);
-//자주 묻는 질문
+// 작성한후기
+export const GetWriteReviewList = (
+  userId: string | undefined,
+  page: number,
+  hidden: boolean
+): Promise<WriteReviewType[]> =>
+  userInstance
+    .get(
+      `/api/v1/admin/users/${userId}/reviews?page=${page}&size=${5}&hidden=${hidden}`
+    )
+    .then((res) => res.data.data);
+//! 자주 묻는 질문
 export const PostWriteFaq = (
   question: string,
   answer: string
@@ -46,17 +59,7 @@ export const DeleteFaq = (faqId: string): Promise<DeleteFaqData> =>
     .delete(`/api/v1/admin/support/faqs/${faqId}`)
     .then((res) => res.data.data);
 
-//전체 팝업
-export const GetOverAllPopupList = (
-  page: number,
-  size: number,
-  oper: string
-): Promise<AllPopupRes> =>
-  userInstance
-    .get(`/api/v1/popup/admin/list?page=${page}&size=${size}&oper=${oper}`)
-    .then((res) => res.data.data);
-
-//정보 수정 요청 관리
+//! 정보 수정 요청 관리
 export const GetEditRequestList = (
   exec: boolean,
   page: number,
@@ -73,6 +76,15 @@ export const GetEditRequestCheck = (
     .get(`/api/v1/modify-info?infoId=${infoId}`)
     .then((res) => res.data.data);
 
+//! 전체 팝업
+export const GetOverAllPopupList = (
+  page: number,
+  size: number,
+  oper: string
+): Promise<AllPopupRes> =>
+  userInstance
+    .get(`/api/v1/popup/admin/list?page=${page}&size=${size}&oper=${oper}`)
+    .then((res) => res.data.data);
 // 전체 팝업 관리 - 팝업 생성
 export const PostPopupCreate = (
   contents: any,
@@ -92,5 +104,15 @@ export const PostPopupCreate = (
     return res.data;
   });
 };
+// 팝업 조회
+export const GetOverAllPopupSearch = (id: string | undefined): Promise<any> =>
+  userInstance.get(`/api/v1/popup/admin?id=${id}`).then((res) => res.data.data);
 
+//! 제보하기
 // 운영자 제보하기
+
+// 팝업 신고 목록 조회
+export const GetReportList = (page: number): Promise<UserList> =>
+  userInstance
+    .get(`/api/v1/admin/reports/popups?isExec={}&page={}&size={}`)
+    .then((res) => res.data.data);

@@ -20,6 +20,7 @@ import ReviewReportDetail from "./pages/reportManagementPage/reviewReportPage/Re
 import { isAuthenticated } from "./auth/auth";
 import { ReactElement } from "react";
 import EditRequestRegister from "./pages/editRequestsPage/EditRequestRegister";
+import PopUpEdit from "./pages/overallManagementPage/PopupEdit";
 
 interface PrivateRouteProps {
   element: ReactElement;
@@ -115,6 +116,10 @@ function App() {
           <Route
             path="/popupRegister"
             element={<PrivateRoute element={<PopUpRegister />} />}
+          />
+          <Route
+            path="/popupEdit/:id"
+            element={<PrivateRoute element={<PopUpEdit />} />}
           />
         </Route>
       </Routes>

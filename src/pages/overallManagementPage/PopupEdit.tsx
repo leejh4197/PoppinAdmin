@@ -7,8 +7,10 @@ import {
   generatePopupObject,
   generateTasteObject,
 } from "../../components/common/FormUtil";
+import { useParams } from "react-router-dom";
+import useGetOverAllPopupSearch from "../../queries/overAllpopupManager/useGetOverAllPopupSearch";
 
-const PopUpRegister = () => {
+const PopUpEdit = () => {
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -59,6 +61,12 @@ const PopUpRegister = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
 
   const { latitude, longitude } = useLocation(address);
+  const { id } = useParams();
+  console.log(id);
+
+  const { data: overAllPopupContent } = useGetOverAllPopupSearch(id);
+
+  console.log(overAllPopupContent);
   useEffect(() => {
     const checkFormComplete = () => {
       if (
@@ -154,7 +162,7 @@ const PopUpRegister = () => {
       address: address,
       addressDetail: detailAddress,
       closeDate: endDate,
-      entranceFee: price,
+      entranceFee: admissionFee,
       availableAge: possibleAge.name,
       parkingAvailable: true,
       resvRequired: false,
@@ -168,10 +176,8 @@ const PopUpRegister = () => {
       taste: generateTasteObject(category.name),
       keywords: keyWord.split("/"),
     };
-    console.log(contents);
-    console.log(images);
 
-    mutate({ contents: contents, images: images });
+    mutate({ contents, images: images });
   };
 
   return (
@@ -234,4 +240,4 @@ const PopUpRegister = () => {
   );
 };
 
-export default PopUpRegister;
+export default PopUpEdit;

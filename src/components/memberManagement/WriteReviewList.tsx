@@ -1,6 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import useFormattedDate from "../../hook/useFormattedDate";
 
-function WriteReviewList() {
+type WriteReviewListType = {
+  popupName: string;
+  visitedAt: string;
+  createAt: string;
+  content: string;
+  imageUrl: string[];
+  hiddenReview: boolean;
+};
+
+const WriteReviewList = ({
+  popupName,
+  createAt,
+  visitedAt,
+  content,
+  hiddenReview,
+  imageUrl,
+}: WriteReviewListType) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState("");
 
@@ -19,27 +36,28 @@ function WriteReviewList() {
       <div className="border-b mb-10">
         <div className="flex justify-between items-center mb-5">
           <div className="flex flex-col">
-            <div className="font-bold">팝업명</div>
+            <div className="font-bold">{popupName}</div>
             <div className="flex">
-              <div className="mr-4">방문일 : 2020.02.02</div>
-              <div>작성일 : 2020.02.02</div>
+              <div className="mr-4">방문일 : {useFormattedDate(visitedAt)}</div>
+              <div>작성일 : {useFormattedDate(createAt)}</div>
             </div>
           </div>
-          <img src="/Security.png" alt="" />
-        </div>
-        <div className="border rounded-md px-4 py-4 mb-5">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt,
-          consequatur dolorem error expedita, blanditiis iure quasi architecto
-          deleniti nisi quos cumque quibusdam laborum dolorum ut culpa, ab
-          consequuntur molestiae similique.
-        </div>
-        <div className="w-28 h-28 mb-5">
           <img
-            className="w-full h-full object-cover cursor-pointer"
-            src="/test.png"
+            src={hiddenReview ? "/Security.png" : "/SecurityRelease.png"}
             alt=""
-            onClick={() => openModal("/test.png")}
           />
+        </div>
+        <div className="border rounded-md px-4 py-4 mb-5">{content}</div>
+        <div className="w-28 h-28 mb-5 flex ">
+          {imageUrl.map((el, idx) => (
+            <img
+              key={idx}
+              className="w-full h-full object-cover cursor-pointer mr-2 rounded-xl"
+              src={el}
+              alt=""
+              onClick={() => openModal(el)}
+            />
+          ))}
         </div>
       </div>
 
@@ -61,6 +79,6 @@ function WriteReviewList() {
       )}
     </div>
   );
-}
+};
 
 export default WriteReviewList;
