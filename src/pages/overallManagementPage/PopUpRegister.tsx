@@ -4,6 +4,8 @@ import PopupForm from "../../components/common/PopupForm";
 import usePostOverAllPopupCreate from "../../queries/overAllpopupManager/usePostOverAllPopupCreate";
 import useLocation from "../../hook/useLocation";
 import {
+  conversionFormDate,
+  conversionFormTime,
   generatePopupObject,
   generateTasteObject,
 } from "../../components/common/FormUtil";
@@ -153,14 +155,14 @@ const PopUpRegister = () => {
       introduce: intro,
       address: address,
       addressDetail: detailAddress,
-      closeDate: "2024-07-30",
+      openDate: startDate ? conversionFormDate(startDate.toISOString()) : "",
+      closeDate: endDate ? conversionFormDate(endDate.toISOString()) : "",
+      openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
+      closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
       entranceFee: price,
       availableAge: possibleAge.name,
       parkingAvailable: true,
       resvRequired: false,
-      openDate: "2024-06-30",
-      openTime: "13:00",
-      closeTime: "14:00",
       operationExcept: exceptions,
       latitude: latitude,
       longitude: longitude,
@@ -168,8 +170,6 @@ const PopUpRegister = () => {
       taste: generateTasteObject(category.name),
       keywords: keyWord.split("/"),
     };
-    console.log(contents);
-    console.log(images);
 
     mutate({ contents: contents, images: images });
   };

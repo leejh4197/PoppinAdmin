@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useFormattedDate from "../../hook/useFormattedDate";
+import { formattedDate } from "../common/FormUtil";
 
 type WriteReviewListType = {
   popupName: string;
@@ -38,8 +38,8 @@ const WriteReviewList = ({
           <div className="flex flex-col">
             <div className="font-bold">{popupName}</div>
             <div className="flex">
-              <div className="mr-4">방문일 : {useFormattedDate(visitedAt)}</div>
-              <div>작성일 : {useFormattedDate(createAt)}</div>
+              <div className="mr-4">방문일 : {formattedDate(visitedAt)}</div>
+              <div>작성일 : {formattedDate(createAt)}</div>
             </div>
           </div>
           <img

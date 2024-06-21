@@ -1,15 +1,14 @@
-import React from "react";
-import useFormattedDate from "../../hook/useFormattedDate";
+import { EditRequestProps } from "../../types/editRequestCheck";
+import { formattedDate } from "../common/FormUtil";
 
-function EditReuestPost({ editCheck }) {
-  console.log("넘김", editCheck);
+function EditReuestPost({ editCheck }: EditRequestProps) {
   return (
     <div>
       {editCheck && (
         <>
           <div className="font-bold text-xl">팝업1</div>
           <div className="text-sm text-gray-300 mb-2">
-            작성일 : {useFormattedDate(editCheck.createdAt)}
+            작성일 : {formattedDate(editCheck.createdAt)}
           </div>
           <div className="bg-gray-100 w-full p-4 rounded-lg mb-2">
             {editCheck.content}

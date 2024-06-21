@@ -6,6 +6,7 @@ type PopupReportType = {
   reporter: string;
   reportTime: string;
   path: string;
+  reviewId: number;
 };
 
 function PopupReportList({
@@ -13,13 +14,14 @@ function PopupReportList({
   reporter,
   reportTime,
   path,
+  reviewId,
 }: PopupReportType) {
   const navigate = useNavigate();
   return (
     <button
       className="border-b p-7 flex flex-col"
       value={title}
-      onClick={(e) => navigate(`/${path}/${e.currentTarget.value}`)}
+      onClick={() => navigate(`/${path}/${reviewId}`)}
     >
       <div className="font-bold text-lg mb-3">{title}</div>
       <div className="flex text-gray-400 text-sm">

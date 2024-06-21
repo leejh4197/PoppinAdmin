@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleText from "../../../components/common/TitleText";
 import PopupReportList from "../../../components/reportManagement/popupReport/PopupReportList";
 import CustomPagination from "../../../components/common/CustomPagination";
+import useGetReportList from "../../../queries/reportManager/useGetReportList";
+import { formattedDate } from "../../../components/common/FormUtil";
+import Spinner from "../../../components/common/Spinner";
 
 function PopupReport() {
   const [active, setActive] = useState("미처리");
-  const [totalPages, setTotalPages] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
   const handlePageChange = (selected: number) => {
     setOffset(selected);
@@ -14,6 +17,17 @@ function PopupReport() {
     const { name } = e.currentTarget;
     setActive(name);
   };
+  const { data: popupReportList } = useGetReportList(
+    active === "미처리" ? false : true,
+    offset,
+    19
+  );
+  console.log(popupReportList);
+  useEffect(() => {
+    if (popupReportList) {
+      setTotalPages(popupReportList.pageInfo.totalPages);
+    }
+  }, [popupReportList]);
   return (
     <div className="flexCenter w-4/5">
       <TitleText mainTitle="신고관리" subTitle="팝업 신고" className="mb-10" />
@@ -31,12 +45,19 @@ function PopupReport() {
           </button>
         ))}
       </div>
-      <PopupReportList
-        path="popupReport"
-        title="팝업1"
-        reporter="성북구불주먹"
-        reportTime="2020.20.20. 15:30"
-      />
+      {popupReportList?.items.length !== 0 ? (
+        popupReportList?.items.map((el) => (
+          <PopupReportList
+            path="popupReport"
+            reviewId={el.reportedPopupId}
+            title={el.popupName}
+            reporter={el.reporter}
+            reportTime={formattedDate(el.reportedAt)}
+          />
+        ))
+      ) : (
+        <Spinner />
+      )}
       <CustomPagination
         totalPage={totalPages}
         handlePageClick={handlePageChange}

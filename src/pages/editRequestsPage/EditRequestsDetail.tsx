@@ -15,14 +15,25 @@ function EditRequestsDetail() {
         className="mb-10"
       />
       <div className="flex items-center mb-10">
-        <img className="w-24 mr-5" src="/PoppinSymbol.png" alt="" />
+        <img
+          className="w-24 mr-5"
+          src={
+            editCheck?.userImageUrl
+              ? editCheck.userImageUrl
+              : "/PoppinSymbol.png"
+          }
+          alt=""
+        />
         <div className="flex flex-col">
-          <div className="text-2xl font-bold mr-5">성북구불주먹</div>
-          <div className="text-sm text-gray-300">test@test.com</div>
+          <div className="text-2xl font-bold mr-5">{editCheck?.nickname}</div>
+          <div className="text-sm text-gray-300">{editCheck?.email}</div>
         </div>
       </div>
       <EditReuestPost editCheck={editCheck} />
-      <button className="absolute right-0 bottom-0 px-12 py-3 text-white bg-LoginBtn rounded-full font-bold" onClick={()=>navigate(`/editRequestRegister/${id}`)}>
+      <button
+        className="absolute right-0 bottom-0 px-12 py-3 text-white bg-LoginBtn rounded-full font-bold"
+        onClick={() => navigate(`/editRequestRegister/${id}`)}
+      >
         정보 수정하기
       </button>
     </div>

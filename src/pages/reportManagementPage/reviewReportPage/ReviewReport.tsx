@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleText from "../../../components/common/TitleText";
 import PopupReportList from "../../../components/reportManagement/popupReport/PopupReportList";
 import CustomPagination from "../../../components/common/CustomPagination";
+import useGetReviewReportList from "../../../queries/reportManager/useGetReviewReportList";
+import { formattedDate } from "../../../components/common/FormUtil";
+import Spinner from "../../../components/common/Spinner";
 
 function ReviewReport() {
   const [active, setActive] = useState("미처리");
-  const [totalPages, setTotalPages] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
+
+  const { data: reviewReportList } = useGetReviewReportList(
+    active === "미처리" ? false : true,
+    offset,
+    19
+  );
+
+  console.log(reviewReportList);
   const handlePageChange = (selected: number) => {
     setOffset(selected);
   };
@@ -14,6 +25,11 @@ function ReviewReport() {
     const { name } = e.currentTarget;
     setActive(name);
   };
+  useEffect(() => {
+    if (reviewReportList) {
+      setTotalPages(reviewReportList.pageInfo.totalPages);
+    }
+  }, [reviewReportList]);
   return (
     <div className="flexCenter w-4/5">
       <TitleText
@@ -35,12 +51,19 @@ function ReviewReport() {
           </button>
         ))}
       </div>
-      <PopupReportList
-        path="reviewReport"
-        title="[팝업1]"
-        reporter="성북구불주먹"
-        reportTime="2020.20.20. 15:30"
-      />
+      {reviewReportList?.items.length !== 0 ? (
+        reviewReportList?.items.map((el) => (
+          <PopupReportList
+            path="reviewReport"
+            reviewId={el.reportedReviewId}
+            title={el.popupName}
+            reporter={el.reporter}
+            reportTime={formattedDate(el.reportedAt)}
+          />
+        ))
+      ) : (
+        <Spinner />
+      )}
       <CustomPagination
         totalPage={totalPages}
         handlePageClick={handlePageChange}

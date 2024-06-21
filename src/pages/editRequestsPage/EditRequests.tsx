@@ -17,7 +17,7 @@ function EditRequests() {
     const { value } = e.currentTarget;
     setProcess(value);
   };
-  const { data: editRequestList, isPending } = useGetEditRequestList(
+  const { data: editRequestList } = useGetEditRequestList(
     process === "미처리" ? true : false,
     offset,
     19
@@ -27,7 +27,7 @@ function EditRequests() {
     if (editRequestList) {
       setTotalPages(editRequestList.pageInfo.totalPages);
     }
-  }, []);
+  }, [editRequestList]);
 
   return (
     <div className="flexCenter w-4/5">
@@ -55,7 +55,7 @@ function EditRequests() {
         </div>
       </div>
       <div>
-        {!isPending ? (
+        {editRequestList?.items.length !== 0 ? (
           editRequestList?.items.map((el) => (
             <PostList
               id={el.id}

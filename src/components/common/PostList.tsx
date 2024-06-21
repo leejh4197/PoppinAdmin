@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useFormattedDate from "../../hook/useFormattedDate";
+import { formattedDate } from "./FormUtil";
 
 type RequstListTypes = {
   id: string;
@@ -43,7 +43,7 @@ const PostList = ({
           </div>
           <div className="flex">
             <div>{sub2}: </div>
-            <div>{useFormattedDate(date)}</div>
+            <div>{formattedDate(date)}</div>
           </div>
         </div>
       </div>

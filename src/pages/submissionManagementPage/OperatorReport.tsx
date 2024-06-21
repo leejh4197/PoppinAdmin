@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import TitleText from "../../components/common/TitleText";
 import PostList from "../../components/common/PostList";
 import CustomPagination from "../../components/common/CustomPagination";
+import { reportBtn } from "../../constants/reportBtnDummy";
 
 function OperatorReport() {
-  const [operateReportBtn, setOperateReportBtn] = useState("미처리");
+  const [operateReportBtn, setOperateReportBtn] = useState({
+    name: "미처리",
+    value: "",
+  });
   const [totalPages, setTotalPages] = useState<number>(4);
   const [offset, setOffset] = useState<number>(0);
 
@@ -15,8 +19,8 @@ function OperatorReport() {
   const handleOperateReportBtnClick = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
-    const { value } = e.currentTarget;
-    setOperateReportBtn(value);
+    const { name, value } = e.currentTarget;
+    setOperateReportBtn({ name: name, value: value });
   };
   return (
     <div className="flexCenter w-4/5">
@@ -26,16 +30,19 @@ function OperatorReport() {
         className="mb-10"
       />
       <div className="flex mb-8">
-        {["미처리", "처리 중", "처리 완료"].map((el, index) => (
+        {reportBtn.map((el, index) => (
           <button
-            value={el}
+            value={el.value}
+            name={el.name}
             onClick={handleOperateReportBtnClick}
             className={`border px-7 py-2 rounded-full ${
-              operateReportBtn === el ? "border-LoginBtn bg-LoginBtn/30" : ""
+              operateReportBtn.name === el.name
+                ? "border-LoginBtn bg-LoginBtn/30"
+                : ""
             } ${index === 0 || index === 1 ? "mr-5" : ""}`}
             key={index}
           >
-            {el}
+            {el.name}
           </button>
         ))}
       </div>
