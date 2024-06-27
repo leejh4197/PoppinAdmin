@@ -1,7 +1,7 @@
 import ReactPaginate from "react-paginate";
 
 const CustomPagination = ({
-  totalPage = 0,
+  totalPage,
   handlePageClick,
   forcePage,
 }: {
@@ -11,7 +11,7 @@ const CustomPagination = ({
 }) => {
   return (
     <ReactPaginate
-      className="flex justify-center w-full gap-[26px] text-[15px]  items-center mb-16 mt-16"
+      className="flex justify-center w-full gap-[26px] text-[15px] items-center mb-16 mt-16"
       nextLabel=">"
       onPageChange={(e) => handlePageClick(e.selected)}
       pageRangeDisplayed={5}
@@ -26,8 +26,8 @@ const CustomPagination = ({
       breakLabel="..."
       breakClassName="page-item"
       breakLinkClassName="page-link"
-      containerClassName="pagination"
-      activeClassName="font-bold"
+      coverClassName="pagination"
+      activeClassName="flex items-center justify-center font-bold text-white w-6 h-6 rounded-full bg-LoginBtn/60"
       renderOnZeroPageCount={null}
       forcePage={forcePage}
     />

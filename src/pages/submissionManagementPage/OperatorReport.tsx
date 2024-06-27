@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TitleText from "../../components/common/TitleText";
 import PostList from "../../components/common/PostList";
 import CustomPagination from "../../components/common/CustomPagination";
 import { reportBtn } from "../../constants/reportBtnDummy";
+import useGetOperatorReportList from "../../queries/submissionManager/useGetOperatorReportList";
+import { formattedDate } from "../../components/common/FormUtil";
 
 function OperatorReport() {
   const [operateReportBtn, setOperateReportBtn] = useState({
     name: "미처리",
-    value: "",
+    value: "NOTEXECUTED",
   });
-  const [totalPages, setTotalPages] = useState<number>(4);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
+  const { data: operateReportList } = useGetOperatorReportList(
+    offset,
+    19,
+    operateReportBtn.value
+  );
+  console.log(operateReportList);
+  useEffect(() => {
+    if (operateReportList)
+      setTotalPages(operateReportList?.pageInfo.totalPages);
+  }, [operateReportList]);
 
   const handlePageChange = (selected: number) => {
     setOffset(selected);
@@ -46,15 +58,19 @@ function OperatorReport() {
           </button>
         ))}
       </div>
-      <PostList
-        path="operatorReport"
-        sub1="제보자"
-        sub2="제보일시"
-        title="팝업1"
-        write="성북구불주먹"
-        date="2024.02.20.13:14"
-        progress="관리자1"
-      />
+      {operateReportList?.items.map((el) => (
+        <PostList
+          key={el.id}
+          id={el.id}
+          path="operatorReport"
+          sub1="제보자"
+          sub2="제보일시"
+          title={el.popupName}
+          write={el.informerName}
+          date={formattedDate(el.informedAt)}
+          progress={el.adminName}
+        />
+      ))}
       <CustomPagination
         totalPage={totalPages}
         handlePageClick={handlePageChange}

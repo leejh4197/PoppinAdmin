@@ -29,14 +29,21 @@ userInstance.interceptors.request.use(
 // 토큰 갱신 함수
 export const getNewToken = async () => {
   try {
-    await userInstance
-      .post("/api/v1/auth/refresh", {
-        headers: { Refresh: window.localStorage.getItem("refreshToken") },
-      })
-      .then((res) => {
-        window.localStorage.setItem("refreshToken", res.data.data.refreshToken);
-        window.localStorage.setItem("token", res.data.data.accessToken);
-      });
+    const refreshToken = window.localStorage.getItem("refreshToken");
+    const response = await userInstance.post(
+      "/api/v1/auth/refresh",
+      {},
+      {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      }
+    );
+    alert("세션이 만료되어 다시 로그인 중 입니다..");
+    window.localStorage.setItem(
+      "refreshToken",
+      response.data.data.refreshToken
+    );
+    window.localStorage.setItem("token", response.data.data.accessToken);
+
     return [
       window.localStorage.getItem("token"),
       window.localStorage.getItem("refreshToken"),

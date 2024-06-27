@@ -5,11 +5,15 @@ export interface WriteReviewType {
   createdAt: string;
   content: string;
   imageUrl: string[];
-  hiddenReview: boolean;
+  visible: boolean;
+}
+export interface WriteReviewPage {
+  page: number;
+  size: number;
+  totalPages: number;
 }
 
 export interface WriteReviewResponse {
-  success: boolean;
-  data: WriteReviewType[];
-  error: null;
+  items: WriteReviewType[];
+  pageInfo: WriteReviewPage;
 }

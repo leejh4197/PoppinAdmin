@@ -1,6 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sideBarContents } from "../../constants/sideBarContent";
 import { Outlet, useNavigate } from "react-router-dom";
+import Spinner from "../common/Spinner";
+import useSpeech from "../../hook/useSpeech";
+const navigationMap: { [key: string]: string } = {
+  홈으로가줘: "/home",
+  공지사항으로가줘: "/noticeManager",
+  회원관리로가줘: "/memberManager",
+  문의하기로가줘: "/contact",
+  정보수정관리로가줘: "/editRequests",
+  팝업신고로가줘: "/popupReport",
+  후기신고로가줘: "/reviewReport",
+  운영자제보로가줘: "/operatorReport",
+  이용자제보로가줘: "/userReport",
+  전체팝업관리로가줘: "/overallManager",
+};
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -8,6 +22,14 @@ const SideBar = () => {
   const [showReportSubMenu, setShowReportSubMenu] = useState(false);
   const [showPopupReportSubMenu, setShowPopupReportSubMenu] = useState(false);
   const [activeButton, setActiveButton] = useState("관리자");
+  const [result, startListening] = useSpeech();
+
+  useEffect(() => {
+    const destination = navigationMap[result.text.split(" ").join("")];
+    if (destination) {
+      navigate(destination);
+    }
+  }, [result]);
 
   const contactButtons = ["문의하기/FAQ 관리", "자주 묻는 질문"];
   const reportsButtons = ["신고 관리", "팝업 신고", "후기 신고"];
@@ -44,6 +66,28 @@ const SideBar = () => {
 
   return (
     <>
+      <div className="absolute items-center justify-center flex flex-col top-0 right-0">
+        <div className="bg-LoginBtn text-white rounded-2xl px-5 mr-2">
+          {result.text.split(" ").join("")}
+        </div>
+        <button className="cursor-pointer" onClick={startListening}>
+          {result.state ? (
+            <Spinner />
+          ) : (
+            <img className="w-10 h-10" src="/speech.png" alt="" />
+          )}
+        </button>
+        <div className="grid grid-cols-1 max-2xl:hidden gap-4 mt-4">
+          {Object.keys(navigationMap).map((command, index) => (
+            <div
+              key={index}
+              className="command-box bg-gray-100 p-4 rounded shadow"
+            >
+              {command}
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="flex flex-col absolute pl-[200px] h-full pt-[160px] z-50">
         <img className="w-8" src="Logo.png" alt="Logo" />
         <div>

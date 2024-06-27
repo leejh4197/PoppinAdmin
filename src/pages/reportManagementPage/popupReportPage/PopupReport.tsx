@@ -22,7 +22,6 @@ function PopupReport() {
     offset,
     19
   );
-  console.log(popupReportList);
   useEffect(() => {
     if (popupReportList) {
       setTotalPages(popupReportList.pageInfo.totalPages);
@@ -46,8 +45,9 @@ function PopupReport() {
         ))}
       </div>
       {popupReportList?.items.length !== 0 ? (
-        popupReportList?.items.map((el) => (
+        popupReportList?.items.map((el, index) => (
           <PopupReportList
+            key={index}
             path="popupReport"
             reviewId={el.reportedPopupId}
             title={el.popupName}

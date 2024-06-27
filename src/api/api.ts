@@ -2,6 +2,9 @@ import { EditRequestCheckType, Popups } from "../types/editRequestCheck";
 import { EditRequestListType } from "../types/editRequestList";
 import { DeleteFaqData } from "../types/faqDelete";
 import { FaqDataList } from "../types/faqList";
+import { FormPopups } from "../types/formPopup";
+import { NoticeContent, NoticeResponse } from "../types/noticeForm";
+import { OperatorRePortListResType } from "../types/operatorReportType";
 import { AllPopupRes } from "../types/overAllPopupList";
 import { PopupReportDetailType } from "../types/popupReportDetailType";
 import { RePortListResType } from "../types/reportType";
@@ -12,7 +15,7 @@ import { UserDetail } from "../types/userDetail";
 import { UserList } from "../types/userList";
 import { UserSearch } from "../types/userSearch";
 import { FaqRes } from "../types/writeFaq";
-import { WriteReviewType } from "../types/writeReviewList";
+import { WriteReviewResponse } from "../types/writeReviewList";
 import { userInstance } from "./instance";
 
 // ! 유저관리
@@ -23,15 +26,15 @@ export const GetuserSearch = (text: string): Promise<UserSearch> =>
   userInstance
     .get(`/api/v1/admin/users/search?text=${text}`)
     .then((res) => res.data.data);
-// 집중 회원 관리
-export const GetFocusUserList = (page: number): Promise<UserList> =>
-  userInstance
-    .get(`/api/v1/admin/users/special-care?page=${page}`)
-    .then((res) => res.data.data);
+
 // 전체 회원 리스트
-export const GetUserList = (page: number): Promise<UserList> =>
+export const GetUserList = (
+  page: number,
+  size: number,
+  care: boolean
+): Promise<UserList> =>
   userInstance
-    .get(`/api/v1/admin/users?page=${page}`)
+    .get(`/api/v1/admin/users?page=${page}&size=${size}&care=${care}`)
     .then((res) => res.data.data);
 
 // 회원 상세 정보
@@ -44,7 +47,7 @@ export const GetWriteReviewList = (
   userId: string | undefined,
   page: number,
   hidden: boolean
-): Promise<WriteReviewType[]> =>
+): Promise<WriteReviewResponse> =>
   userInstance
     .get(
       `/api/v1/admin/users/${userId}/reviews?page=${page}&size=${5}&hidden=${hidden}`
@@ -117,7 +120,7 @@ export const PostPopupCreate = (
 // 팝업 조회
 export const GetOverAllPopupSearch = (
   id: string | undefined
-): Promise<EditRequestCheckType> =>
+): Promise<Popups> =>
   userInstance.get(`/api/v1/popup/admin?id=${id}`).then((res) => res.data.data);
 
 //! 신고 관리
@@ -159,6 +162,31 @@ export const GetReviewReportList = (
       `/api/v1/admin/reports/reviews?isExec=${isExec}&page=${page}&size=${size}`
     )
     .then((res) => res.data.data);
+// 팝업 삭제
+export const DeletePopup = (id: number | undefined) =>
+  userInstance
+    .delete(`/api/v1/popup/admin?id=${id}`)
+    .then((res) => res.data.data);
+
+// 팝업 수정
+export const EditPopup = (
+  contents: FormPopups,
+  images: File[]
+): Promise<FormPopups> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image) => {
+    formData.append(`images`, image);
+  });
+
+  return userInstance.put(`/api/v1/popup/admin`, formData).then((res) => {
+    console.log(res);
+    return res.data;
+  });
+};
 
 //! 제보하기
 // 운영자 제보하기 목록 조회
@@ -166,7 +194,7 @@ export const GetOperatorReportList = (
   page: number,
   size: number,
   prog: string
-): Promise<RePortListResType> =>
+): Promise<OperatorRePortListResType> =>
   userInstance
     .get(`/api/v1/manager-inform/list?page=${page}&size=${size}&prog=${prog}`)
     .then((res) => res.data.data);
@@ -175,7 +203,35 @@ export const GetUserReportList = (
   page: number,
   size: number,
   prog: string
-): Promise<RePortListResType> =>
+): Promise<OperatorRePortListResType> =>
   userInstance
     .get(`/api/v1/user-inform/list?page=${page}&size=${size}&prog=${prog}`)
     .then((res) => res.data.data);
+// 운영자 제보 조회
+export const GetOperatorReportSearch = (informId: number): Promise<Popups> =>
+  userInstance
+    .get(`/api/v1/manager-inform?informId=${informId}`)
+    .then((res) => res.data.data);
+
+// 이용자 제보 조회
+export const GetUserReportSearch = (informId: number): Promise<Popups> =>
+  userInstance
+    .get(`/api/v1/user-inform?informId=${informId}`)
+    .then((res) => res.data.data);
+//! 공지사항등록
+export const PostNotice = (
+  contents: NoticeContent,
+  images: File | null
+): Promise<NoticeResponse> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  if (images) {
+    formData.append(`images`, images);
+  }
+  return userInstance
+    .post("https://www.bubble-poppin.com/api/v1/admin/info/create", formData)
+    .then((res) => res.data.data);
+};

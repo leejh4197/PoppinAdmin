@@ -1,5 +1,3 @@
-import React from "react";
-
 type ReportBtnType = {
   title: string;
   disabled?: boolean;
@@ -7,12 +5,12 @@ type ReportBtnType = {
   onClick?: () => void;
 };
 
-const ReportBtn = ({ title, disabled, onClick, className }: ReportBtnType) => {
+const ReportBtn = ({ title, onClick, className }: ReportBtnType) => {
   return (
-    <div className="flex justify-end w-full">
+    <div className={`flex justify-end`}>
       <button
         onClick={onClick}
-        className="px-10 py-3 rounded-full font-bold text-white mb-24 bg-LoginBtn"
+        className={`px-10 py-3 rounded-full font-bold text-white bg-LoginBtn ${className}`}
       >
         {title}
       </button>

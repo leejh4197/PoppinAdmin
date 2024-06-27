@@ -8,7 +8,7 @@ type CategoryType = {
 };
 type OverallPopupInputType = {
   title: string;
-  value: string;
+  value: string | null | number;
   placeholder: string;
   essential: boolean;
   subTitle?: string;

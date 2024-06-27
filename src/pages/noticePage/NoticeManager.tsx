@@ -1,18 +1,21 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TitleText from "../../components/common/TitleText";
+import usePostNotice from "../../queries/noticeManager/usePostNotice";
 
 const NoticeManager = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadImgUrl, setUploadImgUrl] = useState<string | null>("");
+  const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState<string>("");
   const [detail, setDetail] = useState<string>("");
-
-  console.log(typeof uploadImgUrl);
   const handleFileClick = () => {
     fileInputRef.current!.click();
   };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.currentTarget;
+    if (files) {
+      setImage(files[0]);
+    }
     const uploadFile = files![0];
     const reader = new FileReader();
     reader.readAsDataURL(uploadFile);
@@ -20,6 +23,26 @@ const NoticeManager = () => {
       setUploadImgUrl(reader.result as string);
     };
   };
+
+  const { mutate, isSuccess } = usePostNotice();
+  const handleSubmit = () => {
+    const contents = {
+      title: title,
+      body: detail,
+    };
+
+    mutate({ contents: contents, images: image });
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      setTitle("");
+      setDetail("");
+      setImage(null);
+      setUploadImgUrl("");
+      alert("팝업이 성공적으로 등록되었습니다!");
+    }
+  }, []);
+
   return (
     <div className="flexCenter w-4/5">
       <TitleText
@@ -58,6 +81,7 @@ const NoticeManager = () => {
             placeholder="제목을 입력해주세요"
             className="w-full border p-[18px] rounded-2xl "
             type="text"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -65,6 +89,7 @@ const NoticeManager = () => {
           <div className="font-bold mb-4">상세 내용</div>
           <textarea
             placeholder="상세 내용을 입력해주세요"
+            value={detail}
             className="w-full border resize-none h-56 p-[18px] rounded-2xl"
             onChange={(e) => setDetail(e.target.value)}
           />
@@ -74,6 +99,7 @@ const NoticeManager = () => {
         <button
           disabled={uploadImgUrl && title && detail ? false : true}
           className="whitespace-nowrap px-32 py-5 bg-[#0EB5F9] rounded-full text-white disabled:bg-gray-300"
+          onClick={handleSubmit}
         >
           등록하기
         </button>

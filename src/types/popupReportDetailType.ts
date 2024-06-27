@@ -15,6 +15,11 @@ export interface ReportedPopupDetailDto {
   availableAge: string;
   entranceFee: string;
   homepageLink: string;
+  closeDate: string;
+  closeTime: string;
+  openDate: string;
+  openTime: string;
+  introduce: string;
   parkingAvailable: boolean;
   popupId: number;
   popupName: string;

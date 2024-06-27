@@ -12,7 +12,7 @@ export interface EditRequestCheckType {
 }
 
 export interface Popups {
-  id: number;
+  id?: number;
   name: string;
   introduce: string;
   address: string;
@@ -25,10 +25,11 @@ export interface Popups {
   availableAge: string;
   parkingAvailable: boolean;
   resvRequired: boolean;
+  availableAgeValue: string;
   homepageLink: string;
-  operationStatus: string;
+  operationStatus?: string;
   operationExcept: string | null;
-  posterUrl: string;
+  posterUrl?: string;
   posterList: string[];
   keywordList: string[];
   createdAt: string;

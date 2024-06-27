@@ -12,7 +12,6 @@ const useLogin = () => {
   const [success, setSuccess] = useState<boolean | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [response, setResponse] = useState<AxiosResponse | null>(null);
-
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);

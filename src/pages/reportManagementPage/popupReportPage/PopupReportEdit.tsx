@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
-import PopupForm from "../../components/common/PopupForm";
-import usePostOverAllPopupCreate from "../../queries/overAllpopupManager/usePostOverAllPopupCreate";
-import useLocation from "../../hook/useLocation";
 import {
+  conversionFormDate,
+  conversionFormTime,
   generatePopupObject,
   generateTasteObject,
-} from "../../components/common/FormUtil";
+} from "../../../components/common/FormUtil";
+import PopupForm from "../../../components/common/PopupForm";
+import OverallAddEditBtn from "../../../components/overallManagement/OverallAddEditBtn";
+import useAddressLocation from "../../../hook/useLocation";
+import { useLocation } from "react-router-dom";
+import useGetOverAllPopupSearch from "../../../queries/overAllpopupManager/useGetOverAllPopupSearch";
+import { categoryDummy } from "../../../constants/categoryDummy";
+import useEditPopup from "../../../queries/reportManager/useEditPopup";
+import axios from "axios";
 
-const EditRequestRegister = () => {
+const PopUpReportEdit = () => {
+  const locate = useLocation();
+  const { data: popupInfo } = useGetOverAllPopupSearch(locate.state.popupId);
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -22,9 +30,9 @@ const EditRequestRegister = () => {
     value: "",
   });
   // 예외사항
-  const [exceptions, setExceptions] = useState("");
+  const [exceptions, setExceptions] = useState<string | null>("");
   // 상세주소
-  const [detailAddress, setDetailAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState<string | null>("");
   // 주소
   const [address, setAddress] = useState("");
   // 사이트주소
@@ -58,7 +66,100 @@ const EditRequestRegister = () => {
   // 버튼 disabled
   const [isFormComplete, setIsFormComplete] = useState(false);
 
-  const { latitude, longitude } = useLocation(address);
+  const { latitude, longitude } = useAddressLocation(address);
+
+  useEffect(() => {
+    if (popupInfo) {
+      // 데이터를 받아와서 상태를 설정
+      setPopupName(popupInfo.name);
+      setPossibleAge({
+        name: popupInfo.availableAgeValue,
+        value: popupInfo.availableAge,
+      });
+      setExceptions(popupInfo.operationExcept);
+      setDetailAddress(popupInfo.addressDetail);
+      setAddress(popupInfo.address || "");
+      setSiteAddress(popupInfo.homepageLink);
+      setIntro(popupInfo.introduce);
+      setPrice(popupInfo.entranceFee);
+      setKeyWord(popupInfo.keywordList.join("/"));
+      setStartDate(popupInfo.openDate ? new Date(popupInfo.openDate) : null);
+      setEndDate(popupInfo.closeDate ? new Date(popupInfo.closeDate) : null);
+      if (popupInfo.openTime) {
+        const [hours, minutes] = popupInfo.openTime.split(":");
+        const openTimeDate = new Date();
+        openTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        setStartTime(openTimeDate);
+      }
+      if (popupInfo.closeTime) {
+        const [hours, minutes] = popupInfo.closeTime.split(":");
+        console.log(hours, minutes);
+        const closeTimeDate = new Date();
+        closeTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        setEndTime(closeTimeDate);
+      }
+
+      setAdmissionFee(popupInfo.resvRequired ? "있음" : "없음");
+      const selectCategory = Object.entries(popupInfo.taste)
+        .filter(([, value]) => value === true)
+        .map(([key]) => key);
+
+      const categoryNames = selectCategory
+        .map(
+          (key) =>
+            categoryDummy.find((category) => category.name === key)?.value ||
+            key
+        )
+        .join(", ");
+
+      setCategory({
+        name: selectCategory.join(", "),
+        value: categoryNames,
+      });
+      const selectPopupCategory = Object.entries(popupInfo.prefered)
+        .filter(([, value]) => value === true)
+        .map(([value]) => value);
+
+      setPopupCategory(selectPopupCategory.join());
+      setPopupReservation(popupInfo.resvRequired ? "예약 필수" : "필수 아님");
+      setParking(popupInfo.parkingAvailable ? "주차가능" : "주차불가");
+      // 이미지 미리보기 설정
+      setShowImages(popupInfo.posterList || []);
+
+      const fileTest = async () => {
+        try {
+          const files = await Promise.all(
+            popupInfo.posterList.map(async (el, index) => {
+              try {
+                const response = await axios.get(el, {
+                  responseType: "blob",
+                  headers: {
+                    "Cache-Control": "no-cache",
+                  },
+                });
+
+                const url = response.config.url;
+                const fileName = url?.substring(url.lastIndexOf("/") + 1);
+
+                const file = new File([response.data], fileName || "", {
+                  type: response.data.type,
+                });
+                return file;
+              } catch (err) {
+                console.log(`${index}에서 에러가 발생합니다.`, err);
+                return null;
+              }
+            })
+          );
+          const validFiles = files.filter((file) => file !== null);
+          setImages(validFiles as File[]);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fileTest();
+    }
+  }, [popupInfo]);
 
   useEffect(() => {
     const checkFormComplete = () => {
@@ -66,7 +167,6 @@ const EditRequestRegister = () => {
         popupName &&
         category.name &&
         possibleAge.name &&
-        exceptions &&
         detailAddress &&
         address &&
         siteAddress &&
@@ -145,23 +245,25 @@ const EditRequestRegister = () => {
     }
   };
 
-  const { mutate } = usePostOverAllPopupCreate();
+  const { mutate } = useEditPopup();
+  console.log(detailAddress);
 
   const handleSubmit = async () => {
     const contents = {
+      popupId: locate.state.popupId,
       name: popupName,
       homepageLink: siteAddress,
       introduce: intro,
       address: address,
       addressDetail: detailAddress,
-      closeDate: endDate,
-      entranceFee: admissionFee,
+      openDate: startDate ? conversionFormDate(startDate.toISOString()) : "",
+      closeDate: endDate ? conversionFormDate(endDate.toISOString()) : "",
+      openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
+      closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
+      entranceFee: price,
       availableAge: possibleAge.name,
-      parkingAvailable: true,
-      resvRequired: false,
-      openDate: startDate,
-      openTime: startTime,
-      closeTime: endTime,
+      parkingAvailable: parking === "주차가능" ? true : false,
+      resvRequired: popupReservation === "예약 필수" ? true : false,
       operationExcept: exceptions,
       latitude: latitude,
       longitude: longitude,
@@ -169,8 +271,9 @@ const EditRequestRegister = () => {
       taste: generateTasteObject(category.name),
       keywords: keyWord.split("/"),
     };
+    console.log(contents);
 
-    mutate({ contents, images: images });
+    mutate({ contents: contents, images: images });
   };
 
   return (
@@ -178,7 +281,7 @@ const EditRequestRegister = () => {
       <PopupForm
         title="팝업 정보 관리"
         subTitle="팝핀에 등록할 정확한 정보를 입력해주세요."
-        guide="팝팝의 정보를 알려주세요"
+        guide="팝팝에 등록하기 위한 정보가 충분한지 확인해주세요!"
         address={address}
         setAddress={setAddress}
         popupName={popupName}
@@ -224,7 +327,7 @@ const EditRequestRegister = () => {
       />
       <div className="flex justify-end mb-16">
         <OverallAddEditBtn
-          content="수정 완료"
+          content="수정완료"
           onClick={handleSubmit}
           disabled={!isFormComplete}
         />
@@ -233,4 +336,4 @@ const EditRequestRegister = () => {
   );
 };
 
-export default EditRequestRegister;
+export default PopUpReportEdit;

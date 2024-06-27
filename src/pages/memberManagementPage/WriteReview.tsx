@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomPagination from "../../components/common/CustomPagination";
 import TitleText from "../../components/common/TitleText";
 import WriteReviewList from "../../components/memberManagement/WriteReviewList";
@@ -6,19 +6,22 @@ import { useLocation, useParams } from "react-router-dom";
 import useGetWriteReview from "../../queries/memberManager/useGetWriteReview";
 
 function WriteReview() {
-  const [totalPages, setTotalPages] = useState<number>(5);
+  // 페이지 set 수정 필요
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
   const { id } = useParams();
   const [hiddenReview, setHiddenReview] = useState(false);
+  console.log(hiddenReview);
   const handlePageChange = (selected: number) => {
     setOffset(selected);
   };
   const { state } = useLocation();
-  const { data: writeReviewList } = useGetWriteReview(
-    id,
-    offset + 1,
-    hiddenReview
-  );
+  const { data: writeReviewList } = useGetWriteReview(id, offset, hiddenReview);
+  useEffect(() => {
+    if (writeReviewList) {
+      setTotalPages(writeReviewList?.pageInfo.totalPages);
+    }
+  }, [writeReviewList]);
   console.log(writeReviewList);
   return (
     <div className="flexCenter w-4/5">
@@ -48,11 +51,11 @@ function WriteReview() {
           숨겨진 후기만 보기
         </button>
       </div>
-      {writeReviewList?.map((el) => (
+      {writeReviewList?.items.map((el) => (
         <WriteReviewList
           content={el.content}
           createAt={el.createdAt}
-          hiddenReview={el.hiddenReview}
+          hiddenReview={el.visible}
           key={el.reviewId}
           imageUrl={el.imageUrl}
           visitedAt={el.visitedAt}

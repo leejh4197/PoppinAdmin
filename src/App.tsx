@@ -21,6 +21,7 @@ import { isAuthenticated } from "./auth/auth";
 import { ReactElement } from "react";
 import EditRequestRegister from "./pages/editRequestsPage/EditRequestRegister";
 import PopUpEdit from "./pages/overallManagementPage/PopupEdit";
+import PopupReportEdit from "./pages/reportManagementPage/popupReportPage/PopupReportEdit";
 
 interface PrivateRouteProps {
   element: ReactElement;
@@ -35,6 +36,7 @@ function App() {
       return element;
     }
   };
+
   return (
     <div className="h-full w-full">
       <Routes>
@@ -80,6 +82,10 @@ function App() {
           <Route
             path="/popupReport/:id"
             element={<PrivateRoute element={<PopupReportDetail />} />}
+          />
+          <Route
+            path="/popupReportEdit/:id"
+            element={<PrivateRoute element={<PopupReportEdit />} />}
           />
           <Route
             path="/reviewReport"

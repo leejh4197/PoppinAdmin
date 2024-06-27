@@ -1,19 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MainLoginBanner from "../../components/login/MainLoginBanner";
 import MainLoginBtn from "../../components/login/MainLoginBtn";
 import MainLoginInput from "../../components/login/MainLoginInput";
 import useLogin from "../../api/useLogin";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../auth/auth";
-import Spinner from "../../components/common/Spinner";
+import Fireworks from "../../components/common/Firworks";
+import CustomModal from "../../components/common/CustomModal";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading, response, success } = useLogin();
+  const [showFireworks, setShowFireworks] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
+  const hiddenButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { login, response, success } = useLogin();
 
   const handleLoginBtnClick = async () => {
+    setShowFireworks(true);
     await login(email, password);
   };
   const handleActiveEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -33,8 +39,7 @@ function Login() {
     if (success) {
       localStorage.setItem("token", response?.data.data.accessToken);
       localStorage.setItem("refreshToken", response?.data.data.refreshToken);
-      alert("로그인이 완료 됐습니다.");
-      navigate("/home");
+      setModalActive(true);
     }
   }, [success, response]);
   return (
@@ -59,7 +64,7 @@ function Login() {
           message={response?.data.error?.message}
           keyDown={handleActiveEnter}
         />
-        {!loading ? (
+        {!success ? (
           <MainLoginBtn
             email={email}
             password={password}
@@ -67,9 +72,18 @@ function Login() {
             onClick={handleLoginBtnClick}
           />
         ) : (
-          <Spinner />
+          <Fireworks
+            setShowFireworks={setShowFireworks}
+            showFireworks={showFireworks}
+          />
         )}
       </div>
+      {modalActive && (
+        <CustomModal
+          setModalActive={setModalActive}
+          hiddenButtonRef={hiddenButtonRef}
+        />
+      )}
     </div>
   );
 }

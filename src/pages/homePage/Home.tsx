@@ -7,10 +7,13 @@ function Home() {
   useEffect(() => {
     if (data) {
       setNickName(data.nickname);
+      localStorage.setItem("nickName", data.nickname);
     }
   }, [data]);
-  console.log(data);
 
+  const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickName(e.target.value);
+  };
   return (
     <div className="flexCenter">
       <div className="flex items-center mb-[44px]">
@@ -26,7 +29,7 @@ function Home() {
         <input
           className="outline-none bg-gray-200 py-[20px] pl-[33px] rounded-full w-[887px]"
           readOnly
-          defaultValue={data?.email}
+          value={data?.email || ""}
         />
       </div>
       <div>
@@ -35,6 +38,7 @@ function Home() {
           <input
             value={nickName}
             className="outline-none border-gray-300 border py-[20px] pl-[33px] rounded-full w-[887px]"
+            onChange={handleNickNameChange}
           />
           <button
             onClick={() => setNickName("")}

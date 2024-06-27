@@ -7,9 +7,14 @@ const PopupDetailContent = ({
   entranceFee,
   homepageLink,
   parkingAvailable,
+  introduce,
   popupName,
   posterUrl,
   resvRequired,
+  openDate,
+  openTime,
+  closeDate,
+  closeTime,
 }: ReportedPopupDetailDto) => {
   return (
     <div className="flex mb-10">
@@ -23,12 +28,7 @@ const PopupDetailContent = ({
       <div className="w-1/2 h-full">
         <div className="border-dashed border-b-4 border-gray-100">
           <div className="text-lg font-bold mb-2">{popupName}</div>
-          <div className="text-sm mb-5">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores ab
-            eos architecto iusto vero fugiat, earum nostrum eveniet facere
-            tenetur ex! Expedita libero quod facilis ducimus ipsam ipsum
-            exercitationem illo!
-          </div>
+          <div className="text-sm mb-5">{introduce}</div>
           <div className="flex items-center justify-between mb-5">
             <button
               className="flex items-center px-3 py-1 text-LoginBtn border rounded-full border-LoginBtn text-sm"
@@ -57,11 +57,11 @@ const PopupDetailContent = ({
           <div className="mb-2 text-sm">
             <div>
               <span className="text-[#C37CD2]">기간 : </span>
-              2020.20.02 ~ 2020.02.02
+              {openDate} ~ {closeDate}
             </div>
             <div>
               <span className="text-[#C37CD2]">운영시간 : </span>
-              2020.20.02 ~ 2020.02.02
+              {openTime} ~ {closeTime}
             </div>
             <div>
               <span className="text-[#C37CD2]">주소 : </span>

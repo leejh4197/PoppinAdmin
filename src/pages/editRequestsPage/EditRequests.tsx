@@ -59,6 +59,7 @@ function EditRequests() {
           editRequestList?.items.map((el) => (
             <PostList
               id={el.id}
+              key={el.id}
               path="editRequests"
               sub1="작성자"
               sub2="작성일"

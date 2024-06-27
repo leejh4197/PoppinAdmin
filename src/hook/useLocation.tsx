@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-const useLocation = (address: string) => {
+const useAddressLocation = (address: string) => {
   const [location, setLocation] = useState({ latitude: "", longitude: "" });
 
   useEffect(() => {
@@ -34,4 +34,4 @@ const useLocation = (address: string) => {
   return location;
 };
 
-export default useLocation;
+export default useAddressLocation;

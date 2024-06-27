@@ -17,8 +17,8 @@ type PopupFormType = {
   subTitle: string;
   guide: string;
   popupName: string;
-  exceptions: string;
-  detailAddress: string;
+  exceptions: string | null;
+  detailAddress: string | null;
   siteAddress: string;
   intro: string;
   keyWord: string;
@@ -43,8 +43,8 @@ type PopupFormType = {
   setPrice: React.Dispatch<SetStateAction<string>>;
   setAddress: React.Dispatch<SetStateAction<string>>;
   setPopupName: React.Dispatch<SetStateAction<string>>;
-  setExceptions: React.Dispatch<SetStateAction<string>>;
-  setDetailAddress: React.Dispatch<SetStateAction<string>>;
+  setExceptions: React.Dispatch<SetStateAction<string | null>>;
+  setDetailAddress: React.Dispatch<SetStateAction<string | null>>;
   setSiteAddress: React.Dispatch<SetStateAction<string>>;
   setIntro: React.Dispatch<SetStateAction<string>>;
   setPossibleAge: React.Dispatch<SetStateAction<CategoryType>>;

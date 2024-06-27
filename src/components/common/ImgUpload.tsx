@@ -52,7 +52,7 @@ function ImgUpload({
           {value.map((image, id) => (
             <div className="mr-2 bg-gray-100 rounded-2xl border" key={id}>
               <img
-                className="w-24 h-24 rounded-2xl"
+                className="w-24 h-24 rounded-t-2xl"
                 src={image}
                 alt={`${image}-${id}`}
               />

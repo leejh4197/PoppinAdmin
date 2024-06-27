@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostPopupCreate } from "../../api/api";
 import { useNavigate } from "react-router-dom";
+import { Popups } from "../../types/editRequestCheck";
 
 interface FormData {
-  contents: any;
+  contents: Popups;
   images: File[];
 }
 

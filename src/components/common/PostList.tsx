@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { formattedDate } from "./FormUtil";
 
 type RequstListTypes = {
-  id: string;
+  id?: string;
   sub1: string;
   sub2: string;
   title: string;
@@ -10,7 +10,7 @@ type RequstListTypes = {
   date: string;
   path: string;
   className?: string;
-  progress?: string;
+  progress?: string | null;
 };
 
 const PostList = ({
