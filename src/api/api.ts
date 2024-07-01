@@ -2,7 +2,7 @@ import { EditRequestCheckType, Popups } from "../types/editRequestCheck";
 import { EditRequestListType } from "../types/editRequestList";
 import { DeleteFaqData } from "../types/faqDelete";
 import { FaqDataList } from "../types/faqList";
-import { FormPopups } from "../types/formPopup";
+import { EditPopupResponse, FormPopups } from "../types/formPopup";
 import { NoticeContent, NoticeResponse } from "../types/noticeForm";
 import { OperatorRePortListResType } from "../types/operatorReportType";
 import { AllPopupRes } from "../types/overAllPopupList";
@@ -150,15 +150,20 @@ export const PostReviewReportChange = (reportedReviewId?: string) =>
 // 후기 신고 처리내용
 export const PostReviewProcessingDetail = (
   content: string,
-  reportedReviewId?: string
+  reportId?: string
 ) =>
   userInstance
-    .post(`/api/v1/admin/reports/reviews/${reportedReviewId}`, { content })
+    .post(`/api/v1/admin/reports/reviews/${reportId}`, { content })
     .then((res) => res.data.data);
-// 후기 신고
-export const GetReviewProcessingComplete = (reportId: number) =>
+// 후기 신고 입력된 처리내용
+export const GetReviewProcessingComplete = (reportId?: string) =>
   userInstance
     .get(`/api/v1/admin/reports/reviews/${reportId}/exec`)
+    .then((res) => res.data.data);
+// 팝업 신고 처리내용
+export const PostPopupProcessingDetail = (content: string, reportId?: string) =>
+  userInstance
+    .post(`/api/v1/admin/reports/popups/${reportId}`, { content })
     .then((res) => res.data.data);
 // 팝업 후기 신고 상세조회
 export const GetReviewReportDetail = (
@@ -166,6 +171,11 @@ export const GetReviewReportDetail = (
 ): Promise<ReviewReportDetailType | undefined> =>
   userInstance
     .get(`/api/v1/admin/reports/reviews/${reviewId}`)
+    .then((res) => res.data.data);
+// 팝업 신고 입력된 처리내용
+export const GetPopupProcessingComplete = (reportId?: string) =>
+  userInstance
+    .get(`/api/v1/admin/reports/popups/${reportId}/exec`)
     .then((res) => res.data.data);
 
 // 팝업 후기신고 목록 조회
@@ -189,7 +199,7 @@ export const DeletePopup = (id: number | undefined) =>
 export const EditPopup = (
   contents: FormPopups,
   images: File[]
-): Promise<FormPopups> => {
+): Promise<EditPopupResponse> => {
   const formData = new FormData();
   formData.append(
     "contents",
@@ -200,7 +210,6 @@ export const EditPopup = (
   });
 
   return userInstance.put(`/api/v1/popup/admin`, formData).then((res) => {
-    console.log(res);
     return res.data;
   });
 };

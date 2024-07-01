@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { EditPopup } from "../../api/api";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FormPopups } from "../../types/formPopup";
 
 interface FormData {
@@ -10,6 +10,8 @@ interface FormData {
 
 const useEditPopup = () => {
   const navigate = useNavigate();
+  const locate = useLocation();
+
   const { mutate, data, isPending, isError, error } = useMutation({
     mutationKey: ["editPopup"],
     mutationFn: (formData: FormData) =>
@@ -17,8 +19,10 @@ const useEditPopup = () => {
     retry: false,
     onSuccess: (data) => {
       console.log(data);
-      alert("수정이 완료됐습니다.");
-      navigate("/popupReport");
+      if (data.success) {
+        alert("수정이 완료됐습니다.");
+        navigate(`/popupReport/${locate.state.popupId}?isSuccess=true`);
+      }
     },
   });
   return { mutate, data, isPending, isError, error };

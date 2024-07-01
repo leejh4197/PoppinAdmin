@@ -50,6 +50,7 @@ function PopupReport() {
           <PopupReportList
             key={index}
             path="popupReport"
+            executed={el.executed}
             reportId={el.reportId}
             title={el.popupName}
             reporter={el.reporter}

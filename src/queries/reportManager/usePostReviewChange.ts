@@ -12,7 +12,7 @@ const usePostReviewChange = () => {
     retry: false,
     onSuccess: (data) => {
       console.log(data);
-      queryClient.setQueryData(["postPopup"], data);
+      queryClient.setQueryData(["postReviewChange"], data);
       alert("팝업 처리완료!");
       navigate("/reviewReport");
     },

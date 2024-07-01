@@ -49,3 +49,9 @@ export interface FormPopups {
   };
   viewCnt?: number;
 }
+
+export interface EditPopupResponse {
+  success: boolean;
+  data: FormPopups;
+  error: null;
+}

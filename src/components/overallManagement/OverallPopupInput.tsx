@@ -58,7 +58,6 @@ const OverallPopupInput = ({
           value={value}
         >
           <div>
-            {" "}
             {category && category.value
               ? category.value
               : possibleAge && possibleAge.value

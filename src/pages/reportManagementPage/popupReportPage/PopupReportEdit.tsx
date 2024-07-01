@@ -17,6 +17,7 @@ import axios from "axios";
 const PopUpReportEdit = () => {
   const locate = useLocation();
   const { data: popupInfo } = useGetOverAllPopupSearch(locate.state.popupId);
+  const { mutate } = useEditPopup();
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -93,7 +94,6 @@ const PopUpReportEdit = () => {
       }
       if (popupInfo.closeTime) {
         const [hours, minutes] = popupInfo.closeTime.split(":");
-        console.log(hours, minutes);
         const closeTimeDate = new Date();
         closeTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         setEndTime(closeTimeDate);
@@ -245,9 +245,7 @@ const PopUpReportEdit = () => {
     }
   };
 
-  const { mutate } = useEditPopup();
-  console.log(popupInfo);
-
+  console.log(detailAddress);
   const handleSubmit = async () => {
     const contents = {
       popupId: locate.state.popupId,

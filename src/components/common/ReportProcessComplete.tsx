@@ -5,12 +5,14 @@ type ReportProcessType = {
   admin: string;
   content: string;
   executedAt: string;
+  routeUrl: string;
 };
 
 const ReportProcessComplete = ({
   admin,
   content,
   executedAt,
+  routeUrl,
 }: ReportProcessType) => {
   const navigate = useNavigate();
   return (
@@ -29,7 +31,7 @@ const ReportProcessComplete = ({
       </div>
       <button
         className="w-full flex justify-center text-LoginBtn font-bold"
-        onClick={() => navigate("/reviewReport")}
+        onClick={() => navigate(`/${routeUrl}`)}
       >
         목록으로 돌아가기
       </button>

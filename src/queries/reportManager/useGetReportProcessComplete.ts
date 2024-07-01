@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetReviewProcessingComplete } from "../../api/api";
 
-const useGetReportProcessComplete = (reportId: number) => {
+const useGetReportProcessComplete = (reportId?: string) => {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["getReportDetail", reportId],
+    queryKey: ["getReportProcessComplete", reportId],
     queryFn: () => GetReviewProcessingComplete(reportId),
     refetchOnWindowFocus: false,
     retry: false,

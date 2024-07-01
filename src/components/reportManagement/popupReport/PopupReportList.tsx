@@ -6,7 +6,7 @@ type PopupReportType = {
   reportTime: string;
   path: string;
   reportId: number;
-  executed: boolean;
+  executed?: boolean;
 };
 
 function PopupReportList({

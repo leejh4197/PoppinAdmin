@@ -1,28 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { PostReviewProcessingDetail } from "../../api/api";
+import { PostPopupProcessingDetail } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 
-const usePostReviewProcessingDetail = () => {
+const usePostPopupProcessingDetail = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutate, data, isPending, isError, error } = useMutation({
-    mutationKey: ["postReviewProcessingDetail"],
+    mutationKey: ["postPopupProcessingDetail"],
     mutationFn: ({
       content,
       reportId,
     }: {
       content: string;
       reportId: string | undefined;
-    }) => PostReviewProcessingDetail(content, reportId),
+    }) => PostPopupProcessingDetail(content, reportId),
     retry: false,
     onSuccess: (data) => {
       console.log(data);
-      queryClient.setQueryData(["postReviewProcessingDetail"], data);
+      queryClient.setQueryData(["postPopupProcessingDetail"], data);
       alert("팝업이 성공적으로 처리됐습니다!");
-      navigate("/reviewReport");
+      navigate("/popupReport");
     },
   });
   return { mutate, data, isPending, isError, error };
 };
 
-export default usePostReviewProcessingDetail;
+export default usePostPopupProcessingDetail;

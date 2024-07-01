@@ -23,7 +23,7 @@ const ReviewReportDetail = () => {
   const { mutate: changeMutate } = usePostReviewChange();
   const { mutate: processingMutate } = usePostReviewProcessingDetail();
   const { data: processComplete } = useGetReportProcessComplete(id);
-  console.log(processComplete);
+  console.log(typeof id);
   const handleButtonClick = () => {
     setInputVisible(true);
   };
@@ -38,7 +38,7 @@ const ReviewReportDetail = () => {
   const handleReportProcessingClick = () => {
     const payload = {
       content: reportContent,
-      reportedReviewId: id,
+      reportId: id,
     };
     if (confirm("처리를 완료하시겠습니까?")) {
       processingMutate(payload);
@@ -118,6 +118,7 @@ const ReviewReportDetail = () => {
         )
       ) : (
         <ReportProcessComplete
+          routeUrl={"reviewReport"}
           content={processComplete?.content}
           admin={processComplete?.adminName}
           executedAt={processComplete?.executedAt}

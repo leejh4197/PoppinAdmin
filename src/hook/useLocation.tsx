@@ -18,7 +18,6 @@ const useAddressLocation = (address: string) => {
     geocoder.addressSearch(
       address,
       function (result: { x: string; y: string }[], status: string) {
-        console.log(result, status);
         if (status === "OK") {
           const { x, y } = result[0];
           setLocation({ latitude: y, longitude: x });
