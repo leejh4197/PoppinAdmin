@@ -142,7 +142,24 @@ export const GetPopupReportDetail = (
   userInstance
     .get(`/api/v1/admin/reports/popups/${popupId}`)
     .then((res) => res.data.data);
-
+// 후기 신고 변경사항 없음
+export const PostReviewReportChange = (reportedReviewId?: string) =>
+  userInstance
+    .post(`/api/v1/admin/reports/reviews/${reportedReviewId}/exec`)
+    .then((res) => res.data.data);
+// 후기 신고 처리내용
+export const PostReviewProcessingDetail = (
+  content: string,
+  reportedReviewId?: string
+) =>
+  userInstance
+    .post(`/api/v1/admin/reports/reviews/${reportedReviewId}`, { content })
+    .then((res) => res.data.data);
+// 후기 신고
+export const GetReviewProcessingComplete = (reportId: number) =>
+  userInstance
+    .get(`/api/v1/admin/reports/reviews/${reportId}/exec`)
+    .then((res) => res.data.data);
 // 팝업 후기 신고 상세조회
 export const GetReviewReportDetail = (
   reviewId: string | undefined

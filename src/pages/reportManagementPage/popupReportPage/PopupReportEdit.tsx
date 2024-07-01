@@ -246,7 +246,7 @@ const PopUpReportEdit = () => {
   };
 
   const { mutate } = useEditPopup();
-  console.log(detailAddress);
+  console.log(popupInfo);
 
   const handleSubmit = async () => {
     const contents = {

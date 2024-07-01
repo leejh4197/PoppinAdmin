@@ -13,6 +13,7 @@ type CategoryType = {
   value: string;
 };
 type PopupFormType = {
+  reportSort?: boolean;
   title: string;
   subTitle: string;
   guide: string;
@@ -61,6 +62,7 @@ type PopupFormType = {
 };
 
 const PopupForm = ({
+  reportSort,
   title,
   subTitle,
   guide,
@@ -120,6 +122,24 @@ const PopupForm = ({
     <div>
       <TitleText mainTitle={title} subTitle={subTitle} className="mb-16" />
       <div className="mb-14 font-bold">{guide}</div>
+      {reportSort && (
+        <>
+          <OverallPopupInput
+            title="소속 (업체명)"
+            value={popupName}
+            placeholder="소속명"
+            essential
+            onChange={(e) => setPopupName(e.target.value)}
+          />
+          <OverallPopupInput
+            title="담당자 이메일"
+            value={popupName}
+            placeholder="poppin@gmail.com"
+            essential
+            onChange={(e) => setPopupName(e.target.value)}
+          />
+        </>
+      )}
       <OverallPopupInput
         title="팝업 이름"
         value={popupName}

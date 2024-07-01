@@ -54,8 +54,10 @@ function ReviewReport() {
       {reviewReportList?.items.length !== 0 ? (
         reviewReportList?.items.map((el) => (
           <PopupReportList
+            key={el.reportId}
+            executed={el.executed}
             path="reviewReport"
-            reviewId={el.reportedReviewId}
+            reportId={el.reportId}
             title={el.popupName}
             reporter={el.reporter}
             reportTime={formattedDate(el.reportedAt)}

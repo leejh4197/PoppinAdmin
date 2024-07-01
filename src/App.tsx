@@ -22,6 +22,8 @@ import { ReactElement } from "react";
 import EditRequestRegister from "./pages/editRequestsPage/EditRequestRegister";
 import PopUpEdit from "./pages/overallManagementPage/PopupEdit";
 import PopupReportEdit from "./pages/reportManagementPage/popupReportPage/PopupReportEdit";
+import OperatorReportCreate from "./pages/submissionManagementPage/OperatorReportCreate";
+import UserReportCreate from "./pages/submissionManagementPage/UserReportCreate";
 
 interface PrivateRouteProps {
   element: ReactElement;
@@ -101,7 +103,7 @@ function App() {
           />
           <Route
             path="/operatorReport/:id"
-            element={<PrivateRoute element={<OperatorReport />} />}
+            element={<PrivateRoute element={<OperatorReportCreate />} />}
           />
           <Route
             path="/userReport"
@@ -109,7 +111,7 @@ function App() {
           />
           <Route
             path="/userReport/:id"
-            element={<PrivateRoute element={<UserReport />} />}
+            element={<PrivateRoute element={<UserReportCreate />} />}
           />
           <Route
             path="/noticeManager"

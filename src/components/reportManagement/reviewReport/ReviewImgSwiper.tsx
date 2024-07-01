@@ -4,13 +4,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { reportedReviewDetailDto } from "../../../types/reviewReportDetailType";
+import { ReportedReviewDetailDto } from "../../../types/reviewReportDetailType";
 
 const ReviewImgSwiper = ({
   imageUrl,
   reviewCnt,
   reviewWriter,
-}: reportedReviewDetailDto) => {
+}: ReportedReviewDetailDto) => {
   return (
     <div className="w-1/3 mr-7">
       <div className="flex items-center mb-2">
@@ -32,11 +32,9 @@ const ReviewImgSwiper = ({
         spaceBetween={10}
         slidesPerView={3}
         pagination={{ clickable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
       >
         {imageUrl.length !== 0 ? (
-          imageUrl.map((el, index) => (
+          imageUrl.map((el: string, index: number) => (
             <SwiperSlide key={index}>
               <img src={el} alt="" />
             </SwiperSlide>

@@ -4,23 +4,45 @@ import PopupDetailContent from "../../../components/reportManagement/popupReport
 import ReportBtn from "../../../components/editRequests/ReportBtn";
 import ReviewImgSwiper from "../../../components/reportManagement/reviewReport/ReviewImgSwiper";
 import useGetReviewReportDetail from "../../../queries/reportManager/useGetReviewReportDetail";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Spinner from "../../../components/common/Spinner";
 import { formattedDate } from "../../../components/common/FormUtil";
+import usePostReviewChange from "../../../queries/reportManager/usePostReviewChange";
+import usePostReviewProcessingDetail from "../../../queries/reportManager/usePostReviewProcessingDetail";
+import ReportProcessField from "../../../components/common/ReportProcessField";
+import ReportProcessComplete from "../../../components/common/ReportProcessComplete";
+import useGetReportProcessComplete from "../../../queries/reportManager/useGetReportProcessComplete";
 
 const ReviewReportDetail = () => {
   const { id } = useParams();
+  const { state } = useLocation();
+  console.log(state.executed);
   const [isInputVisible, setInputVisible] = useState(false);
   const [reportContent, setReportContent] = useState("");
   const { data: reviewReportDetail } = useGetReviewReportDetail(id);
-  console.log(reviewReportDetail);
-
+  const { mutate: changeMutate } = usePostReviewChange();
+  const { mutate: processingMutate } = usePostReviewProcessingDetail();
+  const { data: processComplete } = useGetReportProcessComplete(id);
+  console.log(processComplete);
   const handleButtonClick = () => {
     setInputVisible(true);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReportContent(event.target.value);
+  };
+
+  const handleReportChangeClick = () => {
+    changeMutate(id);
+  };
+  const handleReportProcessingClick = () => {
+    const payload = {
+      content: reportContent,
+      reportedReviewId: id,
+    };
+    if (confirm("처리를 완료하시겠습니까?")) {
+      processingMutate(payload);
+    }
   };
   return (
     <div className="flexCenter w-4/5">
@@ -70,23 +92,36 @@ const ReviewReportDetail = () => {
         </div>
       </div>
       {isInputVisible && (
-        <div className="flex flex-col mb-24 border-t">
-          <div className="text-gray-700 mt-10 mb-2 text-lg font-bold">
-            신고 처리내용
-          </div>
-          <div className="text-gray-400 mb-2 text-sm ">담당자: 관리자1</div>
-          <textarea
-            value={reportContent}
-            placeholder="신고 처리 내용을 간략히 기재해주세요."
-            onChange={handleInputChange}
-            className="border resize-none outline-none border-gray-200 rounded-lg px-3 py-3 mt-2"
-          />
-        </div>
+        <ReportProcessField
+          reportContent={reportContent}
+          admin={"관리자1"}
+          onChange={handleInputChange}
+        />
       )}
-      {isInputVisible ? (
-        <ReportBtn title="확인" />
+      {!state.executed && !processComplete ? (
+        isInputVisible ? (
+          <ReportBtn
+            title="확인"
+            disabled={reportContent === "" ? true : false}
+            onClick={handleReportProcessingClick}
+          />
+        ) : (
+          <div className="flex justify-end">
+            <ReportBtn
+              title="변경사항 없음"
+              className="bg-white border border-LoginBtn mr-5"
+              textClass="text-gray-400"
+              onClick={handleReportChangeClick}
+            />
+            <ReportBtn title="후기 가리기" onClick={handleButtonClick} />
+          </div>
+        )
       ) : (
-        <ReportBtn title="후기 가리기" onClick={handleButtonClick} />
+        <ReportProcessComplete
+          content={processComplete?.content}
+          admin={processComplete?.adminName}
+          executedAt={processComplete?.executedAt}
+        />
       )}
     </div>
   );

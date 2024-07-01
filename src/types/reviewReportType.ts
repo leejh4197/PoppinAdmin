@@ -7,7 +7,7 @@ interface Items {
   reviewId: number;
   popupName: string;
   reportedAt: string;
-  reportedReviewId: number;
+  reportId: number;
   reporter: string;
 }
 

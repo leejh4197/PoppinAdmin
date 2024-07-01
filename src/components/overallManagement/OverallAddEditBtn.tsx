@@ -2,13 +2,21 @@ type OverallBtnType = {
   content: string;
   onClick?: () => void;
   disabled?: boolean;
+  className?: string;
 };
 
-const OverallAddEditBtn = ({ content, onClick, disabled }: OverallBtnType) => {
+const OverallAddEditBtn = ({
+  content,
+  onClick,
+  disabled,
+  className,
+}: OverallBtnType) => {
   return (
     <div className="flex">
       <button
-        className="bg-LoginBtn px-10 py-1 text-white text-[20px] whitespace-nowrap rounded-full disabled:bg-gray-300"
+        className={`bg-LoginBtn px-10 py-1 text-[20px] whitespace-nowrap rounded-full disabled:bg-gray-300 ${
+          className ? className : "text-white"
+        }`}
         onClick={onClick}
         disabled={disabled}
       >

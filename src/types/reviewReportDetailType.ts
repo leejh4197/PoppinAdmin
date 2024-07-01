@@ -1,7 +1,7 @@
 export interface ReviewReportDetailType {
   reportContentDto: ReportContentDto;
   reportedPopupDetailDto: ReportedPopupDetailDto;
-  reportedReviewDetailDto: reportedReviewDetailDto;
+  reportedReviewDetailDto: ReportedReviewDetailDto;
 }
 
 interface ReportContentDto {
@@ -21,9 +21,14 @@ export interface ReportedPopupDetailDto {
   popupName: string;
   posterUrl: string;
   resvRequired: boolean;
+  closeDate: string;
+  closeTime: string;
+  openDate: string;
+  openTime: string;
+  introduce: string;
 }
 
-export interface reportedReviewDetailDto {
+export interface ReportedReviewDetailDto {
   imageUrl: string[];
   isCertificated: boolean;
   reviewCnt: number;
