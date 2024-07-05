@@ -22,7 +22,6 @@ function PopupReport() {
     offset,
     19
   );
-  console.log(popupReportList);
   useEffect(() => {
     if (popupReportList) {
       setTotalPages(popupReportList.pageInfo.totalPages);
@@ -36,7 +35,7 @@ function PopupReport() {
           <button
             key={index}
             name={el}
-            className={`border rounded-full px-4 py-2 ${
+            className={`border rounded-full px-7 py-2 ${
               index === 0 ? "mr-2" : ""
             } ${active === el ? "border-LoginBtn bg-LoginBtn/20" : ""}`}
             onClick={handleProcessClick}

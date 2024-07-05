@@ -46,7 +46,7 @@ const DropDownAge = ({
           } ${
             index === 0
               ? "rounded-t-2xl"
-              : "hover:bg-gray-200 hover:text-LoginBtn  cursor-pointer"
+              : "hover:bg-gray-100 hover:text-LoginBtn  cursor-pointer"
           }`}
           key={index}
         >

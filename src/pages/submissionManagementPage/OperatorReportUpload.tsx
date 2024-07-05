@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import useAddressLocation from "../../hook/useLocation";
 import { categoryDummy } from "../../constants/categoryDummy";
-import useEditPopup from "../../queries/reportManager/useEditPopup";
 import {
   conversionFormDate,
   conversionFormTime,
@@ -11,9 +11,18 @@ import {
 } from "../../components/common/FormUtil";
 import PopupForm from "../../components/common/PopupForm";
 import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
+import useGetOperatorReportSearch from "../../queries/submissionManager/useGetOperatorReportSearch";
+import useEditAdminReportApprove from "../../queries/submissionManager/useEditAdminReportApprove";
+import useEditAdminReportTemp from "../../queries/submissionManager/useEditAdminReportTemp";
 
-const OperatorReportCreate = () => {
-  const { id } = useNavigate();
+const OperatorReportUpload = () => {
+  const prams = useParams();
+  const { data: popupInfo } = useGetOperatorReportSearch(prams.id);
+  //업로드 승인
+  const { mutate: editApprove } = useEditAdminReportApprove();
+  //임시
+  const { mutate: editTemp } = useEditAdminReportTemp();
+
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -63,76 +72,113 @@ const OperatorReportCreate = () => {
   // 버튼 disabled
   const [isFormComplete, setIsFormComplete] = useState(false);
 
+  // 업체명
+  const [companyName, setCompanyName] = useState("");
+  // 담당자 이메일
+  const [managerEmail, setManagerEmail] = useState("");
+  // 위도,경도
   const { latitude, longitude } = useAddressLocation(address);
 
-  // useEffect(() => {
-  //   if (popupInfo) {
-  //     // 데이터를 받아와서 상태를 설정
-  //     setPopupName(popupInfo.name);
-  //     setPossibleAge({
-  //       name: popupInfo.availableAgeValue,
-  //       value: popupInfo.availableAge,
-  //     });
-  //     setExceptions(popupInfo.operationExcept);
-  //     setDetailAddress(popupInfo.addressDetail);
-  //     setAddress(popupInfo.address || "");
-  //     setSiteAddress(popupInfo.homepageLink);
-  //     setIntro(popupInfo.introduce);
-  //     setPrice(popupInfo.entranceFee);
-  //     setKeyWord(popupInfo.keywordList.join("/"));
-  //     setStartDate(popupInfo.openDate ? new Date(popupInfo.openDate) : null);
-  //     setEndDate(popupInfo.closeDate ? new Date(popupInfo.closeDate) : null);
-  //     if (popupInfo.openTime) {
-  //       const [hours, minutes] = popupInfo.openTime.split(":");
-  //       const openTimeDate = new Date();
-  //       openTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-  //       setStartTime(openTimeDate);
-  //     }
-  //     if (popupInfo.closeTime) {
-  //       const [hours, minutes] = popupInfo.closeTime.split(":");
-  //       const closeTimeDate = new Date();
-  //       closeTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-  //       setEndTime(closeTimeDate);
-  //     }
-  //     setAdmissionFee(popupInfo.resvRequired ? "있음" : "없음");
-  //     const selectCategory = Object.entries(popupInfo.taste)
-  //       .filter(([, value]) => value === true)
-  //       .map(([key]) => key);
+  useEffect(() => {
+    if (popupInfo) {
+      // 데이터를 받아와서 상태를 설정
+      setCompanyName(popupInfo.affiliation);
+      setManagerEmail(popupInfo.informerEmail);
+      setPopupName(popupInfo.popup.name);
+      setPossibleAge({
+        name: popupInfo.popup.availableAgeValue,
+        value: popupInfo.popup.availableAge,
+      });
+      setExceptions(popupInfo.popup.operationExcept);
+      setDetailAddress(popupInfo.popup.addressDetail);
+      setAddress(popupInfo.popup.address || "");
+      setSiteAddress(popupInfo.popup.homepageLink);
+      setIntro(popupInfo.popup.introduce);
+      setPrice(popupInfo.popup.entranceFee);
+      setKeyWord(popupInfo.popup.keywordList.join("/"));
+      setStartDate(
+        popupInfo.popup.openDate ? new Date(popupInfo.popup.openDate) : null
+      );
+      setEndDate(
+        popupInfo.popup.closeDate ? new Date(popupInfo.popup.closeDate) : null
+      );
+      if (popupInfo.popup.openTime) {
+        const [hours, minutes] = popupInfo.popup.openTime.split(":");
+        const openTimeDate = new Date();
+        openTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        setStartTime(openTimeDate);
+      }
+      if (popupInfo.popup.closeTime) {
+        const [hours, minutes] = popupInfo.popup.closeTime.split(":");
+        const closeTimeDate = new Date();
+        closeTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        setEndTime(closeTimeDate);
+      }
 
-  //     const categoryNames = selectCategory
-  //       .map(
-  //         (key) =>
-  //           categoryDummy.find((category) => category.name === key)?.value ||
-  //           key
-  //       )
-  //       .join(", ");
+      setAdmissionFee(popupInfo.popup.entranceRequired ? "있음" : "없음");
+      const selectCategory = Object.entries(popupInfo.popup.taste)
+        .filter(([, value]) => value === true)
+        .map(([key]) => key);
 
-  //     setCategory({
-  //       name: selectCategory.join(", "),
-  //       value: categoryNames,
-  //     });
-  //     const selectPopupCategory = Object.entries(popupInfo.prefered)
-  //       .filter(([, value]) => value === true)
-  //       .map(([value]) => value);
+      const categoryNames = selectCategory
+        .map(
+          (key) =>
+            categoryDummy.find((category) => category.name === key)?.value ||
+            key
+        )
+        .join(",");
 
-  //     setPopupCategory(selectPopupCategory.join());
-  //     setPopupReservation(popupInfo.resvRequired ? "예약 필수" : "필수 아님");
-  //     setParking(popupInfo.parkingAvailable ? "주차가능" : "주차불가");
-  //     // 이미지 미리보기 설정
-  //     setShowImages(popupInfo.posterList || []);
-  //     // 받아온 이미지 File형태로 변환
-  //     const filesToSend = Promise.all(
-  //       popupInfo.posterList.map((el) => {
-  //         return fetch(el, { mode: "no-cors" })
-  //           .then((response) => response.blob())
-  //           .then((blob) => new File([blob], el));
-  //       })
-  //     );
-  //     filesToSend.then((files) => {
-  //       setImages(files);
-  //     });
-  //   }
-  // }, [popupInfo]);
+      setCategory({
+        name: selectCategory.join(", "),
+        value: categoryNames,
+      });
+      const selectPopupCategory = Object.entries(popupInfo.popup.prefered)
+        .filter(([, value]) => value === true)
+        .map(([value]) => value);
+
+      setPopupCategory(selectPopupCategory.join());
+      setPopupReservation(
+        popupInfo.popup.resvRequired ? "예약 필수" : "필수 아님"
+      );
+      setParking(popupInfo.popup.parkingAvailable ? "주차가능" : "주차불가");
+      // 이미지 미리보기 설정
+      setShowImages(popupInfo.popup.posterList || []);
+
+      const fileTest = async () => {
+        try {
+          const files = await Promise.all(
+            popupInfo.popup.posterList.map(async (el, index) => {
+              try {
+                const response = await axios.get(el, {
+                  responseType: "blob",
+                  headers: {
+                    "Cache-Control": "no-cache",
+                  },
+                });
+
+                const url = response.config.url;
+                const fileName = url?.substring(url.lastIndexOf("/") + 1);
+
+                const file = new File([response.data], fileName || "", {
+                  type: response.data.type,
+                });
+                return file;
+              } catch (err) {
+                console.log(`${index}에서 에러가 발생합니다.`, err);
+                return null;
+              }
+            })
+          );
+          const validFiles = files.filter((file) => file !== null);
+          setImages(validFiles as File[]);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fileTest();
+    }
+  }, [popupInfo]);
+
   useEffect(() => {
     const checkFormComplete = () => {
       if (
@@ -217,10 +263,12 @@ const OperatorReportCreate = () => {
     }
   };
 
-  const { mutate } = useEditPopup();
-
+  // 업로드 승인
   const handleSubmit = async () => {
     const contents = {
+      affiliation: companyName,
+      informerEmail: managerEmail,
+      managerInformId: prams.id,
       name: popupName,
       homepageLink: siteAddress,
       introduce: intro,
@@ -231,6 +279,7 @@ const OperatorReportCreate = () => {
       openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
       closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
       entranceFee: price,
+      entranceRequired: admissionFee === "있음" ? true : false,
       availableAge: possibleAge.name,
       parkingAvailable: parking === "주차가능" ? true : false,
       resvRequired: popupReservation === "예약 필수" ? true : false,
@@ -242,16 +291,49 @@ const OperatorReportCreate = () => {
       keywords: keyWord.split("/"),
     };
 
-    mutate({ contents: contents, images: images });
+    editApprove({ contents, images });
+  };
+  const handleTempSubmit = async () => {
+    const contents = {
+      affiliation: companyName,
+      informerEmail: managerEmail,
+      managerInformId: prams.id,
+      name: popupName,
+      homepageLink: siteAddress,
+      introduce: intro,
+      address: address,
+      addressDetail: detailAddress,
+      openDate: startDate ? conversionFormDate(startDate.toISOString()) : "",
+      closeDate: endDate ? conversionFormDate(endDate.toISOString()) : "",
+      openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
+      closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
+      entranceFee: price,
+      entranceRequired: admissionFee === "있음" ? true : false,
+      availableAge: possibleAge.name,
+      parkingAvailable: parking === "주차가능" ? true : false,
+      resvRequired: popupReservation === "예약 필수" ? true : false,
+      operationExcept: exceptions,
+      latitude: latitude,
+      longitude: longitude,
+      prefered: generatePopupObject(popupCategory),
+      taste: generateTasteObject(category.name),
+      keywords: keyWord.split("/"),
+    };
+
+    editTemp({ contents, images });
   };
 
   return (
     <div className="flexCenter w-4/5">
       <PopupForm
-        reportSort={true}
+        reportSort
         title="팝업 정보 관리"
         subTitle="팝핀에 등록할 정확한 정보를 입력해주세요."
         guide="팝팝에 등록하기 위한 정보가 충분한지 확인해주세요!"
+        managerEmail={managerEmail}
+        setManagerEmail={setManagerEmail}
+        companyName={companyName}
+        setCompanyName={setCompanyName}
         address={address}
         setAddress={setAddress}
         popupName={popupName}
@@ -298,11 +380,11 @@ const OperatorReportCreate = () => {
       <div className="flex justify-end mb-16">
         <OverallAddEditBtn
           content="임시저장"
-          onClick={handleSubmit}
-          className="bg-white border border-LoginBtn text-gray-400 mr-2"
+          onClick={handleTempSubmit}
+          className="text-gray-400 bg-white border border-LoginBtn mr-5"
         />
         <OverallAddEditBtn
-          content="업로드승인"
+          content="업로드 승인"
           onClick={handleSubmit}
           disabled={!isFormComplete}
         />
@@ -311,4 +393,4 @@ const OperatorReportCreate = () => {
   );
 };
 
-export default OperatorReportCreate;
+export default OperatorReportUpload;

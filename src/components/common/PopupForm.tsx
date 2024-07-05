@@ -37,6 +37,10 @@ type PopupFormType = {
   endTime: Date | null;
   startDate: Date | null;
   endDate: Date | null;
+  managerEmail?: string;
+  companyName?: string;
+  setManagerEmail?: React.Dispatch<SetStateAction<string>>;
+  setCompanyName?: React.Dispatch<SetStateAction<string>>;
   setEndDate: React.Dispatch<SetStateAction<Date | null>>;
   setStartDate: React.Dispatch<SetStateAction<Date | null>>;
   setEndTime: React.Dispatch<SetStateAction<Date | null>>;
@@ -86,6 +90,10 @@ const PopupForm = ({
   startDate,
   endDate,
   images,
+  companyName,
+  managerEmail,
+  setCompanyName,
+  setManagerEmail,
   setImages,
   setEndTime,
   setStartTime,
@@ -126,17 +134,17 @@ const PopupForm = ({
         <>
           <OverallPopupInput
             title="소속 (업체명)"
-            value={popupName}
+            value={companyName}
             placeholder="소속명"
             essential
-            onChange={(e) => setPopupName(e.target.value)}
+            onChange={(e) => setCompanyName?.(e.target.value)}
           />
           <OverallPopupInput
             title="담당자 이메일"
-            value={popupName}
+            value={managerEmail}
             placeholder="poppin@gmail.com"
             essential
-            onChange={(e) => setPopupName(e.target.value)}
+            onChange={(e) => setManagerEmail?.(e.target.value)}
           />
         </>
       )}

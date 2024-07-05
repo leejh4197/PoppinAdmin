@@ -6,7 +6,7 @@ import useGetEditRequestCheck from "../../queries/editRequestManager/useGetEditR
 function EditRequestsDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: editCheck } = useGetEditRequestCheck(Number(id));
+  const { data: editCheck } = useGetEditRequestCheck(id);
   return (
     <div className="flexCenter w-4/5 relative">
       <TitleText
@@ -30,12 +30,24 @@ function EditRequestsDetail() {
         </div>
       </div>
       <EditReuestPost editCheck={editCheck} />
-      <button
-        className="absolute right-0 bottom-0 px-12 py-3 text-white bg-LoginBtn rounded-full font-bold"
-        onClick={() => navigate(`/editRequestRegister/${id}`)}
-      >
-        정보 수정하기
-      </button>
+      {!editCheck?.isExecuted && (
+        <button
+          className="absolute right-0 bottom-0 px-12 py-3 text-white bg-LoginBtn rounded-full font-bold"
+          onClick={() => navigate(`/editRequestRegister/${id}`)}
+        >
+          정보 수정하기
+        </button>
+      )}
+      {editCheck?.isExecuted && (
+        <div className="w-full flex justify-center">
+          <button
+            className="mt-5 text-LoginBtn font-bold"
+            onClick={() => navigate(`/editRequests`)}
+          >
+            목록으로가기
+          </button>
+        </div>
+      )}
     </div>
   );
 }

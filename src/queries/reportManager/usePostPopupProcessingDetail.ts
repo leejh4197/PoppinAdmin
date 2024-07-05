@@ -16,7 +16,6 @@ const usePostPopupProcessingDetail = () => {
     }) => PostPopupProcessingDetail(content, reportId),
     retry: false,
     onSuccess: (data) => {
-      console.log(data);
       queryClient.setQueryData(["postPopupProcessingDetail"], data);
       alert("팝업이 성공적으로 처리됐습니다!");
       navigate("/popupReport");

@@ -17,7 +17,6 @@ function ReviewReport() {
     19
   );
 
-  console.log(reviewReportList);
   const handlePageChange = (selected: number) => {
     setOffset(selected);
   };

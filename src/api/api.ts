@@ -1,12 +1,17 @@
-import { EditRequestCheckType, Popups } from "../types/editRequestCheck";
+import {
+  EditRequestCheckType,
+  PopupEdit,
+  Popups,
+} from "../types/editRequestCheck";
 import { EditRequestListType } from "../types/editRequestList";
 import { DeleteFaqData } from "../types/faqDelete";
 import { FaqDataList } from "../types/faqList";
-import { EditPopupResponse, FormPopups } from "../types/formPopup";
+import { AdminFormPopups, AdminPopupResponse } from "../types/adminFormPopup";
 import { NoticeContent, NoticeResponse } from "../types/noticeForm";
 import { OperatorRePortListResType } from "../types/operatorReportType";
 import { AllPopupRes } from "../types/overAllPopupList";
 import { PopupReportDetailType } from "../types/popupReportDetailType";
+import { ReportPopupsRes } from "../types/reportPopups";
 import { RePortListResType } from "../types/reportType";
 import { ReviewReportDetailType } from "../types/reviewReportDetailType";
 import { ReviewRePortListResType } from "../types/reviewReportType";
@@ -17,6 +22,8 @@ import { UserSearch } from "../types/userSearch";
 import { FaqRes } from "../types/writeFaq";
 import { WriteReviewResponse } from "../types/writeReviewList";
 import { userInstance } from "./instance";
+import { UserFormPopups, UserPopupResponse } from "../types/userFormPopup";
+import { EditPopupResponse, EditPopups } from "../types/editForm";
 
 // ! 유저관리
 export const GetUserCheck = (): Promise<User> =>
@@ -82,12 +89,29 @@ export const GetEditRequestList = (
     .then((res) => res.data.data);
 // 정보 수정 요청 조회
 export const GetEditRequestCheck = (
-  infoId: number
+  infoId?: string
 ): Promise<EditRequestCheckType> =>
   userInstance
     .get(`/api/v1/modify-info?infoId=${infoId}`)
     .then((res) => res.data.data);
+// 정보 수정 요청 수정완료
+export const EditRequestPopup = (
+  contents: EditPopups,
+  images: File[]
+): Promise<EditPopupResponse> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image) => {
+    formData.append(`images`, image);
+  });
 
+  return userInstance.put(`/api/v1/modify-info`, formData).then((res) => {
+    return res.data;
+  });
+};
 //! 전체 팝업 관리
 // 전체 팝업 리스트
 export const GetOverAllPopupList = (
@@ -113,14 +137,13 @@ export const PostPopupCreate = (
   });
 
   return userInstance.post(`/api/v1/popup/admin`, formData).then((res) => {
-    console.log(res);
     return res.data;
   });
 };
 // 팝업 조회
 export const GetOverAllPopupSearch = (
   id: string | undefined
-): Promise<Popups> =>
+): Promise<PopupEdit> =>
   userInstance.get(`/api/v1/popup/admin?id=${id}`).then((res) => res.data.data);
 
 //! 신고 관리
@@ -197,7 +220,7 @@ export const DeletePopup = (id: number | undefined) =>
 
 // 팝업 수정
 export const EditPopup = (
-  contents: FormPopups,
+  contents: EditPopups,
   images: File[]
 ): Promise<EditPopupResponse> => {
   const formData = new FormData();
@@ -234,16 +257,95 @@ export const GetUserReportList = (
     .get(`/api/v1/user-inform/list?page=${page}&size=${size}&prog=${prog}`)
     .then((res) => res.data.data);
 // 운영자 제보 조회
-export const GetOperatorReportSearch = (informId: number): Promise<Popups> =>
+export const GetOperatorReportSearch = (
+  informId?: string
+): Promise<ReportPopupsRes> =>
   userInstance
     .get(`/api/v1/manager-inform?informId=${informId}`)
     .then((res) => res.data.data);
 
 // 이용자 제보 조회
-export const GetUserReportSearch = (informId: number): Promise<Popups> =>
+export const GetUserReportSearch = (
+  informId?: string
+): Promise<ReportPopupsRes> =>
   userInstance
     .get(`/api/v1/user-inform?informId=${informId}`)
     .then((res) => res.data.data);
+
+// 운영자 제보 임시저장
+export const EditAdminReportTemp = (
+  contents: AdminFormPopups,
+  images: File[]
+): Promise<AdminPopupResponse> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image) => {
+    formData.append(`images`, image);
+  });
+
+  return userInstance
+    .put(`/api/v1/manager-inform/save`, formData)
+    .then((res) => {
+      return res.data;
+    });
+};
+// 운영자 제보 업로드 승인
+export const EditAdminReportApprove = (
+  contents: AdminFormPopups,
+  images: File[]
+): Promise<AdminPopupResponse> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image) => {
+    formData.append(`images`, image);
+  });
+
+  return userInstance.put(`/api/v1/manager-inform`, formData).then((res) => {
+    return res.data;
+  });
+};
+// 이용자 제보 임시저장
+export const EditUserReportTemp = (
+  contents: UserFormPopups,
+  images: File[]
+): Promise<UserPopupResponse> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image) => {
+    formData.append(`images`, image);
+  });
+
+  return userInstance.put(`/api/v1/user-inform/save`, formData).then((res) => {
+    return res.data;
+  });
+};
+// 이용자 제보 업로드 승인
+export const EditUserReportApprove = (
+  contents: UserFormPopups,
+  images: File[]
+): Promise<UserPopupResponse> => {
+  const formData = new FormData();
+  formData.append(
+    "contents",
+    new Blob([JSON.stringify(contents)], { type: "application/json" })
+  );
+  images.forEach((image) => {
+    formData.append(`images`, image);
+  });
+
+  return userInstance.put(`/api/v1/user-inform`, formData).then((res) => {
+    return res.data;
+  });
+};
 //! 공지사항등록
 export const PostNotice = (
   contents: NoticeContent,

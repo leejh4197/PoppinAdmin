@@ -21,10 +21,9 @@ const PopupReportDetail = () => {
   const [reportContent, setReportContent] = useState("");
   const { data: popupReportDetail } = useGetReportDetail(id);
 
-  const { mutate } = useDeletePopup();
+  const { mutate } = useDeletePopup(["getReportList"], "/popupReport");
   const { mutate: processingMutate } = usePostPopupProcessingDetail();
-  const { data } = useGetPopupProcessComplete(id);
-  console.log("처리데이터", data);
+  const { data: popupProcessData } = useGetPopupProcessComplete(id);
   const handleEditClick = () => {
     navigate(`/popupReportEdit/${id}`, {
       state: { popupId: popupReportDetail?.reportedPopupDetailDto.popupId },
@@ -40,13 +39,11 @@ const PopupReportDetail = () => {
     }
   };
 
-  console.log(popupReportDetail);
   const handleDeleteClick = () => {
     if (confirm("삭제하시겠어요?")) {
       mutate(popupReportDetail?.reportedPopupDetailDto.popupId);
     }
   };
-  console.log(popupReportDetail?.reportedPopupDetailDto.popupId);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReportContent(event.target.value);
@@ -77,7 +74,12 @@ const PopupReportDetail = () => {
         </div>
       </div>
       {executed === true ? (
-        <ReportProcessComplete routeUrl={"popupReport"} />
+        <ReportProcessComplete
+          routeUrl={"popupReport"}
+          admin={popupProcessData?.adminName}
+          content={popupProcessData?.content}
+          executedAt={popupProcessData?.executedAt}
+        />
       ) : isSuccess ? (
         <div>
           <ReportProcessField

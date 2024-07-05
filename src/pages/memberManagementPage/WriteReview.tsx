@@ -6,12 +6,10 @@ import { useLocation, useParams } from "react-router-dom";
 import useGetWriteReview from "../../queries/memberManager/useGetWriteReview";
 
 function WriteReview() {
-  // 페이지 set 수정 필요
   const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
   const { id } = useParams();
   const [hiddenReview, setHiddenReview] = useState(false);
-  console.log(hiddenReview);
   const handlePageChange = (selected: number) => {
     setOffset(selected);
   };
@@ -22,7 +20,6 @@ function WriteReview() {
       setTotalPages(writeReviewList?.pageInfo.totalPages);
     }
   }, [writeReviewList]);
-  console.log(writeReviewList);
   return (
     <div className="flexCenter w-4/5">
       <TitleText

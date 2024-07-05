@@ -63,9 +63,8 @@ userInstance.interceptors.response.use(
   async (error) => {
     const { config, response } = error;
     if (
-      config.url === "/api/v1/auth/refresh" ||
-      config._retry ||
-      response.staus === 403
+      response.staus === 403 ||
+      response.config.url === "/api/v1/auth/refresh"
     ) {
       return Promise.reject(error);
     }

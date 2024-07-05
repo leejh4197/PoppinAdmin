@@ -5,6 +5,7 @@ import CustomPagination from "../../components/common/CustomPagination";
 import { reportBtn } from "../../constants/reportBtnDummy";
 import useGetOperatorReportList from "../../queries/submissionManager/useGetOperatorReportList";
 import { formattedDate } from "../../components/common/FormUtil";
+import Spinner from "../../components/common/Spinner";
 
 function OperatorReport() {
   const [operateReportBtn, setOperateReportBtn] = useState({
@@ -18,7 +19,6 @@ function OperatorReport() {
     19,
     operateReportBtn.value
   );
-  console.log(operateReportList);
   useEffect(() => {
     if (operateReportList)
       setTotalPages(operateReportList?.pageInfo.totalPages);
@@ -58,19 +58,24 @@ function OperatorReport() {
           </button>
         ))}
       </div>
-      {operateReportList?.items.map((el) => (
-        <PostList
-          key={el.id}
-          id={el.id}
-          path="operatorReport"
-          sub1="제보자"
-          sub2="제보일시"
-          title={el.popupName}
-          write={el.informerName}
-          date={formattedDate(el.informedAt)}
-          progress={el.adminName}
-        />
-      ))}
+      {operateReportList?.items.length !== 0 ? (
+        operateReportList?.items.map((el) => (
+          <PostList
+            clickPaging={operateReportBtn}
+            key={el.id}
+            id={el.id}
+            path="operatorReport"
+            sub1="제보자"
+            sub2="제보일시"
+            title={el.popupName}
+            write={el.informerName}
+            date={formattedDate(el.informedAt)}
+            progress={el.adminName}
+          />
+        ))
+      ) : (
+        <Spinner />
+      )}
       <CustomPagination
         totalPage={totalPages}
         handlePageClick={handlePageChange}

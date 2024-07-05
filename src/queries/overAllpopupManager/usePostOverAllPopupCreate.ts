@@ -17,7 +17,6 @@ const usePostOverAllPopupCreate = () => {
       PostPopupCreate(formData.contents, formData.images),
     retry: false,
     onSuccess: (data) => {
-      console.log(data);
       queryClient.setQueryData(["postPopup"], data);
       alert("팝업이 성공적으로 등록되었습니다!");
       navigate("/overallManager");

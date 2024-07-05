@@ -6,6 +6,7 @@ import { useDebounce } from "../../hook/useDebounce";
 import { User } from "../../types/user";
 import useGetUserList from "../../queries/memberManager/useGetUserList";
 import useGetUserSearch from "../../queries/memberManager/useGetUserSearch";
+import Spinner from "../common/Spinner";
 
 const MemberList = () => {
   const navigate = useNavigate();
@@ -82,19 +83,23 @@ const MemberList = () => {
         </button>
         <div className="text-gray-400 whitespace-nowrap">총{totalCount}명</div>
       </div>
-      <div className="flex flex-col mb-[74px]">
-        {displayData?.map((el) => (
-          <div key={el.id}>
-            <UserList
-              handleMemberDetailClick={handleMemberDetailClick}
-              userId={el.id}
-              nickName={el.nickname}
-              email={el.email}
-              requiresSpecialCare={el.requiresSpecialCare}
-            />
-          </div>
-        ))}
-      </div>
+      {displayData.length === 0 ? (
+        <Spinner />
+      ) : (
+        <div className="flex flex-col mb-[74px]">
+          {displayData?.map((el) => (
+            <div key={el.id}>
+              <UserList
+                handleMemberDetailClick={handleMemberDetailClick}
+                userId={el.id}
+                nickName={el.nickname}
+                email={el.email}
+                requiresSpecialCare={el.requiresSpecialCare}
+              />
+            </div>
+          ))}
+        </div>
+      )}
       <CustomPagination
         totalPage={totalPages}
         handlePageClick={handlePageChange}

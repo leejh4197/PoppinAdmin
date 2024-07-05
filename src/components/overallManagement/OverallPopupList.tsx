@@ -20,7 +20,7 @@ const OverallPopupList = ({
       <div>[{title}]</div>
       <div className="flex justify-between">
         <div>등록 일시: {formattedDate(date)}</div>
-        <div>{name}</div>
+        <div className="text-gray-300">{name}</div>
       </div>
     </div>
   );

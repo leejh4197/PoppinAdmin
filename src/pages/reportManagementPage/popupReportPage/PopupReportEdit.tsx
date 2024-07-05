@@ -17,7 +17,7 @@ import axios from "axios";
 const PopUpReportEdit = () => {
   const locate = useLocation();
   const { data: popupInfo } = useGetOverAllPopupSearch(locate.state.popupId);
-  const { mutate } = useEditPopup();
+  const { mutate } = useEditPopup(true, "/popupReport");
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -99,7 +99,8 @@ const PopUpReportEdit = () => {
         setEndTime(closeTimeDate);
       }
 
-      setAdmissionFee(popupInfo.resvRequired ? "있음" : "없음");
+      setAdmissionFee(popupInfo.entranceRequired ? "있음" : "없음");
+
       const selectCategory = Object.entries(popupInfo.taste)
         .filter(([, value]) => value === true)
         .map(([key]) => key);
@@ -245,7 +246,6 @@ const PopUpReportEdit = () => {
     }
   };
 
-  console.log(detailAddress);
   const handleSubmit = async () => {
     const contents = {
       popupId: locate.state.popupId,
@@ -259,6 +259,7 @@ const PopUpReportEdit = () => {
       openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
       closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
       entranceFee: price,
+      entranceRequired: admissionFee === "있음" ? true : false,
       availableAge: possibleAge.name,
       parkingAvailable: parking === "주차가능" ? true : false,
       resvRequired: popupReservation === "예약 필수" ? true : false,
@@ -269,7 +270,6 @@ const PopUpReportEdit = () => {
       taste: generateTasteObject(category.name),
       keywords: keyWord.split("/"),
     };
-    console.log(contents);
 
     mutate({ contents: contents, images: images });
   };

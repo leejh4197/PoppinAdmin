@@ -7,11 +7,47 @@ export interface EditRequestCheckType {
   images: string[];
   nickname: string;
   email: string;
-  popup: Popups[];
+  popup: Popups;
   userImageUrl: string;
 }
 
 export interface Popups {
+  modifyInfoId: string | undefined;
+  name: string;
+  homepageLink: string;
+  introduce: string;
+  address: string;
+  addressDetail: string | null;
+  availableAgeValue: string;
+  openDate: string;
+  closeDate: string;
+  openTime: string;
+  closeTime: string;
+  entranceFee: string;
+  availableAge: string;
+  parkingAvailable: boolean;
+  resvRequired: boolean;
+  operationExcept: string | null;
+  latitude: string;
+  longitude: string;
+  keywordList: string[];
+  posterList: string[];
+  entranceRequired: boolean;
+  prefered: {
+    [key: string]: boolean;
+  };
+  reopenDemandCnt?: number;
+  taste: {
+    [key: string]: boolean;
+  };
+  viewCnt?: number;
+}
+
+export interface EditRequestProps {
+  editCheck?: EditRequestCheckType;
+}
+
+export interface PopupEdit {
   id?: number;
   name: string;
   introduce: string;
@@ -22,6 +58,7 @@ export interface Popups {
   openTime: string;
   closeTime: string;
   entranceFee: string;
+  entranceRequired: boolean;
   availableAge: string;
   parkingAvailable: boolean;
   resvRequired: boolean;
@@ -32,37 +69,17 @@ export interface Popups {
   posterUrl?: string;
   posterList: string[];
   keywordList: string[];
-  createdAt: string;
-  editedAt: string;
-  interestCnt: number;
-  viewCnt: number;
-  reopenDemandCnt: number;
+  createdAt?: string;
+  editedAt?: string;
+  interestCnt?: number;
+  viewCnt?: number;
+  reopenDemandCnt?: number;
+  latitude: string;
+  longitude: string;
   prefered: {
-    id: number;
-    market: boolean;
-    display: boolean;
-    experience: boolean;
-    wantFree: boolean;
+    [key: string]: boolean;
   };
   taste: {
-    alcohol: boolean;
-    animalPlant: boolean;
-    characters: boolean;
-    etc: boolean;
-    fashionBeauty: boolean;
-    foodBeverage: boolean;
-    game: boolean;
-    id: number;
-    interiorThings: boolean;
-    itTech: boolean;
-    kpop: boolean;
-    movie: boolean;
-    musical: boolean;
-    sports: boolean;
-    webtoonAni: boolean;
+    [key: string]: boolean;
   };
-}
-
-export interface EditRequestProps {
-  editCheck?: EditRequestCheckType;
 }

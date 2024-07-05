@@ -24,9 +24,9 @@ const PopUpRegister = () => {
     value: "",
   });
   // 예외사항
-  const [exceptions, setExceptions] = useState("");
+  const [exceptions, setExceptions] = useState<string | null>("");
   // 상세주소
-  const [detailAddress, setDetailAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState<string | null>("");
   // 주소
   const [address, setAddress] = useState("");
   // 사이트주소
@@ -160,6 +160,7 @@ const PopUpRegister = () => {
       openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
       closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
       entranceFee: price,
+      entranceRequired: admissionFee === "있음" ? true : false,
       availableAge: possibleAge.name,
       parkingAvailable: true,
       resvRequired: false,
@@ -171,7 +172,7 @@ const PopUpRegister = () => {
       keywords: keyWord.split("/"),
     };
 
-    mutate({ contents: contents, images: images });
+    mutate({ contents, images });
   };
 
   return (

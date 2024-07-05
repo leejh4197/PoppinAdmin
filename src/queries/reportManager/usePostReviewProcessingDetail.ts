@@ -16,7 +16,6 @@ const usePostReviewProcessingDetail = () => {
     }) => PostReviewProcessingDetail(content, reportId),
     retry: false,
     onSuccess: (data) => {
-      console.log(data);
       queryClient.setQueryData(["postReviewProcessingDetail"], data);
       alert("팝업이 성공적으로 처리됐습니다!");
       navigate("/reviewReport");

@@ -13,7 +13,7 @@ const UserList = ({
   handleMemberDetailClick,
 }: UserListProps) => {
   return (
-    <div className="flex items-center mb-5 whitespace-nowrap">
+    <div className="flex items-center mb-5 whitespace-nowrap hover:bg-gray-200">
       <div className="text-xl mr-3">
         <button
           id={String(userId)}

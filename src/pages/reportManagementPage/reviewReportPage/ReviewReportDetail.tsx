@@ -16,14 +16,12 @@ import useGetReportProcessComplete from "../../../queries/reportManager/useGetRe
 const ReviewReportDetail = () => {
   const { id } = useParams();
   const { state } = useLocation();
-  console.log(state.executed);
   const [isInputVisible, setInputVisible] = useState(false);
   const [reportContent, setReportContent] = useState("");
   const { data: reviewReportDetail } = useGetReviewReportDetail(id);
   const { mutate: changeMutate } = usePostReviewChange();
   const { mutate: processingMutate } = usePostReviewProcessingDetail();
   const { data: processComplete } = useGetReportProcessComplete(id);
-  console.log(typeof id);
   const handleButtonClick = () => {
     setInputVisible(true);
   };

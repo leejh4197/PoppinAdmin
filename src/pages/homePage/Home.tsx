@@ -4,9 +4,8 @@ import useGetUser from "../../queries/memberManager/useGetUser";
 function Home() {
   const { data } = useGetUser();
   const [nickName, setNickName] = useState<string | undefined>("");
-  console.log(data);
   useEffect(() => {
-    setNickName(data?.nickname);
+    setNickName(data?.nickname || "");
   }, [data]);
 
   const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

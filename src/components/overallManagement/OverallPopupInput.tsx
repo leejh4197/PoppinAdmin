@@ -8,10 +8,12 @@ type CategoryType = {
 };
 type OverallPopupInputType = {
   title: string;
-  value: string | null | number;
+  value?: string | null | number;
   placeholder: string;
   essential: boolean;
   subTitle?: string;
+  setManagerEmail?: React.Dispatch<SetStateAction<string>>;
+  setCompanyName?: React.Dispatch<SetStateAction<string>>;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   setCategory?: React.Dispatch<SetStateAction<CategoryType>>;
@@ -55,7 +57,6 @@ const OverallPopupInput = ({
         <button
           className={`w-full flex justify-between items-center px-9 py-4 bg-[#F2F4F6] rounded-full outline-LoginBtn`}
           onClick={onClick}
-          value={value}
         >
           <div>
             {category && category.value
@@ -75,7 +76,7 @@ const OverallPopupInput = ({
       ) : (
         <input
           className={`w-full px-9 py-4 bg-[#F2F4F6] rounded-full outline-LoginBtn`}
-          value={value}
+          value={value !== null ? value : ""}
           placeholder={placeholder}
           type="text"
           onChange={onChange}

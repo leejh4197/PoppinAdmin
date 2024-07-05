@@ -11,6 +11,7 @@ type RequstListTypes = {
   path: string;
   className?: string;
   progress?: string | null;
+  clickPaging?: { name: string; value: string };
 };
 
 const PostList = ({
@@ -22,15 +23,18 @@ const PostList = ({
   sub1,
   sub2,
   progress,
+  clickPaging,
 }: RequstListTypes) => {
   const navigate = useNavigate();
 
   const handleBoardClick = () => {
-    navigate(`/${path}/${id}`);
+    if (clickPaging?.value !== "EXECUTED") {
+      navigate(`/${path}/${id}`);
+    }
   };
   return (
     <button
-      className={`flex items-center px-8 py-9 border-b w-full `}
+      className={`flex items-center px-8 py-9 border-b w-full hover:bg-gray-100`}
       onClick={handleBoardClick}
       value={write}
     >

@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
-import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
-import PopupForm from "../../components/common/PopupForm";
-import usePostOverAllPopupCreate from "../../queries/overAllpopupManager/usePostOverAllPopupCreate";
-import useLocation from "../../hook/useLocation";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import useGetOverAllPopupSearch from "../../queries/overAllpopupManager/useGetOverAllPopupSearch";
+import useEditPopup from "../../queries/reportManager/useEditPopup";
+import useAddressLocation from "../../hook/useLocation";
+import { categoryDummy } from "../../constants/categoryDummy";
 import {
+  conversionFormDate,
+  conversionFormTime,
   generatePopupObject,
   generateTasteObject,
 } from "../../components/common/FormUtil";
-import { useParams } from "react-router-dom";
-import useGetOverAllPopupSearch from "../../queries/overAllpopupManager/useGetOverAllPopupSearch";
+import PopupForm from "../../components/common/PopupForm";
+import OverallAddEditBtn from "../../components/overallManagement/OverallAddEditBtn";
+import useDeletePopup from "../../queries/reportManager/useDeletePopup";
 
-const PopUpEdit = () => {
+const PopupEdit = () => {
+  const prams = useParams();
+  const { data: popupInfo } = useGetOverAllPopupSearch(prams.id);
+  const { mutate: deleltePopup } = useDeletePopup(
+    ["getOverallPopupList"],
+    "/overallManager"
+  );
+  const { mutate } = useEditPopup(false, "/overallManager");
   // 팝업이름
   const [popupName, setPopupName] = useState("");
   // 카테고리
@@ -60,20 +72,106 @@ const PopUpEdit = () => {
   // 버튼 disabled
   const [isFormComplete, setIsFormComplete] = useState(false);
 
-  const { latitude, longitude } = useLocation(address);
-  const { id } = useParams();
-  console.log(id);
+  const { latitude, longitude } = useAddressLocation(address);
 
-  const { data: overAllPopupContent } = useGetOverAllPopupSearch(id);
+  useEffect(() => {
+    if (popupInfo) {
+      // 데이터를 받아와서 상태를 설정
+      setPopupName(popupInfo.name);
+      setPossibleAge({
+        name: popupInfo.availableAgeValue,
+        value: popupInfo.availableAge,
+      });
+      setExceptions(popupInfo.operationExcept);
+      setDetailAddress(popupInfo.addressDetail);
+      setAddress(popupInfo.address || "");
+      setSiteAddress(popupInfo.homepageLink);
+      setIntro(popupInfo.introduce);
+      setPrice(popupInfo.entranceFee);
+      setKeyWord(popupInfo.keywordList.join("/"));
+      setStartDate(popupInfo.openDate ? new Date(popupInfo.openDate) : null);
+      setEndDate(popupInfo.closeDate ? new Date(popupInfo.closeDate) : null);
+      if (popupInfo.openTime) {
+        const [hours, minutes] = popupInfo.openTime.split(":");
+        const openTimeDate = new Date();
+        openTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        setStartTime(openTimeDate);
+      }
+      if (popupInfo.closeTime) {
+        const [hours, minutes] = popupInfo.closeTime.split(":");
+        const closeTimeDate = new Date();
+        closeTimeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        setEndTime(closeTimeDate);
+      }
 
-  console.log(overAllPopupContent);
+      setAdmissionFee(popupInfo.entranceRequired ? "있음" : "없음");
+      const selectCategory = Object.entries(popupInfo.taste)
+        .filter(([, value]) => value === true)
+        .map(([key]) => key);
+
+      const categoryNames = selectCategory
+        .map(
+          (key) =>
+            categoryDummy.find((category) => category.name === key)?.value ||
+            key
+        )
+        .join(", ");
+
+      setCategory({
+        name: selectCategory.join(", "),
+        value: categoryNames,
+      });
+      const selectPopupCategory = Object.entries(popupInfo.prefered)
+        .filter(([, value]) => value === true)
+        .map(([value]) => value);
+
+      setPopupCategory(selectPopupCategory.join());
+      setPopupReservation(popupInfo.resvRequired ? "예약 필수" : "필수 아님");
+      setParking(popupInfo.parkingAvailable ? "주차가능" : "주차불가");
+      // 이미지 미리보기 설정
+      setShowImages(popupInfo.posterList || []);
+
+      const fileTest = async () => {
+        try {
+          const files = await Promise.all(
+            popupInfo.posterList.map(async (el, index) => {
+              try {
+                const response = await axios.get(el, {
+                  responseType: "blob",
+                  headers: {
+                    "Cache-Control": "no-cache",
+                  },
+                });
+
+                const url = response.config.url;
+                const fileName = url?.substring(url.lastIndexOf("/") + 1);
+
+                const file = new File([response.data], fileName || "", {
+                  type: response.data.type,
+                });
+                return file;
+              } catch (err) {
+                console.log(`${index}에서 에러가 발생합니다.`, err);
+                return null;
+              }
+            })
+          );
+          const validFiles = files.filter((file) => file !== null);
+          setImages(validFiles as File[]);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fileTest();
+    }
+  }, [popupInfo]);
+
   useEffect(() => {
     const checkFormComplete = () => {
       if (
         popupName &&
         category.name &&
         possibleAge.name &&
-        exceptions &&
         detailAddress &&
         address &&
         siteAddress &&
@@ -151,24 +249,29 @@ const PopUpEdit = () => {
       setImages(imagesList);
     }
   };
-
-  const { mutate } = usePostOverAllPopupCreate();
+  const handleDeletePopup = () => {
+    if (confirm("삭제하시겠습니까?")) {
+      deleltePopup(Number(prams.id));
+    }
+  };
 
   const handleSubmit = async () => {
     const contents = {
+      popupId: prams.id,
       name: popupName,
       homepageLink: siteAddress,
       introduce: intro,
       address: address,
       addressDetail: detailAddress,
-      closeDate: endDate,
-      entranceFee: admissionFee,
+      openDate: startDate ? conversionFormDate(startDate.toISOString()) : "",
+      closeDate: endDate ? conversionFormDate(endDate.toISOString()) : "",
+      openTime: startTime ? conversionFormTime(startTime.toISOString()) : "",
+      closeTime: endTime ? conversionFormTime(endTime.toISOString()) : "",
+      entranceFee: price,
+      entranceRequired: admissionFee === "있음" ? true : false,
       availableAge: possibleAge.name,
-      parkingAvailable: true,
-      resvRequired: false,
-      openDate: startDate,
-      openTime: startTime,
-      closeTime: endTime,
+      parkingAvailable: parking === "주차가능" ? true : false,
+      resvRequired: popupReservation === "예약 필수" ? true : false,
       operationExcept: exceptions,
       latitude: latitude,
       longitude: longitude,
@@ -177,7 +280,7 @@ const PopUpEdit = () => {
       keywords: keyWord.split("/"),
     };
 
-    mutate({ contents, images: images });
+    mutate({ contents, images });
   };
 
   return (
@@ -231,7 +334,12 @@ const PopUpEdit = () => {
       />
       <div className="flex justify-end mb-16">
         <OverallAddEditBtn
-          content="등록하기"
+          content="삭제하기"
+          onClick={handleDeletePopup}
+          className="text-gray-400 bg-white border border-LoginBtn mr-5"
+        />
+        <OverallAddEditBtn
+          content="저장하기"
           onClick={handleSubmit}
           disabled={!isFormComplete}
         />
@@ -240,4 +348,4 @@ const PopUpEdit = () => {
   );
 };
 
-export default PopUpEdit;
+export default PopupEdit;

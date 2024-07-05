@@ -25,11 +25,49 @@ const SideBar = () => {
   const [result, startListening] = useSpeech();
 
   useEffect(() => {
+    const savedActiveButton = sessionStorage.getItem("activeButton");
+    const savedShowContactSubMenu =
+      sessionStorage.getItem("showContactSubMenu");
+    const savedShowReportSubMenu = sessionStorage.getItem("showReportSubMenu");
+    const savedShowPopupReportSubMenu = sessionStorage.getItem(
+      "showPopupReportSubMenu"
+    );
+
+    if (savedActiveButton) {
+      setActiveButton(savedActiveButton);
+    }
+    if (savedShowContactSubMenu) {
+      setShowContactSubMenu(savedShowContactSubMenu === "true");
+    }
+    if (savedShowReportSubMenu) {
+      setShowReportSubMenu(savedShowReportSubMenu === "true");
+    }
+    if (savedShowPopupReportSubMenu) {
+      setShowPopupReportSubMenu(savedShowPopupReportSubMenu === "true");
+    }
+  }, []);
+
+  useEffect(() => {
     const destination = navigationMap[result.text.split(" ").join("")];
     if (destination) {
       navigate(destination);
     }
-  }, [result]);
+  }, [navigate, result]);
+
+  useEffect(() => {
+    sessionStorage.setItem("activeButton", activeButton);
+    sessionStorage.setItem("showContactSubMenu", showContactSubMenu.toString());
+    sessionStorage.setItem("showReportSubMenu", showReportSubMenu.toString());
+    sessionStorage.setItem(
+      "showPopupReportSubMenu",
+      showPopupReportSubMenu.toString()
+    );
+  }, [
+    activeButton,
+    showContactSubMenu,
+    showReportSubMenu,
+    showPopupReportSubMenu,
+  ]);
 
   const contactButtons = ["문의하기/FAQ 관리", "자주 묻는 질문"];
   const reportsButtons = ["신고 관리", "팝업 신고", "후기 신고"];
@@ -59,6 +97,10 @@ const SideBar = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
+      sessionStorage.removeItem("showContactSubMenu");
+      sessionStorage.removeItem("activeButton");
+      sessionStorage.removeItem("showPopupReportSubMenu");
+      sessionStorage.removeItem("showReportSubMenu");
       alert("로그아웃 완료!");
       navigate("/");
     }

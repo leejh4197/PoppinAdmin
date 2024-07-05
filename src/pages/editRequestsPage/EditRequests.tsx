@@ -18,11 +18,10 @@ function EditRequests() {
     setProcess(value);
   };
   const { data: editRequestList } = useGetEditRequestList(
-    process === "미처리" ? true : false,
+    process === "미처리" ? false : true,
     offset,
     19
   );
-  console.log(editRequestList);
   useEffect(() => {
     if (editRequestList) {
       setTotalPages(editRequestList.pageInfo.totalPages);
@@ -45,7 +44,7 @@ function EditRequests() {
             >
               <button
                 value={el}
-                className="px-[30px] py-3"
+                className="px-7 py-2"
                 onClick={handleProcessBtnClick}
               >
                 {el}

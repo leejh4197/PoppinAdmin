@@ -14,7 +14,7 @@ const OverallAddEditBtn = ({
   return (
     <div className="flex">
       <button
-        className={`bg-LoginBtn px-10 py-1 text-[20px] whitespace-nowrap rounded-full disabled:bg-gray-300 ${
+        className={`bg-LoginBtn px-10 py-1 text-[20px] whitespace-nowrap rounded-full disabled:bg-gray-200 disabled:text-gray-400 ${
           className ? className : "text-white"
         }`}
         onClick={onClick}

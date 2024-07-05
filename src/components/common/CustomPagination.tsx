@@ -26,8 +26,7 @@ const CustomPagination = ({
       breakLabel="..."
       breakClassName="page-item"
       breakLinkClassName="page-link"
-      coverClassName="pagination"
-      activeClassName="flex items-center justify-center font-bold text-white w-6 h-6 rounded-full bg-LoginBtn/60"
+      activeClassName="flex pagination items-center justify-center font-bold text-white w-6 h-6 rounded-full bg-LoginBtn/60"
       renderOnZeroPageCount={null}
       forcePage={forcePage}
     />
