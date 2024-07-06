@@ -9,6 +9,7 @@ export interface EditRequestCheckType {
   email: string;
   popup: Popups;
   userImageUrl: string;
+  popupName: string;
 }
 
 export interface Popups {
@@ -45,7 +46,6 @@ export interface Popups {
 
 export interface EditRequestProps {
   editCheck?: EditRequestCheckType;
-  popupName: string | undefined;
 }
 
 export interface PopupEdit {

@@ -45,7 +45,6 @@ const PopupDetailContent = ({
 
   // 수정된 homepageLink
   const validHomepageLink = ensureProtocol(homepageLink);
-  // 클립보드 주소 복사
 
   return (
     <div className="flex mb-10">
