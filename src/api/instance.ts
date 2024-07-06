@@ -17,7 +17,7 @@ userInstance.interceptors.request.use(
       config.headers["Authorization"] = `Bearer ${token}`;
     }
     if (refreshToken) {
-      config.headers["Refresh"] = refreshToken;
+      config.headers["Refresh"] = `Bearer ${refreshToken}`;
     }
     return config;
   },
@@ -37,7 +37,6 @@ export const getNewToken = async () => {
         headers: { Authorization: `Bearer ${refreshToken}` },
       }
     );
-    alert("세션이 만료되어 다시 로그인 중 입니다..");
     window.localStorage.setItem(
       "refreshToken",
       response.data.data.refreshToken
@@ -58,10 +57,14 @@ export const getNewToken = async () => {
 
 userInstance.interceptors.response.use(
   (res) => {
+    console.log("인터셉트res", res);
     return res;
   },
   async (error) => {
+    console.log("인터셉트 에러", error);
     const { config, response } = error;
+    console.log("콘피그", config, "Res", response);
+
     if (
       response.staus === 403 ||
       response.config.url === "/api/v1/auth/refresh"
@@ -73,7 +76,7 @@ userInstance.interceptors.response.use(
       const newToken = await getNewToken();
       if (newToken) {
         config.headers["Authorization"] = `Bearer ${newToken[0]}`;
-        config.headers["Refresh"] = newToken[1];
+        config.headers["Refresh"] = `Bearer ${newToken[1]}`;
       }
       return userInstance(config);
     } catch (newError) {

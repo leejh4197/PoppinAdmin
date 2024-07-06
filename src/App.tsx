@@ -24,6 +24,7 @@ import PopUpEdit from "./pages/overallManagementPage/PopupEdit";
 import PopupReportEdit from "./pages/reportManagementPage/popupReportPage/PopupReportEdit";
 import OperatorReportUpload from "./pages/submissionManagementPage/OperatorReportUpload";
 import UserReportUpload from "./pages/submissionManagementPage/UserReportUpload";
+import NotFound from "./pages/notFoundPage/NotFound";
 
 interface PrivateRouteProps {
   element: ReactElement;
@@ -130,6 +131,7 @@ function App() {
             element={<PrivateRoute element={<PopUpEdit />} />}
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

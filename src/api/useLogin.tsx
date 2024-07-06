@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { baseInstance } from "./instance";
 import { AxiosResponse } from "axios";
-
-const encodeCredentials = (email: string, password: string) => {
-  const credentials = `${email}:${password}`;
-  return btoa(credentials);
-};
+import { encodeCredentials } from "./encodeCredentials";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
