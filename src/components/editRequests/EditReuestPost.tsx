@@ -1,12 +1,12 @@
 import { EditRequestProps } from "../../types/editRequestCheck";
 import { formattedDate } from "../common/FormUtil";
 
-function EditReuestPost({ editCheck }: EditRequestProps) {
+function EditReuestPost({ editCheck, popupName }: EditRequestProps) {
   return (
     <div>
       {editCheck && (
         <>
-          <div className="font-bold text-xl">팝업1</div>
+          <div className="font-bold text-xl">{popupName}</div>
           <div className="text-sm text-gray-300 mb-2">
             작성일 : {formattedDate(editCheck.createdAt)}
           </div>

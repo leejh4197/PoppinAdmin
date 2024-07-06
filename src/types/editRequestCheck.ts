@@ -45,6 +45,7 @@ export interface Popups {
 
 export interface EditRequestProps {
   editCheck?: EditRequestCheckType;
+  popupName: string | undefined;
 }
 
 export interface PopupEdit {

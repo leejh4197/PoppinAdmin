@@ -35,7 +35,7 @@ function EditRequestsDetail() {
           <div className="text-sm text-gray-300">{editCheck?.email}</div>
         </div>
       </div>
-      <EditReuestPost editCheck={editCheck} />
+      <EditReuestPost editCheck={editCheck} popupName={editCheck?.popup.name} />
       {!editCheck?.isExecuted && (
         <button
           className="absolute right-0 bottom-0 px-12 py-3 text-white bg-LoginBtn rounded-full font-bold"
