@@ -17,5 +17,8 @@ export const sideBarContents: SideBarContent[] = [
   { name: "이용자 제보", path: "/userReport" },
   { name: "전체 팝업 관리", path: "/overallManager" },
   { name: "공지사항 관리", path: "/noticeManager" },
-  { name: "이용 약관 및 정책 관리", path: "/" },
+  {
+    name: "이용 약관 및 정책 관리",
+    path: "https://www.notion.so/2-13ver-fffbe3f598b14e2e9723486c33b38128?pvs=4",
+  },
 ];

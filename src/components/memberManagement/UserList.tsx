@@ -1,29 +1,30 @@
+import { useNavigate } from "react-router-dom";
+
 type UserListProps = {
   nickName: string;
   userId: number;
   email: string;
   requiresSpecialCare: boolean;
-  handleMemberDetailClick: (nickName: string, focus: boolean) => void;
 };
 const UserList = ({
   nickName,
   email,
   userId,
   requiresSpecialCare,
-  handleMemberDetailClick,
 }: UserListProps) => {
+  const navigate = useNavigate();
+  const handleMemberDetailClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { id } = e.currentTarget;
+    navigate(`/memberManager/${id}`);
+  };
   return (
-    <div className="flex items-center mb-5 whitespace-nowrap hover:bg-gray-200">
+    <button
+      className="flex w-full py-2 items-center whitespace-nowrap hover:bg-LoginBtn/10"
+      id={String(userId)}
+      onClick={handleMemberDetailClick}
+    >
       <div className="text-xl mr-3">
-        <button
-          id={String(userId)}
-          value={nickName}
-          onClick={(e) =>
-            handleMemberDetailClick(e.currentTarget.id, requiresSpecialCare)
-          }
-        >
-          {nickName}
-        </button>
+        <div>{nickName}</div>
       </div>
       <div className="text-gray-400 mr-3">{email}</div>
       {requiresSpecialCare && (
@@ -31,7 +32,7 @@ const UserList = ({
           집중 관리
         </div>
       )}
-    </div>
+    </button>
   );
 };
 

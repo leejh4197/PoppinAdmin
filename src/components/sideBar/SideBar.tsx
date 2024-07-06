@@ -89,7 +89,9 @@ const SideBar = () => {
     } else {
       setActiveButton(name);
     }
-    if (path) {
+    if (path && name === "이용 약관 및 정책 관리") {
+      window.open(path);
+    } else if (path) {
       navigate(path);
     }
   };
@@ -131,10 +133,10 @@ const SideBar = () => {
         </div>
       </div>
       <div className="flex flex-col absolute pl-[200px] h-full pt-[160px] z-50">
-        <img className="w-8" src="Logo.png" alt="Logo" />
+        <img className="w-8" src="/Logo.png" alt="Logo" />
         <div>
           <button
-            className={`py-8 text-4xl ${
+            className={`py-4 w-full flex text-4xl ${
               activeButton === "관리자" ? "font-bold" : ""
             }`}
             onClick={() => handleClick("관리자", "/home")}
@@ -144,7 +146,7 @@ const SideBar = () => {
         </div>
         <div className="border-y">
           {sideBarContents.map((el, index) => (
-            <div className="my-5" key={index}>
+            <div className="my-5 " key={index}>
               {el.name === "문의하기/FAQ 관리" && (
                 <button
                   className={`flex items-center ${
@@ -164,7 +166,7 @@ const SideBar = () => {
               )}
               {el.name === "자주 묻는 질문" && showContactSubMenu && (
                 <button
-                  className={` ${
+                  className={`animate-dropdown ${
                     activeButton === el.name
                       ? "font-bold text-LoginBtn"
                       : "text-gray-400"
@@ -194,7 +196,7 @@ const SideBar = () => {
               {(el.name === "팝업 신고" || el.name === "후기 신고") &&
                 showReportSubMenu && (
                   <button
-                    className={`${
+                    className={`animate-dropdown ${
                       activeButton === el.name
                         ? "font-bold text-LoginBtn"
                         : "text-gray-400"
@@ -226,7 +228,7 @@ const SideBar = () => {
               {(el.name === "운영자 제보" || el.name === "이용자 제보") &&
                 showPopupReportSubMenu && (
                   <button
-                    className={`${
+                    className={`animate-dropdown ${
                       activeButton === el.name
                         ? "font-bold text-LoginBtn"
                         : "text-gray-400"

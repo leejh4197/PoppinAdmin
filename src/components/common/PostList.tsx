@@ -34,7 +34,7 @@ const PostList = ({
   };
   return (
     <button
-      className={`flex items-center px-8 py-9 border-b w-full hover:bg-gray-100`}
+      className={`flex items-center px-8 py-9 border-b w-full hover:bg-LoginBtn/10`}
       onClick={handleBoardClick}
       value={write}
     >

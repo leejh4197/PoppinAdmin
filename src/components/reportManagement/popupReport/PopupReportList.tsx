@@ -20,7 +20,7 @@ function PopupReportList({
   const navigate = useNavigate();
   return (
     <button
-      className="border-b p-7 flex flex-col"
+      className="border-b p-7 flex flex-col hover:bg-LoginBtn/10"
       value={title}
       onClick={() =>
         navigate(`/${path}/${reportId}`, { state: { executed: executed } })

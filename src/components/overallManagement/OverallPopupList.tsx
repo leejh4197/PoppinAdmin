@@ -14,7 +14,7 @@ const OverallPopupList = ({
 }: OverallPopupListType) => {
   return (
     <div
-      className="w-full px-8 py-6 border-b hover:bg-gray-100 cursor-pointer"
+      className="w-full px-8 py-6 border-b hover:bg-LoginBtn/10 cursor-pointer"
       onClick={onClick}
     >
       <div>[{title}]</div>

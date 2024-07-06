@@ -25,7 +25,7 @@ const CustomModal = ({ setModalActive, hiddenButtonRef }: ModalType) => {
         <div className="text-black font-bold mb-5">로그인이 완료됐습니다!</div>
         <button
           ref={hiddenButtonRef}
-          className="bg-[#0EB5F9] text-white font-bold py-2 px-6 rounded-full hover:bg-[#0da0d1] transition duration-300 ease-in-out focus:outline-none"
+          className="bg-[#0EB5F9] text-white font-bold py-2 px-6 rounded-full hover:bg-LoginBtn/10 transition duration-300 ease-in-out focus:outline-none"
           onClick={handleModalClick}
         >
           확인

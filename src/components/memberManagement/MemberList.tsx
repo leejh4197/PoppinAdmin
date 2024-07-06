@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomPagination from "../common/CustomPagination";
 import UserList from "./UserList";
-import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../../hook/useDebounce";
 import { User } from "../../types/user";
 import useGetUserList from "../../queries/memberManager/useGetUserList";
@@ -9,7 +8,6 @@ import useGetUserSearch from "../../queries/memberManager/useGetUserSearch";
 import Spinner from "../common/Spinner";
 
 const MemberList = () => {
-  const navigate = useNavigate();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -36,12 +34,6 @@ const MemberList = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setFocusUserActive(false);
-  };
-
-  const handleMemberDetailClick = (id: string) => {
-    navigate(`/memberManager/${id}`, {
-      state: { id: id },
-    });
   };
 
   useEffect(() => {
@@ -90,7 +82,6 @@ const MemberList = () => {
           {displayData?.map((el) => (
             <div key={el.id}>
               <UserList
-                handleMemberDetailClick={handleMemberDetailClick}
                 userId={el.id}
                 nickName={el.nickname}
                 email={el.email}

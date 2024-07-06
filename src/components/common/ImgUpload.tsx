@@ -40,7 +40,7 @@ function ImgUpload({
             className="hidden"
             type="file"
             id="input-file"
-            accept="image/*"
+            accept="image/png,image/jpeg,image/jpg"
             multiple
             onChange={onChange}
           />

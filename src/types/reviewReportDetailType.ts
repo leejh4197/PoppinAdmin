@@ -36,4 +36,5 @@ export interface ReportedReviewDetailDto {
   reviewId: number;
   reviewWriter: string;
   reviewContent: string;
+  userProfileImageUrl: string;
 }

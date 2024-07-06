@@ -4,6 +4,7 @@ export const baseInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 10000,
 });
+
 export const userInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 10000,
@@ -26,11 +27,10 @@ userInstance.interceptors.request.use(
   }
 );
 
-// 토큰 갱신 함수
 export const getNewToken = async () => {
   try {
     const refreshToken = window.localStorage.getItem("refreshToken");
-    const response = await userInstance.post(
+    const response = await baseInstance.post(
       "/api/v1/auth/refresh",
       {},
       {
@@ -57,30 +57,40 @@ export const getNewToken = async () => {
 
 userInstance.interceptors.response.use(
   (res) => {
-    console.log("인터셉트res", res);
     return res;
   },
   async (error) => {
-    console.log("인터셉트 에러", error);
     const { config, response } = error;
-    console.log("콘피그", config, "Res", response);
 
     if (
-      response.staus === 403 ||
+      response.status === 403 &&
+      !config._retry &&
+      response.config.url !== "/api/v1/auth/refresh"
+    ) {
+      // 무한루프 방지를 위해 retry를 추가
+      config._retry = true;
+      try {
+        const newToken = await getNewToken();
+        if (newToken) {
+          config.headers["Authorization"] = `Bearer ${newToken[0]}`;
+          config.headers["Refresh"] = `Bearer ${newToken[1]}`;
+        }
+        return userInstance(config);
+      } catch (newError) {
+        return Promise.reject(newError);
+      }
+    }
+
+    if (
+      response.status === 403 &&
       response.config.url === "/api/v1/auth/refresh"
     ) {
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("refreshToken");
+      window.dispatchEvent(new CustomEvent("refreshFailed"));
       return Promise.reject(error);
     }
-    config._retry = true;
-    try {
-      const newToken = await getNewToken();
-      if (newToken) {
-        config.headers["Authorization"] = `Bearer ${newToken[0]}`;
-        config.headers["Refresh"] = `Bearer ${newToken[1]}`;
-      }
-      return userInstance(config);
-    } catch (newError) {
-      return Promise.reject(newError);
-    }
+
+    return Promise.reject(error);
   }
 );

@@ -10,7 +10,7 @@ const NotFound = () => {
         <div className="animate-bounce">존재하지 않는 페이지 입니다.</div>
       </div>
       <button
-        className="py-5 ml-10 font-bold flex items-center hover:bg-gray-100"
+        className="py-5 ml-10 font-bold flex items-center hover:bg-LoginBtn/10"
         onClick={() => navigate(-1)}
       >
         <img className="rotate-90 mr-2" src="/arrow.svg" alt="" />

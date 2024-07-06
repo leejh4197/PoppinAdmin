@@ -311,7 +311,6 @@ const UserReportUpload = () => {
     };
 
     editTemp({ contents, images });
-    console.log(contents);
   };
 
   return (

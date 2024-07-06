@@ -17,7 +17,6 @@ const useEditRequestPopup = () => {
       EditRequestPopup(formData.contents, formData.images),
     retry: false,
     onSuccess: (data) => {
-      console.log(data);
       if (data.success) {
         alert("수정이 완료됐습니다.");
         navigate("/editRequests");

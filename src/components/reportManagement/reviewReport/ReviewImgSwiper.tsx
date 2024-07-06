@@ -10,19 +10,21 @@ const ReviewImgSwiper = ({
   imageUrl,
   reviewCnt,
   reviewWriter,
+  isCertificated,
+  userProfileImageUrl,
 }: ReportedReviewDetailDto) => {
   return (
     <div className="w-1/3 mr-7">
       <div className="flex items-center mb-2">
         <img
           className="mr-5 w-10 h-10 object-cover rounded-full border border-LoginBtn"
-          src="/Logo.png"
+          src={`${userProfileImageUrl ? userProfileImageUrl : "/Logo.png"}`}
           alt=""
         />
         <div className="flex flex-col">
           <div className="flex items-center">
             <div className="mr-2 font-bold text-lg">{reviewWriter}</div>
-            <img src="/check.svg" alt="" />
+            {isCertificated && <img src="/check.svg" alt="" />}
           </div>
           <div className="text-gray-400 text-sm">리뷰 {reviewCnt}개</div>
         </div>
