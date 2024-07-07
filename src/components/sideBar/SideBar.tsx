@@ -132,7 +132,7 @@ const SideBar = () => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col absolute pl-[200px] h-full pt-[160px] z-50">
+      <div className="flex flex-col absolute pl-[200px] h-full pt-[160px] z-30">
         <img className="w-8" src="/Logo.png" alt="Logo" />
         <div>
           <button

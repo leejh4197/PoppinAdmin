@@ -1,20 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import MainLoginBanner from "../../components/login/MainLoginBanner";
 import MainLoginBtn from "../../components/login/MainLoginBtn";
 import MainLoginInput from "../../components/login/MainLoginInput";
 import useLogin from "../../api/useLogin";
-import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../auth/auth";
 import Fireworks from "../../components/common/Firworks";
-import CustomModal from "../../components/common/CustomModal";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "../../atom/alertState";
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showFireworks, setShowFireworks] = useState(false);
-  const [modalActive, setModalActive] = useState(false);
-  const hiddenButtonRef = useRef<HTMLButtonElement>(null);
+  const setAlert = useSetRecoilState(alertState);
 
   const { login, response, success } = useLogin();
 
@@ -22,16 +20,16 @@ function Login() {
     setShowFireworks(true);
     await login(email, password);
   };
-  const handleActiveEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && email && password) {
-      handleLoginBtnClick();
-    }
-  };
 
   useEffect(() => {
     if (isAuthenticated()) {
-      alert("이미 로그인 된 상태입니다.");
-      navigate("/home");
+      setAlert({
+        title: "이미 로그인 된 상태입니다.",
+        cancelBtn: "",
+        btnTitle: "확인",
+        show: true,
+        navigateTo: "/home",
+      });
     }
   }, []);
 
@@ -39,7 +37,13 @@ function Login() {
     if (success) {
       localStorage.setItem("token", response?.data.data.accessToken);
       localStorage.setItem("refreshToken", response?.data.data.refreshToken);
-      setModalActive(true);
+      setAlert({
+        title: "로그인이 완료됐습니다.",
+        btnTitle: "확인",
+        cancelBtn: "",
+        show: true,
+        navigateTo: "/home",
+      });
     }
   }, [success, response]);
   return (
@@ -52,7 +56,6 @@ function Login() {
           placeholder="이메일 주소를 입력해주세요."
           value={email}
           setValue={setEmail}
-          keyDown={handleActiveEnter}
         />
         <MainLoginInput
           title="비밀번호"
@@ -62,7 +65,6 @@ function Login() {
           setValue={setPassword}
           success={success}
           message={response?.data.error?.message}
-          keyDown={handleActiveEnter}
         />
         {!success ? (
           <MainLoginBtn
@@ -78,12 +80,6 @@ function Login() {
           />
         )}
       </div>
-      {modalActive && (
-        <CustomModal
-          setModalActive={setModalActive}
-          hiddenButtonRef={hiddenButtonRef}
-        />
-      )}
     </div>
   );
 }

@@ -8,7 +8,6 @@ type MainLoginInputProps = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
   success?: boolean | null;
   message?: string | null;
-  keyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const MainLoginInput = ({
@@ -19,7 +18,6 @@ const MainLoginInput = ({
   success,
   message,
   setValue,
-  keyDown,
 }: MainLoginInputProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const handlePasswordVisibleClick = () => {
@@ -40,7 +38,6 @@ const MainLoginInput = ({
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
-          onKeyDown={keyDown}
         />
         {title === "비밀번호" && !success && (
           <div className="mb-[64px] text-[11px] text-red-500 font-semibold">

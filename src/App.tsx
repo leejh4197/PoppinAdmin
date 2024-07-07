@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/homePage/Home";
 import SideBar from "./components/sideBar/SideBar";
 import Login from "./pages/loginPage/Login";
@@ -25,16 +25,25 @@ import PopupReportEdit from "./pages/reportManagementPage/popupReportPage/PopupR
 import OperatorReportUpload from "./pages/submissionManagementPage/OperatorReportUpload";
 import UserReportUpload from "./pages/submissionManagementPage/UserReportUpload";
 import NotFound from "./pages/notFoundPage/NotFound";
+import CustomModal from "./components/common/CustomModal";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "./atom/alertState";
 
 interface PrivateRouteProps {
   element: ReactElement;
 }
 
 function App() {
+  const setAlert = useSetRecoilState(alertState);
   const PrivateRoute = ({ element }: PrivateRouteProps) => {
     if (!isAuthenticated()) {
-      alert("로그인이 필요합니다.");
-      return <Navigate to="/" />;
+      setAlert({
+        title: "로그인이 필요합니다.",
+        btnTitle: "확인",
+        cancelBtn: "",
+        show: true,
+        navigateTo: "/",
+      });
     } else {
       return element;
     }
@@ -42,6 +51,7 @@ function App() {
 
   return (
     <div className="h-full w-full">
+      <CustomModal />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route element={<SideBar />}>
